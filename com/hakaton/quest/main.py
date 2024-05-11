@@ -6,13 +6,15 @@ from aiogram import Bot, Dispatcher, F, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, \
+    CallbackQuery, ReplyKeyboardRemove
 
 from dialogue import Translate
 from npc_manager import ask_question
 from player import Player
 from quest_manager import QuestManager
 from config import *
+from geopy.distance import geodesic
 
 dp = Dispatcher()
 players = {}
@@ -20,6 +22,8 @@ quest_managers = {}
 asked_questions = {}
 translate = Translate()
 last_start_mesg = {}
+
+bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 
 @dp.message(CommandStart())
@@ -29,8 +33,29 @@ async def start_quest(message: Message) -> None:
         quest_managers[message.from_user.id] = QuestManager(player=players[message.from_user.id])
     asked_questions[message.from_user.id] = False
     quest_description, markup = quest_managers[message.from_user.id].make_choice()
-
+    await message.answer(text="Глава: " + quest_managers[message.from_user.id].current_chapter.title)
     await message.answer(text=quest_description, reply_markup=markup)
+
+
+@dp.message(F.location)
+async def location(message: Message) -> None:
+    loc = (message.location.latitude, message.location.longitude)
+    print(geodesic(loc, quest_managers[message.from_user.id].current_chapter.geo_position).meters)
+    if (players[message.from_user.id].change_loc and
+            geodesic((message.location.latitude,
+                      message.location.longitude),
+                     quest_managers[message.from_user.id].current_chapter.geo_position).meters <= 50):
+        user = quest_managers[message.from_user.id]
+        players[message.from_user.id].change_loc = False
+        await message.answer(
+            text="Глава: " + quest_managers[message.from_user.id].current_chapter.title,
+            reply_markup=ReplyKeyboardRemove())
+        quest_description, markup = user.make_choice()
+        await message.answer(text=quest_description, reply_markup=markup)
+    elif geodesic((message.location.latitude,
+                   message.location.longitude),
+                  quest_managers[message.from_user.id].current_chapter.geo_position).meters > 50:
+        await message.answer("Вы слишком далеко.")
 
 
 @dp.message()
@@ -58,15 +83,18 @@ async def apply_choice(callback: types.CallbackQuery):
             compare_data = user.current_chapter_id + ";" + user.current_quest_id + ";" + choice.choice_id
             if compare_data == callback.data:
                 if choice.to_quest.startswith("ch"):
+                    players[callback.from_user.id].change_loc = True
+                    markup = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Продолжить", request_location=True)]])
+                    await callback.message.answer(text="Новая локация", reply_markup=markup)
                     user.current_chapter_id = choice.to_quest
                     user.current_chapter = user.chapters[user.current_chapter_id]
                     user.current_quest_id = "q0"
                     user.current_quest = user.current_chapter.quests[user.current_quest_id]
-                    await callback.message.answer(
-                        text="Глава: " + quest_managers[callback.from_user.id].current_chapter.title)
+                    # await callback.message.answer(
+                    #     text="Глава: " + quest_managers[callback.from_user.id].current_chapter.title)
                     quest_description, markup = user.make_choice()
                     await callback.message.edit_reply_markup(reply_markup=None)
-                    await callback.message.answer(text=quest_description, reply_markup=markup)
+                    # await callback.message.answer(text=quest_description, reply_markup=markup)
                 else:
                     quest_managers[callback.from_user.id].current_quest_id = choice.to_quest
                     quest_description, markup = quest_managers[callback.from_user.id].make_choice()
@@ -87,7 +115,6 @@ async def apply_choice(callback: types.CallbackQuery):
 
 
 async def main() -> None:
-    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await dp.start_polling(bot)
 
 
