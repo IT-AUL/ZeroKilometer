@@ -1,82 +1,115 @@
 [
   {
-    "quest_id": "ask",
-    "description": "Говори",
-    "choices": []
-  },
-  {
-    "quest_id": "q0",
-    "description": "Ты кто?",
-    "choices": [
+    "chapter_id": "ch0",
+    "title": "First chapter",
+    "geo_position": "55.842182;49.132691",
+    "quests": [
       {
-        "choice_id": "c0",
-        "to_quest": "q1",
-        "text": "Я $name.",
-        "conditions": [],
-        "result": {
-          "health": 10
-        }
+        "quest_id": "ask",
+        "description": "Говори",
+        "choices": []
       },
       {
-        "choice_id": "c1",
-        "to_quest": "q2",
-        "text": "Казань ли это?",
-        "conditions": [],
-        "result": {
-        }
+        "quest_id": "q0",
+        "description": "Ты кто?",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Я $name.",
+            "conditions": [],
+            "result": {
+              "health": 10
+            }
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Казань ли это?",
+            "conditions": [],
+            "result": {
+            }
+          },
+          {
+            "choice_id": "ask",
+            "to_quest": "ask",
+            "text": "Расспросить стражника",
+            "conditions": [],
+            "result": {}
+          }
+        ]
       },
       {
-        "choice_id": "ask",
-        "to_quest": "ask",
-        "text": "Расспросить стражника",
-        "conditions": [],
-        "result": {}
-      }
-    ]
-  },
-  {
-    "quest_id": "q1",
-    "description": "И я $name",
-    "choices": [
+        "quest_id": "q1",
+        "description": "И я $name",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q2",
+            "text": "А можно ли мне пройти?",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
       {
-        "choice_id": "c0",
-        "to_quest": "q2",
-        "text": "А можно ли мне пройти?",
-        "conditions": [],
-        "result": {}
-      }
-    ]
-  },
-  {
-    "quest_id": "q2",
-    "description": "Ну, если монету заплатишь, то не только пройдешь, но и расспросить сможешь.",
-    "choices": [
+        "quest_id": "q2",
+        "description": "Ну, если монету заплатишь, то не только пройдешь, но и расспросить сможешь.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q3",
+            "text": "Дать монету",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
       {
-        "choice_id": "c0",
-        "to_quest": "q3",
-        "text": "Дать монету",
-        "conditions": [],
-        "result": {}
-      }
-    ]
-  },
-  {
-    "quest_id": "q3",
-    "description": "Казань, город средневекового величия и исторической важности, раскинулась на берегу могучей реки Волги. Ее крепостные стены, украшенные башнями и крепостными воротами, возвышались над городом, защищая его от врагов и создавая атмосферу таинственности и мощи.\n\n\nВнутри города, узкие и извилистые улочки, выложенные брусчаткой, вели к замысловатым домам из дерева и камня. Величественные церкви и монастыри, с их золотыми куполами и узорчатыми фресками, украшали городскую панораму и придавали ему духовную ауру.",
-    "choices": [
+        "quest_id": "q3",
+        "description": "Казань, город средневекового величия и исторической важности, раскинулась на берегу могучей реки Волги. Ее крепостные стены, украшенные башнями и крепостными воротами, возвышались над городом, защищая его от врагов и создавая атмосферу таинственности и мощи.\n\n\nВнутри города, узкие и извилистые улочки, выложенные брусчаткой, вели к замысловатым домам из дерева и камня. Величественные церкви и монастыри, с их золотыми куполами и узорчатыми фресками, украшали городскую панораму и придавали ему духовную ауру.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "ch1",
+            "text": "Конец",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
       {
-        "choice_id": "c0",
-        "to_quest": "-1",
-        "text": "Конец",
-        "conditions": [],
-        "result": {}
+        "quest_id": "q4",
+        "description": "Квест завершен",
+        "choices": [
+        ]
       }
     ]
   },
   {
-    "quest_id": "-1",
-    "description": "Квест завершен",
-    "choices": [
+    "chapter_id": "ch1",
+    "title": "Second chapter",
+    "geo_position": "55.842182;49.132691",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Квест завершен",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Конец",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": "Квест завершен",
+        "choices": [
+        ]
+      }
     ]
   }
 ]

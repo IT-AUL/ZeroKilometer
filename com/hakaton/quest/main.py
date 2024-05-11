@@ -19,6 +19,7 @@ players = {}
 quest_managers = {}
 asked_questions = {}
 translate = Translate()
+last_start_mesg = {}
 
 
 @dp.message(CommandStart())
@@ -45,21 +46,37 @@ async def answer_question(message: Message):
 @dp.callback_query(F.data != "ask_question")
 async def apply_choice(callback: types.CallbackQuery):
     global asked_questions
-    if callback.data == 'ask':
+    global quest_managers
+    if callback.data.endswith('ask'):
         asked_questions[callback.from_user.id] = True
         await callback.message.edit_reply_markup(reply_markup=None)
         await callback.message.answer(text="Ну, спрашивай")
     else:
         for choice in quest_managers[callback.from_user.id].current_quest.choices:
             asked_questions[callback.from_user.id] = False
-            if choice.choice_id == callback.data:
-                quest_managers[callback.from_user.id].current_quest_id = choice.to_quest
-                quest_description, markup = quest_managers[callback.from_user.id].make_choice()
-                players[callback.from_user.id].apply_changes(**choice.result)
-                await callback.message.edit_reply_markup(reply_markup=None)
-                await callback.message.answer(text=choice.text)
-                await callback.message.answer(text=quest_description, reply_markup=markup)
+            user = quest_managers[callback.from_user.id]
+            compare_data = user.current_chapter_id + ";" + user.current_quest_id + ";" + choice.choice_id
+            if compare_data == callback.data:
+                if choice.to_quest.startswith("ch"):
+                    user.current_chapter_id = choice.to_quest
+                    user.current_chapter = user.chapters[user.current_chapter_id]
+                    user.current_quest_id = "q0"
+                    user.current_quest = user.current_chapter.quests[user.current_quest_id]
+                    await callback.message.answer(
+                        text="Глава: " + quest_managers[callback.from_user.id].current_chapter.title)
+                    quest_description, markup = user.make_choice()
+                    await callback.message.edit_reply_markup(reply_markup=None)
+                    await callback.message.answer(text=quest_description, reply_markup=markup)
+                else:
+                    quest_managers[callback.from_user.id].current_quest_id = choice.to_quest
+                    quest_description, markup = quest_managers[callback.from_user.id].make_choice()
+                    players[callback.from_user.id].apply_changes(**choice.result)
+                    await callback.message.edit_reply_markup(reply_markup=None)
+                    await callback.message.answer(text=choice.text)
+                    await callback.message.answer(text=quest_description, reply_markup=markup)
                 break
+        else:
+            await callback.message.delete()
 
 
 # @dp.callback_query()
