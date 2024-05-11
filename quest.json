@@ -1,17 +1,40 @@
 [
   {
     "chapter_id": "ch0",
-    "title": "First chapter",
-    "geo_position": "59.842182;49.132691",
+    "title": "Начало",
+    "geo_position": "52;52",
     "quests": [
       {
-        "quest_id": "ask",
-        "description": "Говори",
-        "choices": []
+        "quest_id": "q0",
+        "description": "Вы подошли к воротам Казани. Надо бы поговорить со стражником.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Что это за место?",
+            "conditions": [],
+            "result": {
+            }
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Кто ты?",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q3",
+            "text": "Милый человек, подай монетку.",
+            "conditions": [],
+            "result": {}
+          }
+        ]
       },
       {
-        "quest_id": "q0",
-        "description": "Ты кто?",
+        "quest_id": "q1",
+        "description": "Не знаешь что-ли? Это же Казань, великий город.",
         "choices": [
           {
             "choice_id": "c0",
@@ -107,8 +130,7 @@
       {
         "quest_id": "q1",
         "description": "Квест завершен",
-        "choices": [
-        ]
+        "choices": []
       }
     ]
   }

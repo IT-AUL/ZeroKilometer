@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add geolocation">
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Cleaned code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/dialogue.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/dialogue.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/com/hakaton/quest/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/quest_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/quest_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quest.json" beforeDir="false" afterPath="$PROJECT_DIR$/quest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,7 +233,7 @@
       <workItem from="1715421020274" duration="6191000" />
       <workItem from="1715439948844" duration="4876000" />
       <workItem from="1715445305221" duration="1641000" />
-      <workItem from="1715454543060" duration="2237000" />
+      <workItem from="1715454543060" duration="4731000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -333,7 +331,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715454672153</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="[*] Cleaned code">
+      <option name="closed" value="true" />
+      <created>1715457123644</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1715457123644</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -358,10 +364,11 @@
     <MESSAGE value="[+] Conditions for every choice&#10;[+] Ending&#10;[+] Connection to neural network for speaking&#10;[+] Many players supporting" />
     <MESSAGE value="[+]" />
     <MESSAGE value="[+] Add geolocation" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Add geolocation" />
+    <MESSAGE value="[*] Cleaned code" />
+    <option name="LAST_COMMIT_MESSAGE" value="[*] Cleaned code" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1715445920093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1715458696467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$w.coverage" NAME="w Coverage Results" MODIFIED="1715096687664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$ww.coverage" NAME="ww Coverage Results" MODIFIED="1715375619303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$dialogue.coverage" NAME="dialogue Coverage Results" MODIFIED="1713860432239" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
