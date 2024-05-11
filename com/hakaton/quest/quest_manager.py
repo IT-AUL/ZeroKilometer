@@ -28,7 +28,6 @@ def load_chapters(quests_file):
                     conditions = [str(condition) for condition in choice_json['conditions']]
                     result = dict(choice_json['result'])
                     choice.append(Choice(choice_id, to_quest, text, conditions, result))
-                # chapters[quest_id] = Quest(quest_id, description, choice)
                 quests[quest_id] = Quest(quest_id, description, choice)
             chapters[chapter_id] = Chapter(chapter_id, title, geo_position, quests)
         return chapters
@@ -50,7 +49,7 @@ class QuestManager:
         self.current_quest = self.current_chapter.quests[self.current_quest_id]
         return self.current_quest.description, self.current_quest.choices
 
-    def make_choice(self):
+    def get_quest_desc_and_choices(self):
         quest_description, choices = self.get_current_quest()
         quest_description = self.replace_variables(quest_description)
         builder = InlineKeyboardBuilder()

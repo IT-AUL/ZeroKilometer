@@ -3,7 +3,7 @@ import random
 
 class Player:
     def __init__(self):
-        self.change_loc = False
+        self.changed_location = False
         self.health = 50
         self.name = "Алмаз"
         self.items = []
