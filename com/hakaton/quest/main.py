@@ -1,19 +1,28 @@
+# Standard library imports
 import asyncio
 import logging
 import sys
 
+# Third-party library imports
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, CallbackQuery
+from aiogram.types import (
+    Message,
+    ReplyKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardRemove,
+    CallbackQuery
+)
+from geopy.distance import geodesic
 
+# Local application/library specific imports
 from dialogue import Translate
 from npc_manager import ask_question
 from player import Player
 from quest_manager import QuestManager
 from config import *
-from geopy.distance import geodesic
 
 dp = Dispatcher()
 

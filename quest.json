@@ -112,7 +112,7 @@
   {
     "chapter_id": "ch1",
     "title": "Second chapter",
-    "geo_position": "55.842182;49.132691",
+    "geo_position": "52;52",
     "quests": [
       {
         "quest_id": "q0",
