@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game</title>
+    <style>
+        #card {
+            width: 100px;
+            height: 150px;
+            position: absolute;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<img id="card" src="img.png" alt="Card Image">
+<script>
+    const card = document.getElementById('card');
+
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    card.addEventListener('mousedown', startDrag);
+    card.addEventListener('mouseup', endDrag);
+
+    function startDrag(e) {
+        isDragging = true;
+        offsetX = e.offsetX - card.width / 2;
+        offsetY = e.offsetY - card.height / 2;
+
+        document.addEventListener('mousemove', dragCard);
+    }
+
+    function dragCard(e) {
+        if (isDragging) {
+            card.style.left = e.pageX - offsetX + 'px';
+            card.style.top = e.pageY - offsetY + 'px';
+        }
+    }
+
+    function endDrag() {
+        isDragging = false;
+        document.removeEventListener('mousemove', dragCard);
+    }
+
+</script>
+</body>
+</html>

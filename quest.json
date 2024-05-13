@@ -2,134 +2,43 @@
   {
     "chapter_id": "ch0",
     "title": "Начало",
-    "geo_position": "52;52",
+    "geo_position": "50.842243;49.132724",
     "quests": [
       {
         "quest_id": "q0",
-        "description": "Вы подошли к воротам Казани. Надо бы поговорить со стражником.",
-        "choices": [
-          {
-            "choice_id": "c0",
-            "to_quest": "q1",
-            "text": "Что это за место?",
-            "conditions": [],
-            "result": {
-            }
-          },
-          {
-            "choice_id": "c1",
-            "to_quest": "q2",
-            "text": "Кто ты?",
-            "conditions": [],
-            "result": {}
-          },
-          {
-            "choice_id": "c2",
-            "to_quest": "q3",
-            "text": "Милый человек, подай монетку.",
-            "conditions": [],
-            "result": {}
-          }
-        ]
-      },
-      {
-        "quest_id": "q1",
-        "description": "Не знаешь что-ли? Это же Казань, великий город.",
-        "choices": [
-          {
-            "choice_id": "c0",
-            "to_quest": "q1",
-            "text": "Я $name.",
-            "conditions": [],
-            "result": {
-              "health": 10
-            }
-          },
-          {
-            "choice_id": "c1",
-            "to_quest": "q2",
-            "text": "Казань ли это?",
-            "conditions": [],
-            "result": {
-            }
-          },
-          {
-            "choice_id": "ask",
-            "to_quest": "ask",
-            "text": "Расспросить стражника",
-            "conditions": [],
-            "result": {}
-          }
-        ]
-      },
-      {
-        "quest_id": "q1",
-        "description": "И я $name",
-        "choices": [
-          {
-            "choice_id": "c0",
-            "to_quest": "q2",
-            "text": "А можно ли мне пройти?",
-            "conditions": [],
-            "result": {}
-          }
-        ]
-      },
-      {
-        "quest_id": "q2",
-        "description": "Ну, если монету заплатишь, то не только пройдешь, но и расспросить сможешь.",
-        "choices": [
-          {
-            "choice_id": "c0",
-            "to_quest": "q3",
-            "text": "Дать монету",
-            "conditions": [],
-            "result": {}
-          }
-        ]
-      },
-      {
-        "quest_id": "q3",
-        "description": "Казань, город средневекового величия и исторической важности, раскинулась на берегу могучей реки Волги. Ее крепостные стены, украшенные башнями и крепостными воротами, возвышались над городом, защищая его от врагов и создавая атмосферу таинственности и мощи.\n\n\nВнутри города, узкие и извилистые улочки, выложенные брусчаткой, вели к замысловатым домам из дерева и камня. Величественные церкви и монастыри, с их золотыми куполами и узорчатыми фресками, украшали городскую панораму и придавали ему духовную ауру.",
+        "description": "пусто",
         "choices": [
           {
             "choice_id": "c0",
             "to_quest": "ch1",
-            "text": "Конец",
+            "text": "пусто",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask",
+            "to_quest": "ask",
+            "text": "поговорить",
             "conditions": [],
             "result": {}
           }
         ]
       },
       {
-        "quest_id": "q4",
-        "description": "Квест завершен",
-        "choices": [
-        ]
+        "quest_id": "ask",
+        "description": "говори",
+        "choices": []
       }
     ]
   },
   {
     "chapter_id": "ch1",
-    "title": "Second chapter",
-    "geo_position": "52;52",
+    "title": "Начало",
+    "geo_position": "52.842243;49.132724",
     "quests": [
       {
         "quest_id": "q0",
-        "description": "Квест завершен",
-        "choices": [
-          {
-            "choice_id": "c0",
-            "to_quest": "q1",
-            "text": "Конец",
-            "conditions": [],
-            "result": {}
-          }
-        ]
-      },
-      {
-        "quest_id": "q1",
-        "description": "Квест завершен",
+        "description": "конец",
         "choices": []
       }
     ]

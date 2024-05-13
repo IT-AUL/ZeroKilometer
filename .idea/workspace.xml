@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Cleaned code&#10;[+] Requirements">
+      <change afterPath="$PROJECT_DIR$/com/hakaton/quest/content.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/file.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/com/hakaton/quest/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/npc_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/npc_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quest.json" beforeDir="false" afterPath="$PROJECT_DIR$/quest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -233,7 +237,11 @@
       <workItem from="1715421020274" duration="6191000" />
       <workItem from="1715439948844" duration="4876000" />
       <workItem from="1715445305221" duration="1641000" />
-      <workItem from="1715454543060" duration="5357000" />
+      <workItem from="1715454543060" duration="5701000" />
+      <workItem from="1715541415467" duration="2892000" />
+      <workItem from="1715610959361" duration="1150000" />
+      <workItem from="1715615244357" duration="360000" />
+      <workItem from="1715616009902" duration="3581000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -347,7 +355,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715459362316</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="[*] Cleaned code&#10;[+] Requirements">
+      <option name="closed" value="true" />
+      <created>1715459952273</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1715459952273</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,7 +393,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="[*] Cleaned code&#10;[+] Requirements" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1715458696467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1715622056022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$w.coverage" NAME="w Coverage Results" MODIFIED="1715096687664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$ww.coverage" NAME="ww Coverage Results" MODIFIED="1715375619303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$dialogue.coverage" NAME="dialogue Coverage Results" MODIFIED="1713860432239" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
