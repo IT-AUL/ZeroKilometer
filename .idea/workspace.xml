@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Cleaned code&#10;[+] Requirements">
-      <change afterPath="$PROJECT_DIR$/com/hakaton/quest/content.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/file.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img.png" afterDir="false" />
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Map">
+      <change afterPath="$PROJECT_DIR$/com/hakaton/fight/character.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/hakaton/fight/choose.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/hakaton/fight/file.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/com/hakaton/quest/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/npc_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/npc_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest.json" beforeDir="false" afterPath="$PROJECT_DIR$/quest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/fight/img.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +81,7 @@
       <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\fight" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
@@ -241,7 +242,8 @@
       <workItem from="1715541415467" duration="2892000" />
       <workItem from="1715610959361" duration="1150000" />
       <workItem from="1715615244357" duration="360000" />
-      <workItem from="1715616009902" duration="3581000" />
+      <workItem from="1715616009902" duration="4825000" />
+      <workItem from="1715708870431" duration="6694000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -363,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715459952273</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="[+] Map">
+      <option name="closed" value="true" />
+      <created>1715623805729</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1715623805729</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -390,10 +400,11 @@
     <MESSAGE value="[+] Add geolocation" />
     <MESSAGE value="[*] Cleaned code" />
     <MESSAGE value="[*] Cleaned code&#10;[+] Requirements" />
-    <option name="LAST_COMMIT_MESSAGE" value="[*] Cleaned code&#10;[+] Requirements" />
+    <MESSAGE value="[+] Map" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Map" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1715622056022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1715710006612" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$w.coverage" NAME="w Coverage Results" MODIFIED="1715096687664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$ww.coverage" NAME="ww Coverage Results" MODIFIED="1715375619303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$dialogue.coverage" NAME="dialogue Coverage Results" MODIFIED="1713860432239" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

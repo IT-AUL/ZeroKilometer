@@ -13,7 +13,7 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardRemove,
-    CallbackQuery
+    CallbackQuery, WebAppInfo
 )
 from geopy.distance import geodesic
 
@@ -46,7 +46,10 @@ async def start_quest(message: Message) -> None:
         await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
     is_talking_with_npc[user_id] = False
     quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
-    await message.answer(text=quest_description, reply_markup=markup)
+    m = ReplyKeyboardMarkup(keyboard=[
+        [KeyboardButton(web_app=WebAppInfo(url="https://danisgaleev.github.io/"),
+                        text="rkjey")]])
+    await message.answer(text=quest_description, reply_markup=m)
 
 
 @dp.message(Command("clear"))
