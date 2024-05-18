@@ -143,7 +143,9 @@
             "text": "Спасибо, я пойду",
             "video_path": "",
             "conditions": [],
-            "result": {}
+            "result": {
+              "items": [{"type":  "ally", "id":  "0", "name":  "Кот Казанский"}]
+            }
           }
         ]
       },

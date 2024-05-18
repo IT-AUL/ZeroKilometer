@@ -15,7 +15,7 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardRemove,
-    CallbackQuery, FSInputFile, InlineKeyboardButton, WebAppInfo
+    CallbackQuery, FSInputFile, WebAppInfo, InputMediaPhoto
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from geopy.distance import geodesic
@@ -127,7 +127,10 @@ async def handle_fight(callback: CallbackQuery):
             print(it['id'])
     ally_keyboard.button(text="Начать", callback_data="start_boy")
     ally_keyboard.adjust(1, True)
-    await callback.message.answer(text="Собрать команду", reply_markup=ally_keyboard.as_markup())
+    await bot.send_photo(chat_id=callback.message.chat.id,
+                         photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\img.png"), caption="Ваша колода",
+                         reply_markup=ally_keyboard.as_markup())
+    # await callback.message.answer(text="Собрать команду", reply_markup=ally_keyboard.as_markup())
 
 
 @dp.callback_query(F.data.startswith("id_"))
@@ -136,10 +139,23 @@ async def handle_fighters(callback: CallbackQuery):
     pl = players[user_id]
     if str(callback.data[3:]) in pl.deck:
         pl.deck.remove(str(callback.data[3:]))
+        await callback.message.edit_media(
+            media=InputMediaPhoto(media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\img.png"),
+                                  caption="Количество: " + str(len(pl.deck))), reply_markup=ally_keyboard.as_markup())
+        # await callback.message.edit_text(text="Количество: " + str(len(pl.deck)),
+        #                                  reply_markup=ally_keyboard.as_markup())
     else:
         pl.deck.append(str(callback.data[3:]))
+
+        await callback.message.edit_media(
+            media=InputMediaPhoto(
+                media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\{str(callback.data[3:])}.png"),
+                caption="Количество: " + str(len(pl.deck))), reply_markup=ally_keyboard.as_markup())
+        # await callback.message.edit_text(text="Количество: " + str(len(pl.deck)),
+        #                                  reply_markup=ally_keyboard.as_markup())
     print(pl.deck)
-    await callback.message.edit_text(text="количество: " + str(len(pl.deck)), reply_markup=ally_keyboard.as_markup())
+
+    # await callback.message.edit_text(text="Количество: " + str(len(pl.deck)), reply_markup=ally_keyboard.as_markup())
 
 
 @dp.callback_query(F.data.startswith("start_boy"))

@@ -16,7 +16,7 @@
             "video_path": "C:\\Users\\galee\\PycharmProjects\\Hakaton\\com\\hakaton\\quest\\wave.mp4",
             "conditions": [],
             "result": {
-              "items": [{"type":  "ally", "id":  "0", "name":  "my_name"}, {"type":  "ally", "id":  "1", "name":  "my1_name"}, {"type":  "ally", "id":  "2", "name":  "myname"}]
+              "items": [{"type":  "ally", "id":  "0", "name":  "Кот Казанский"}, {"type":  "ally", "id":  "1", "name":  "Стражник"}, {"type":  "ally", "id":  "2", "name":  "Аксакал"}, {"type":  "ally", "id":  "3", "name":  "Рыба"}]
             }
           },
           {

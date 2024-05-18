@@ -38,7 +38,7 @@ def load_chapters(quests_file):
 class QuestManager:
     player: Player
 
-    def __init__(self, quests_file='q.json', player=None):
+    def __init__(self, quests_file='quest.json', player=None):
         self.chapters = load_chapters(quests_file)
         self.current_chapter_id = "ch0"
         self.current_chapter = self.chapters[self.current_chapter_id]
