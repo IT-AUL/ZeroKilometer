@@ -29,7 +29,6 @@ from quest_manager import QuestManager
 import circle
 from config import *
 
-db = DatabaseManager("users.sqlite")
 dp = Dispatcher()
 ally_keyboard = InlineKeyboardBuilder()
 
@@ -49,20 +48,13 @@ async def start_quest(message: Message) -> None:
     user_id = message.from_user.id
     if message.from_user.id not in players.keys():
         players[user_id] = Player()
-        # await db.save(int(user_id), "ch0", "q0")
         quest_managers[user_id] = QuestManager(player=players[user_id])
         await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
     is_talking_with_npc[user_id] = False
     quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
-    # m = ReplyKeyboardMarkup(keyboard=[
-    #     [KeyboardButton(web_app=WebAppInfo(url="https://danisgaleev.github.io/"),
-    #                     text="rkjey")]])
-    # cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
-    # await bot.send_video_note(message.chat.id, cat, length=360)
-    # await circle.process_video()
     print(quest_managers[user_id].current_chapter.title, quest_managers[user_id].current_chapter.video_path)
     if quest_managers[user_id].current_chapter.video_path != "":
-        cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+        cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
         await bot.send_video_note(message.chat.id, cat, length=360)
     await message.answer(text=quest_description, reply_markup=markup)
 
@@ -122,8 +114,8 @@ async def check_location(message: Message) -> None:  # check if player near righ
         quest_description, markup = user.get_quest_desc_and_choices()
 
         await message.answer(text=f"Глава: <b>{user.current_chapter.title}</b>", reply_markup=ReplyKeyboardRemove())
-        if user.current_chapter.video_path != "":
-            cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+        if quest_managers[user_id].current_chapter.video_path != "":
+            cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
             await bot.send_video_note(message.chat.id, cat, length=360)
         await message.answer(text=quest_description, reply_markup=markup)
     elif geodesic(_location, user.current_chapter.geo_position).meters > 50:
@@ -156,62 +148,62 @@ async def handle_ask_question(callback: CallbackQuery):
 async def handle_fight(callback: CallbackQuery):
     user_id = callback.from_user.id
     await callback.message.edit_reply_markup(reply_markup=None)
-    for it in players[user_id].items:
-        if it['type'] == "ally":
-            ally_keyboard.button(text=it['name'], callback_data="id_" + str(it['id']))
-            print(it['id'])
-    ally_keyboard.button(text="Начать", callback_data="start_boy")
-    ally_keyboard.adjust(1, True)
+    # for it in players[user_id].items:
+    #     if it['type'] == "ally":
+    #         ally_keyboard.button(text=it['name'], callback_data="id_" + str(it['id']))
+    #         print(it['id'])
+    # ally_keyboard.button(text="Начать", callback_data="start_fighting")
+    # ally_keyboard.adjust(1, True)
+    ally_markup = ally_deck(players[user_id])
     await bot.send_photo(chat_id=callback.message.chat.id,
                          photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\img.png"), caption="Ваша колода",
-                         reply_markup=ally_keyboard.as_markup())
-    # await callback.message.answer(text="Собрать команду", reply_markup=ally_keyboard.as_markup())
+                         reply_markup=ally_markup)
 
 
 @dp.callback_query(F.data.startswith("id_"))
 async def handle_fighters(callback: CallbackQuery):
+    global ally_keyboard
+    ally_keyboard = InlineKeyboardBuilder()
+
     user_id = callback.from_user.id
-    pl = players[user_id]
-    if str(callback.data[3:]) in pl.deck:
-        pl.deck.remove(str(callback.data[3:]))
+    player = players[user_id]
+    if str(callback.data[3:]) in player.deck:
+        player.deck.remove(str(callback.data[3:]))
+
+        ally_markup = ally_deck(player)
         await callback.message.edit_media(
             media=InputMediaPhoto(media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\img.png"),
-                                  caption="Количество: " + str(len(pl.deck))), reply_markup=ally_keyboard.as_markup())
-        # await callback.message.edit_text(text="Количество: " + str(len(pl.deck)),
-        #                                  reply_markup=ally_keyboard.as_markup())
+                                  caption="Выбрано: " + str(len(player.deck))), reply_markup=ally_markup)
     else:
-        pl.deck.append(str(callback.data[3:]))
-
+        player.deck.append(str(callback.data[3:]))
+        ally_markup = ally_deck(player)
         await callback.message.edit_media(
             media=InputMediaPhoto(
                 media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\{str(callback.data[3:])}.png"),
-                caption="Количество: " + str(len(pl.deck))), reply_markup=ally_keyboard.as_markup())
-        # await callback.message.edit_text(text="Количество: " + str(len(pl.deck)),
-        #                                  reply_markup=ally_keyboard.as_markup())
-    print(pl.deck)
-
-    # await callback.message.edit_text(text="Количество: " + str(len(pl.deck)), reply_markup=ally_keyboard.as_markup())
+                caption="Выбрано: " + str(len(player.deck))), reply_markup=ally_markup)
 
 
-@dp.callback_query(F.data.startswith("start_boy"))
+@dp.callback_query(F.data.startswith("start_fighting"))
 async def handle_fighters(callback: CallbackQuery):
     user_id = callback.from_user.id
-    pl = players[user_id]
-    if len(pl.deck) == 3:
-        ar = []
-        for i in pl.items:
+    player = players[user_id]
+    if len(player.deck) == 3:
+        opponents = []
+        for i in player.items:
             if i['type'] == "opponent":
-                ar.append(i['id'])
-        b = InlineKeyboardBuilder()
-        WEBAPP_URL = 'https://your-webapp-url.com/?data={data}'
-        data = pl.deck + ar
-        encoded_array1 = urllib.parse.quote(json.dumps(data))
-        ur = WEBAPP_URL.format(data=encoded_array1)
-        b.button(text="Перейти", web_app=WebAppInfo(url=ur))
-        print(ur)
-        await callback.message.answer(text="Перейти", reply_markup=b.as_markup())
+                opponents.append(i['id'])
+
+        wep_app_url = 'https://your-webapp-url.com/?data={data}'
+        data = player.deck + opponents
+        encoded_data = urllib.parse.quote(json.dumps(data))
+        url = wep_app_url.format(data=encoded_data)
+
+        fight_markup = InlineKeyboardBuilder()
+        fight_markup.button(text="Перейти", web_app=WebAppInfo(url=url))
+        print(url)
+        await callback.message.answer(text="Перейти", reply_markup=fight_markup.as_markup())
     else:
-        await callback.answer("Должно быть три карты")
+        await callback.answer("У Вас должно быть выбрано три карты")
 
 
 @dp.callback_query()
@@ -233,8 +225,8 @@ async def apply_choice(callback: types.CallbackQuery):
                 user.current_quest_id = "q0"
                 user.current_quest = user.current_chapter.quests[user.current_quest_id]
 
-                if choice.video_path != "":
-                    cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+                if quest_managers[user_id].current_chapter.video_path != "":
+                    cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
                     await bot.send_video_note(callback.message.chat.id, cat, length=360)
                 await callback.message.answer(text="<b>Новая локация</b>", reply_markup=next_chapter_button_markup)
                 await callback.message.edit_reply_markup(reply_markup=None)
@@ -243,8 +235,8 @@ async def apply_choice(callback: types.CallbackQuery):
                 quest_description, markup = user.get_quest_desc_and_choices()
                 if len(choice.result) > 0:
                     players[user_id].apply_changes(**choice.result)
-                if choice.video_path != "":
-                    cat = FSInputFile(choice.video_path)
+                if quest_managers[user_id].current_chapter.video_path != "":
+                    cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
                     await bot.send_video_note(callback.message.chat.id, cat, length=360)
                 await callback.message.edit_reply_markup(reply_markup=None)
                 await callback.message.answer(text=choice.text)
@@ -254,9 +246,18 @@ async def apply_choice(callback: types.CallbackQuery):
         await callback.message.delete()
 
 
+def ally_deck(player: Player):
+    for item in player.items:
+        if item['type'] == "ally" and item['id'] in player.deck:
+            ally_keyboard.button(text=item["name"] + " ✅", callback_data=f"id_{item['id']}")
+        elif item['type'] == "ally":
+            ally_keyboard.button(text=item["name"] + " ☑️", callback_data=f"id_{item['id']}")
+    ally_keyboard.button(text="Начать", callback_data="start_fighting")
+    ally_keyboard.adjust(1, True)
+    return ally_keyboard.as_markup()
+
+
 async def main() -> None:
-    await db.create_connection()
-    await db.create_table()
     await dp.start_polling(bot)
 
 
