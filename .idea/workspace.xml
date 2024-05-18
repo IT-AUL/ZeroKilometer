@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] WepApp site">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/circle.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/com/hakaton/quest/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/wave.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/ее.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest.json" beforeDir="false" afterPath="$PROJECT_DIR$/quest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +83,7 @@
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton\cards" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\fight" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
@@ -304,6 +301,7 @@
       <workItem from="1715967814314" duration="738000" />
       <workItem from="1716013350679" duration="4715000" />
       <workItem from="1716018523402" duration="42971000" />
+      <workItem from="1716071261637" duration="1452000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -497,7 +495,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716069900725</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="[+] WepApp site">
+      <option name="closed" value="true" />
+      <created>1716071507986</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1716071507986</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

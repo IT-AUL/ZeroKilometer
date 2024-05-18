@@ -20,7 +20,6 @@ from aiogram.types import (
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from geopy.distance import geodesic
 
-from com.hakaton.database.database import DatabaseManager
 # Local application/library specific imports
 from dialogue import Translate
 from npc_manager import ask_question
@@ -31,7 +30,6 @@ from config import *
 DISTANCE = 50
 
 dp = Dispatcher()
-ally_keyboard = InlineKeyboardBuilder()
 
 players = {}
 quest_managers = {}
@@ -159,9 +157,6 @@ async def handle_fight(callback: CallbackQuery):
 
 @dp.callback_query(F.data.startswith("id_"))
 async def handle_fighters(callback: CallbackQuery):
-    global ally_keyboard
-    ally_keyboard = InlineKeyboardBuilder()
-
     user_id = callback.from_user.id
     player = players[user_id]
     if str(callback.data[3:]) in player.deck:
@@ -244,6 +239,7 @@ async def apply_choice(callback: types.CallbackQuery):
 
 
 def ally_deck(player: Player):
+    ally_keyboard = InlineKeyboardBuilder()
     for item in player.items:
         if item['type'] == "ally" and item['id'] in player.deck:
             ally_keyboard.button(text=item["name"] + " ✅", callback_data=f"id_{item['id']}")
