@@ -101,15 +101,17 @@ async def check_location(message: Message) -> None:  # check if player near righ
 @dp.message()
 async def managing_player_responses(message: Message):
     if is_talking_with_npc[message.from_user.id]:
-        translation = translate.tat_to_rus(message.text)
-        answer = ask_question(translation)
+        # translation = translate.tat_to_rus(message.text)
+        answer = ask_question(message.text, players[message.from_user.id].npc)
         await message.answer(text=answer)
 
 
-@dp.callback_query(F.data.endswith("ask"))
+@dp.callback_query(F.data.contains("ask_"))
 async def handle_ask_question(callback: CallbackQuery):
     user_id = callback.from_user.id
+    print(callback.data)
     is_talking_with_npc[user_id] = True
+    players[user_id].npc = str(callback.data).split(";")[-1]
     await callback.message.edit_reply_markup(reply_markup=None)
     await callback.message.answer(text="Ну, спрашивай")
 
@@ -118,7 +120,6 @@ async def handle_ask_question(callback: CallbackQuery):
 @dp.callback_query(F.data.endswith("fight"))
 async def handle_fight(callback: CallbackQuery):
     user_id = callback.from_user.id
-    is_talking_with_npc[user_id] = True
     await callback.message.edit_reply_markup(reply_markup=None)
     for it in players[user_id].items:
         if it['type'] == "ally":
@@ -153,15 +154,18 @@ async def handle_fighters(callback: CallbackQuery):
         b = InlineKeyboardBuilder()
         WEBAPP_URL = 'https://your-webapp-url.com/?data={data}'
         data = pl.deck + ar
-        ur = WEBAPP_URL.format(data=data)
+        encoded_array1 = urllib.parse.quote(json.dumps(data))
+        ur = WEBAPP_URL.format(data=encoded_array1)
         b.button(text="Перейти", web_app=WebAppInfo(url=ur))
-        print(pl.deck, ar, ur)
+        print(ur)
         await callback.message.answer(text="Перейти", reply_markup=b.as_markup())
-    await callback.answer("Должно быть три карты")
+    else:
+        await callback.answer("Должно быть три карты")
 
 
 @dp.callback_query()
 async def apply_choice(callback: types.CallbackQuery):
+    print(callback.data)
     user_id = callback.from_user.id
     user = quest_managers[user_id]
     for choice in user.current_quest.choices:

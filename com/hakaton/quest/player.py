@@ -4,6 +4,7 @@ import random
 class Player:
     def __init__(self):
         self.changed_location = False
+        self.npc = ""
         self.health = 50
         self.name = "Алмаз"
         self.items = []
