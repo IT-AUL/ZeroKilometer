@@ -2,6 +2,8 @@
 import asyncio
 import logging
 import sys
+import json
+import urllib.parse
 
 # Third-party library imports
 from aiogram import Bot, Dispatcher, F, types
@@ -13,8 +15,9 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardRemove,
-    CallbackQuery, WebAppInfo
+    CallbackQuery, FSInputFile, InlineKeyboardButton, WebAppInfo
 )
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from geopy.distance import geodesic
 
 # Local application/library specific imports
@@ -22,9 +25,11 @@ from dialogue import Translate
 from npc_manager import ask_question
 from player import Player
 from quest_manager import QuestManager
+import circle
 from config import *
 
 dp = Dispatcher()
+ally_keyboard = InlineKeyboardBuilder()
 
 players = {}
 quest_managers = {}
@@ -49,6 +54,13 @@ async def start_quest(message: Message) -> None:
     # m = ReplyKeyboardMarkup(keyboard=[
     #     [KeyboardButton(web_app=WebAppInfo(url="https://danisgaleev.github.io/"),
     #                     text="rkjey")]])
+    # cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+    # await bot.send_video_note(message.chat.id, cat, length=360)
+    # await circle.process_video()
+    print(quest_managers[user_id].current_chapter.title, quest_managers[user_id].current_chapter.video_path)
+    if quest_managers[user_id].current_chapter.video_path != "":
+        cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+        await bot.send_video_note(message.chat.id, cat, length=360)
     await message.answer(text=quest_description, reply_markup=markup)
 
 
@@ -69,11 +81,15 @@ async def check_location(message: Message) -> None:  # check if player near righ
     print(message.from_user.id, _location)
     user_id = message.from_user.id
     user = quest_managers[user_id]
-    if players[user_id].changed_location and geodesic(_location, user.current_chapter.geo_position).meters <= 50:
+    if players[user_id].changed_location and geodesic(_location,
+                                                      user.current_chapter.geo_position).meters <= 500000000000:
         players[user_id].changed_location = False
         quest_description, markup = user.get_quest_desc_and_choices()
 
         await message.answer(text=f"Глава: <b>{user.current_chapter.title}</b>", reply_markup=ReplyKeyboardRemove())
+        if user.current_chapter.video_path != "":
+            cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+            await bot.send_video_note(message.chat.id, cat, length=360)
         await message.answer(text=quest_description, reply_markup=markup)
     elif geodesic(_location, user.current_chapter.geo_position).meters > 50:
         await bot.send_venue(message.chat.id, latitude=user.current_chapter.geo_position[0],
@@ -98,6 +114,52 @@ async def handle_ask_question(callback: CallbackQuery):
     await callback.message.answer(text="Ну, спрашивай")
 
 
+# (ally/opponent)_id_name
+@dp.callback_query(F.data.endswith("fight"))
+async def handle_fight(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    is_talking_with_npc[user_id] = True
+    await callback.message.edit_reply_markup(reply_markup=None)
+    for it in players[user_id].items:
+        if it['type'] == "ally":
+            ally_keyboard.button(text=it['name'], callback_data="id_" + str(it['id']))
+            print(it['id'])
+    ally_keyboard.button(text="Начать", callback_data="start_boy")
+    ally_keyboard.adjust(1, True)
+    await callback.message.answer(text="Собрать команду", reply_markup=ally_keyboard.as_markup())
+
+
+@dp.callback_query(F.data.startswith("id_"))
+async def handle_fighters(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    pl = players[user_id]
+    if str(callback.data[3:]) in pl.deck:
+        pl.deck.remove(str(callback.data[3:]))
+    else:
+        pl.deck.append(str(callback.data[3:]))
+    print(pl.deck)
+    await callback.message.edit_text(text="количество: " + str(len(pl.deck)), reply_markup=ally_keyboard.as_markup())
+
+
+@dp.callback_query(F.data.startswith("start_boy"))
+async def handle_fighters(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    pl = players[user_id]
+    if len(pl.deck) == 3:
+        ar = []
+        for i in pl.items:
+            if i['type'] == "opponent":
+                ar.append(i['id'])
+        b = InlineKeyboardBuilder()
+        WEBAPP_URL = 'https://your-webapp-url.com/?data={data}'
+        data = pl.deck + ar
+        ur = WEBAPP_URL.format(data=data)
+        b.button(text="Перейти", web_app=WebAppInfo(url=ur))
+        print(pl.deck, ar, ur)
+        await callback.message.answer(text="Перейти", reply_markup=b.as_markup())
+    await callback.answer("Должно быть три карты")
+
+
 @dp.callback_query()
 async def apply_choice(callback: types.CallbackQuery):
     user_id = callback.from_user.id
@@ -116,13 +178,18 @@ async def apply_choice(callback: types.CallbackQuery):
                 user.current_quest_id = "q0"
                 user.current_quest = user.current_chapter.quests[user.current_quest_id]
 
+                if choice.video_path != "":
+                    cat = FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest\wave.mp4")
+                    await bot.send_video_note(callback.message.chat.id, cat, length=360)
                 await callback.message.answer(text="<b>Новая локация</b>", reply_markup=next_chapter_button_markup)
                 await callback.message.edit_reply_markup(reply_markup=None)
             else:
                 user.current_quest_id = choice.to_quest
                 quest_description, markup = user.get_quest_desc_and_choices()
                 players[user_id].apply_changes(**choice.result)
-
+                if choice.video_path != "":
+                    cat = FSInputFile(choice.video_path)
+                    await bot.send_video_note(callback.message.chat.id, cat, length=360)
                 await callback.message.edit_reply_markup(reply_markup=None)
                 await callback.message.answer(text=choice.text)
                 await callback.message.answer(text=quest_description, reply_markup=markup)

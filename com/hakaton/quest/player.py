@@ -10,18 +10,16 @@ class Player:
         self.damage = 25
         self.damage_spread = 5
         self.armor = 12
+        self.deck = []
 
-    def apply_changes(self, health=0, items=None):
-        """
-        Apply changes to the player's health and stats
-        :param health: How much to increase the health of the player
-        :param items: List of items to add to the player's items
-        :return: None
-        """
+    def apply_changes(self, health=0, items=None, clear=False):
+        if clear:
+            self.items = filter(lambda x: x['type'] == "ally", self.items)
         if items is None:
             items = []
         self.health += health
         self.items.extend(items)
+        print(self.items)
 
     def attack(self, enemy):
         enemy.health -= random.randrange(self.damage - self.damage_spread, self.damage + self.damage_spread)

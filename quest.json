@@ -2,6 +2,7 @@
   {
     "chapter_id": "ch0",
     "title": "Начало",
+    "video_path": "",
     "geo_position": "50.842243;49.132724",
     "quests": [
       {
@@ -10,30 +11,44 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "ch1",
+            "to_quest": "q1",
             "text": "пусто",
+            "video_path": "C:\\Users\\galee\\PycharmProjects\\Hakaton\\com\\hakaton\\quest\\wave.mp4",
             "conditions": [],
-            "result": {}
+            "result": {
+              "items": [{"type":  "ally", "id":  "0", "name":  "my_name"}, {"type":  "ally", "id":  "1", "name":  "my1_name"}, {"type":  "ally", "id":  "2", "name":  "myname"}]
+            }
           },
           {
             "choice_id": "ask",
             "to_quest": "ask",
             "text": "поговорить",
+            "video_path": "",
             "conditions": [],
             "result": {}
           }
         ]
       },
       {
-        "quest_id": "ask",
+        "quest_id": "q1",
         "description": "говори",
-        "choices": []
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "В бой",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
       }
     ]
   },
   {
     "chapter_id": "ch1",
     "title": "Начало",
+    "video_path": "C:\\Users\\galee\\PycharmProjects\\Hakaton\\com\\hakaton\\quest\\wave.mp4",
     "geo_position": "52.842243;49.132724",
     "quests": [
       {

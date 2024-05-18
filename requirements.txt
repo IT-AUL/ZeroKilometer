@@ -3,3 +3,4 @@ beautifulsoup4==4.12.3
 geopy==2.4.1
 openai==1.28.1
 Requests==2.31.0
+moviepy~=1.0.3

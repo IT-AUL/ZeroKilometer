@@ -15,6 +15,7 @@ def load_chapters(quests_file):
         for chapter_json in json.load(file):
             chapter_id = str(chapter_json["chapter_id"])
             title = str(chapter_json["title"])
+            video_path = str(chapter_json["video_path"])
             geo_position = str(chapter_json["geo_position"])
             quests = {}
             for quest_json in chapter_json['quests']:
@@ -25,11 +26,12 @@ def load_chapters(quests_file):
                     choice_id = str(choice_json['choice_id'])
                     to_quest = str(choice_json['to_quest'])
                     text = str(choice_json['text'])
+                    v_path = str(choice_json['video_path'])
                     conditions = [str(condition) for condition in choice_json['conditions']]
                     result = dict(choice_json['result'])
-                    choice.append(Choice(choice_id, to_quest, text, conditions, result))
+                    choice.append(Choice(choice_id, to_quest, text, v_path, conditions, result))
                 quests[quest_id] = Quest(quest_id, description, choice)
-            chapters[chapter_id] = Chapter(chapter_id, title, geo_position, quests)
+            chapters[chapter_id] = Chapter(chapter_id, title, video_path, geo_position, quests)
         return chapters
 
 
