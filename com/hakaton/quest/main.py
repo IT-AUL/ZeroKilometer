@@ -101,6 +101,11 @@ async def view_path(message: Message) -> None:
     await bot.send_photo(chat_id=user_id, photo=media)
 
 
+@dp.message(F.web_app_data)
+async def battle_result(message: Message) -> None:
+    print(message.web_app_data.data)
+
+
 @dp.message(F.location)
 async def check_location(message: Message) -> None:  # check if player near right place
     _location = (message.location.latitude, message.location.longitude)

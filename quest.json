@@ -55,8 +55,8 @@
         "description": "говори",
         "choices": [
           {
-            "choice_id": "c0",
-            "to_quest": "ch1",
+            "choice_id": "fight",
+            "to_quest": "fight",
             "text": "В бой",
             "video_path": "",
             "conditions": [],
