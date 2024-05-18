@@ -12,12 +12,16 @@ class Player:
         self.damage_spread = 5
         self.armor = 12
         self.deck = []
+        self.will_fight = 1
+        self.changed = False
 
-    def apply_changes(self, health=0, items=None, clear=False):
-        if clear:
-            self.items = filter(lambda x: x['type'] == "ally", self.items)
+    def apply_changes(self, health=0, items=None, clear="False", will_fight=1):
+        if clear == "True":
+            self.items = list(filter(lambda x: x['type'] == "ally", self.items))
         if items is None:
             items = []
+        if self.will_fight == 1:
+            self.will_fight = will_fight
         self.health += health
         self.items.extend(items)
         print(self.items)

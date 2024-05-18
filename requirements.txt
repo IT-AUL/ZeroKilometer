@@ -4,3 +4,6 @@ geopy==2.4.1
 openai==1.28.1
 Requests==2.31.0
 moviepy~=1.0.3
+opencv-python~=4.9.0.80
+pillow~=10.3.0
+aiosqlite~=0.20.0

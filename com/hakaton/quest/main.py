@@ -20,6 +20,7 @@ from aiogram.types import (
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from geopy.distance import geodesic
 
+from com.hakaton.database.database import DatabaseManager
 # Local application/library specific imports
 from dialogue import Translate
 from npc_manager import ask_question
@@ -28,6 +29,7 @@ from quest_manager import QuestManager
 import circle
 from config import *
 
+db = DatabaseManager("users.sqlite")
 dp = Dispatcher()
 ally_keyboard = InlineKeyboardBuilder()
 
@@ -47,6 +49,7 @@ async def start_quest(message: Message) -> None:
     user_id = message.from_user.id
     if message.from_user.id not in players.keys():
         players[user_id] = Player()
+        # await db.save(int(user_id), "ch0", "q0")
         quest_managers[user_id] = QuestManager(player=players[user_id])
         await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
     is_talking_with_npc[user_id] = False
@@ -64,6 +67,17 @@ async def start_quest(message: Message) -> None:
     await message.answer(text=quest_description, reply_markup=markup)
 
 
+@dp.message(Command("no_fight"))
+async def clear(message: Message) -> None:
+    user_id = message.from_user.id
+    if not players[user_id].changed:
+        players[user_id].will_fight = 0
+        players[user_id].changed = True
+        await message.answer(text="Вы включили мирное прохождение")
+    else:
+        await message.answer(text="Вы не можете поменять режим.")
+
+
 @dp.message(Command("clear"))
 async def clear(message: Message) -> None:
     user_id = message.from_user.id
@@ -73,6 +87,27 @@ async def clear(message: Message) -> None:
     is_talking_with_npc[user_id] = False
     quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
     await message.answer(text=quest_description, reply_markup=markup)
+
+
+@dp.message(Command("cards"))
+async def clear(message: Message) -> None:
+    user_id = message.from_user.id
+    msg = ""
+    media = []
+    for it in players[user_id].items:
+        if it["type"] == "ally":
+            media.append(InputMediaPhoto(media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\{it['id']}.png')))
+    if len(media) > 0:
+        await bot.send_media_group(chat_id=user_id, media=media)
+    else:
+        await message.answer(text="У Вас нет карточек.")
+
+
+@dp.message(Command("path"))
+async def clear(message: Message) -> None:
+    user_id = message.from_user.id
+    media = FSInputFile(r'C:\Users\galee\PycharmProjects\Hakaton\path.png')
+    await bot.send_photo(chat_id=message.from_user.id, photo=media)
 
 
 @dp.message(F.location)
@@ -206,7 +241,8 @@ async def apply_choice(callback: types.CallbackQuery):
             else:
                 user.current_quest_id = choice.to_quest
                 quest_description, markup = user.get_quest_desc_and_choices()
-                players[user_id].apply_changes(**choice.result)
+                if len(choice.result) > 0:
+                    players[user_id].apply_changes(**choice.result)
                 if choice.video_path != "":
                     cat = FSInputFile(choice.video_path)
                     await bot.send_video_note(callback.message.chat.id, cat, length=360)
@@ -219,6 +255,8 @@ async def apply_choice(callback: types.CallbackQuery):
 
 
 async def main() -> None:
+    await db.create_connection()
+    await db.create_table()
     await dp.start_polling(bot)
 
 
