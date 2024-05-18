@@ -26,8 +26,9 @@ from dialogue import Translate
 from npc_manager import ask_question
 from player import Player
 from quest_manager import QuestManager
-import circle
 from config import *
+
+DISTANCE = 50
 
 dp = Dispatcher()
 ally_keyboard = InlineKeyboardBuilder()
@@ -60,7 +61,7 @@ async def start_quest(message: Message) -> None:
 
 
 @dp.message(Command("no_fight"))
-async def clear(message: Message) -> None:
+async def no_fight(message: Message) -> None:
     user_id = message.from_user.id
     if not players[user_id].changed:
         players[user_id].will_fight = 0
@@ -82,13 +83,13 @@ async def clear(message: Message) -> None:
 
 
 @dp.message(Command("cards"))
-async def clear(message: Message) -> None:
+async def view_cards(message: Message) -> None:
     user_id = message.from_user.id
-    msg = ""
     media = []
     for it in players[user_id].items:
         if it["type"] == "ally":
-            media.append(InputMediaPhoto(media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\{it['id']}.png')))
+            media.append(
+                InputMediaPhoto(media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\cards\{it['id']}.png')))
     if len(media) > 0:
         await bot.send_media_group(chat_id=user_id, media=media)
     else:
@@ -96,10 +97,10 @@ async def clear(message: Message) -> None:
 
 
 @dp.message(Command("path"))
-async def clear(message: Message) -> None:
+async def view_path(message: Message) -> None:
     user_id = message.from_user.id
     media = FSInputFile(r'C:\Users\galee\PycharmProjects\Hakaton\path.png')
-    await bot.send_photo(chat_id=message.from_user.id, photo=media)
+    await bot.send_photo(chat_id=user_id, photo=media)
 
 
 @dp.message(F.location)
@@ -109,16 +110,18 @@ async def check_location(message: Message) -> None:  # check if player near righ
     user_id = message.from_user.id
     user = quest_managers[user_id]
     if players[user_id].changed_location and geodesic(_location,
-                                                      user.current_chapter.geo_position).meters <= 500000000000:
+                                                      user.current_chapter.geo_position).meters <= DISTANCE:
         players[user_id].changed_location = False
         quest_description, markup = user.get_quest_desc_and_choices()
 
         await message.answer(text=f"Глава: <b>{user.current_chapter.title}</b>", reply_markup=ReplyKeyboardRemove())
+
         if quest_managers[user_id].current_chapter.video_path != "":
             cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
             await bot.send_video_note(message.chat.id, cat, length=360)
+
         await message.answer(text=quest_description, reply_markup=markup)
-    elif geodesic(_location, user.current_chapter.geo_position).meters > 50:
+    elif geodesic(_location, user.current_chapter.geo_position).meters > DISTANCE:
         await bot.send_venue(message.chat.id, latitude=user.current_chapter.geo_position[0],
                              longitude=user.current_chapter.geo_position[1], title="Вы слишком далеко.",
                              address="Следующая точка здесь.")
@@ -136,7 +139,6 @@ async def managing_player_responses(message: Message):
 @dp.callback_query(F.data.contains("ask_"))
 async def handle_ask_question(callback: CallbackQuery):
     user_id = callback.from_user.id
-    print(callback.data)
     is_talking_with_npc[user_id] = True
     players[user_id].npc = str(callback.data).split(";")[-1]
     await callback.message.edit_reply_markup(reply_markup=None)
@@ -148,15 +150,10 @@ async def handle_ask_question(callback: CallbackQuery):
 async def handle_fight(callback: CallbackQuery):
     user_id = callback.from_user.id
     await callback.message.edit_reply_markup(reply_markup=None)
-    # for it in players[user_id].items:
-    #     if it['type'] == "ally":
-    #         ally_keyboard.button(text=it['name'], callback_data="id_" + str(it['id']))
-    #         print(it['id'])
-    # ally_keyboard.button(text="Начать", callback_data="start_fighting")
-    # ally_keyboard.adjust(1, True)
     ally_markup = ally_deck(players[user_id])
     await bot.send_photo(chat_id=callback.message.chat.id,
-                         photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\img.png"), caption="Ваша колода",
+                         photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\cards\default_card.png"),
+                         caption="Ваша колода",
                          reply_markup=ally_markup)
 
 
@@ -172,26 +169,26 @@ async def handle_fighters(callback: CallbackQuery):
 
         ally_markup = ally_deck(player)
         await callback.message.edit_media(
-            media=InputMediaPhoto(media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\img.png"),
+            media=InputMediaPhoto(media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\cards\default_card.png"),
                                   caption="Выбрано: " + str(len(player.deck))), reply_markup=ally_markup)
     else:
         player.deck.append(str(callback.data[3:]))
         ally_markup = ally_deck(player)
         await callback.message.edit_media(
             media=InputMediaPhoto(
-                media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\{str(callback.data[3:])}.png"),
+                media=FSInputFile(fr"C:\Users\galee\PycharmProjects\Hakaton\cards\{str(callback.data[3:])}.png"),
                 caption="Выбрано: " + str(len(player.deck))), reply_markup=ally_markup)
 
 
-@dp.callback_query(F.data.startswith("start_fighting"))
+@dp.callback_query(F.data == "start_fighting")
 async def handle_fighters(callback: CallbackQuery):
     user_id = callback.from_user.id
     player = players[user_id]
     if len(player.deck) == 3:
         opponents = []
-        for i in player.items:
-            if i['type'] == "opponent":
-                opponents.append(i['id'])
+        for item in player.items:
+            if item['type'] == "opponent":
+                opponents.append(item['id'])
 
         wep_app_url = 'https://your-webapp-url.com/?data={data}'
         data = player.deck + opponents
@@ -252,7 +249,7 @@ def ally_deck(player: Player):
             ally_keyboard.button(text=item["name"] + " ✅", callback_data=f"id_{item['id']}")
         elif item['type'] == "ally":
             ally_keyboard.button(text=item["name"] + " ☑️", callback_data=f"id_{item['id']}")
-    ally_keyboard.button(text="Начать", callback_data="start_fighting")
+    ally_keyboard.button(text="⚔️ Начать ⚔️", callback_data="start_fighting")
     ally_keyboard.adjust(1, True)
     return ally_keyboard.as_markup()
 

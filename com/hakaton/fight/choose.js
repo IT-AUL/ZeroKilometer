@@ -5,11 +5,11 @@
 // document.body.appendChild(listContainer);
 // // Create an array of image URLs
 // const images = [
-//     "img.png",
-//     "img.png",
-//     "img.png",
-//     "img.png",
-//     "img.png",
+//     "default_card.png",
+//     "default_card.png",
+//     "default_card.png",
+//     "default_card.png",
+//     "default_card.png",
 // ];
 //
 // // Create the scrollable list of images
@@ -122,11 +122,11 @@ document.body.appendChild(listContainer);
 
 // Create an array of card objects
 const cards = [
-    new Card("img.png", 10, 5, 0.8, 10, 5, 100),
-    new Card("img.png", 15, 3, 0.9, 15, 3, 80),
-    new Card("img.png", 12, 4, 0.7, 12, 4, 90),
-    new Card("img.png", 18, 2, 0.6, 18, 2, 70),
-    new Card("img.png", 20, 1, 0.5, 20, 1, 60),
+    new Card("default_card.png", 10, 5, 0.8, 10, 5, 100),
+    new Card("default_card.png", 15, 3, 0.9, 15, 3, 80),
+    new Card("default_card.png", 12, 4, 0.7, 12, 4, 90),
+    new Card("default_card.png", 18, 2, 0.6, 18, 2, 70),
+    new Card("default_card.png", 20, 1, 0.5, 20, 1, 60),
 ];
 
 // Create the scrollable list of cards

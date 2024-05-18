@@ -13,10 +13,31 @@
             "choice_id": "c0",
             "to_quest": "q1",
             "text": "пусто",
-            "video_path": "C:\\Users\\galee\\PycharmProjects\\Hakaton\\com\\hakaton\\quest\\wave.mp4",
+            "video_path": "",
             "conditions": [],
             "result": {
-              "items": [{"type":  "ally", "id":  "0", "name":  "Кот Казанский"}, {"type":  "ally", "id":  "1", "name":  "Стражник"}, {"type":  "ally", "id":  "2", "name":  "Аксакал"}, {"type":  "ally", "id":  "3", "name":  "Рыба"}]
+              "items": [
+                {
+                  "type": "ally",
+                  "id": "0",
+                  "name": "Кот Казанский"
+                },
+                {
+                  "type": "ally",
+                  "id": "1",
+                  "name": "Стражник"
+                },
+                {
+                  "type": "ally",
+                  "id": "2",
+                  "name": "Аксакал"
+                },
+                {
+                  "type": "ally",
+                  "id": "3",
+                  "name": "Рыба"
+                }
+              ]
             }
           },
           {
@@ -34,8 +55,8 @@
         "description": "говори",
         "choices": [
           {
-            "choice_id": "fight",
-            "to_quest": "fight",
+            "choice_id": "c0",
+            "to_quest": "ch1",
             "text": "В бой",
             "video_path": "",
             "conditions": [],
@@ -48,7 +69,7 @@
   {
     "chapter_id": "ch1",
     "title": "Начало",
-    "video_path": "C:\\Users\\galee\\PycharmProjects\\Hakaton\\com\\hakaton\\quest\\wave.mp4",
+    "video_path": "",
     "geo_position": "52.842243;49.132724",
     "quests": [
       {
