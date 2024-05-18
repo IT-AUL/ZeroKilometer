@@ -94,5 +94,101 @@
         ]
       }
     ]
+  },
+  {
+    "chapter_id": "ch1",
+    "title": "Улица Баумана.",
+    "video_path": "",
+    "geo_position": "55.792446;49.112733",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Пррривет,что тебя пррривело к столь великому коту, что приближен к императорской семье. Я мудррр и добррр, поэтому готов тебя выслушать.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Я ищу свою любовь, следую зову сердца. Не хочешь ко мне присоединиться?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "А кто ты вообще такой?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q3",
+            "text": "*погладить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_cat",
+            "to_quest": "ask_cat",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "ch2",
+            "text": "Спасибо, я пойду",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": "Благородный мотив, я тоже был молод и понимаю тебя. Да и засиделся я здесь, надо размяяють мышцы. Помогу тебе.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Понимаю",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Что значит, кто я? Ты разве не слышал о известной династии котов, что спасают произведения искусств, от полчищ мышей.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Учту",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q3",
+        "description": "Благодарррю, за это я нагрражуу тебя желанием. Закрой глаза и подумай о своей мечте.",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Спасибо, ты очень щедр",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
   }
 ]
