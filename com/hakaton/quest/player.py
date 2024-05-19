@@ -7,7 +7,11 @@ class Player:
         self.npc = ""
         self.health = 50
         self.name = "Алмаз"
-        self.items = []
+        self.items = [{
+            "name": "Булат",
+            "id": "1",
+            "type": "ally"
+        }]
         self.damage = 25
         self.damage_spread = 5
         self.armor = 12

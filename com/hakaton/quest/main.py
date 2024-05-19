@@ -27,7 +27,7 @@ from player import Player
 from quest_manager import QuestManager
 from config import *
 
-DISTANCE = 50
+DISTANCE = 5000000000
 
 dp = Dispatcher()
 
@@ -38,8 +38,8 @@ translate = Translate()
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
-next_chapter_button_markup = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="Двигаться дальше", request_location=True)]])
+next_chapter_button_markup = ReplyKeyboardMarkup(resize_keyboard=True, keyboard=[
+    [KeyboardButton(text="Двигаться дальше", request_location=True)]])
 
 
 @dp.message(CommandStart())
@@ -51,7 +51,7 @@ async def start_quest(message: Message) -> None:
         await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
     is_talking_with_npc[user_id] = False
     quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
-    print(quest_managers[user_id].current_chapter.title, quest_managers[user_id].current_chapter.video_path)
+    print('START')
     if quest_managers[user_id].current_chapter.video_path != "":
         cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
         await bot.send_video_note(message.chat.id, cat, length=360)
@@ -85,9 +85,11 @@ async def view_cards(message: Message) -> None:
     user_id = message.from_user.id
     media = []
     for it in players[user_id].items:
-        if it["type"] == "ally":
+        print(it)
+        if str(it["type"]) == "ally":
             media.append(
-                InputMediaPhoto(media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\cards\{it['id']}.png')))
+                InputMediaPhoto(
+                    media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\cards\{str(it['id'])}.png')))
     if len(media) > 0:
         await bot.send_media_group(chat_id=user_id, media=media)
     else:
@@ -97,13 +99,18 @@ async def view_cards(message: Message) -> None:
 @dp.message(Command("path"))
 async def view_path(message: Message) -> None:
     user_id = message.from_user.id
-    media = FSInputFile(r'C:\Users\galee\PycharmProjects\Hakaton\path.png')
-    await bot.send_photo(chat_id=user_id, photo=media)
+    # media = FSInputFile(r'C:\Users\galee\PycharmProjects\Hakaton\path.png')
+    # await bot.send_photo(chat_id=user_id, photo=media)
+    await message.answer(text="https://yandex.ru/maps/-/CDbHVY~n")
 
 
 @dp.message(F.web_app_data)
 async def battle_result(message: Message) -> None:
-    print(message.web_app_data.data)
+    data = json.loads(message.web_app_data.data)
+    player = players[message.from_user.id]
+    for card in data["cards"]:
+        player.items.append({"id": card["id"], "name": card["name"], "type": "ally"})
+    await message.answer(text="Карточки получены.")
 
 
 @dp.message(F.location)
@@ -190,7 +197,7 @@ async def handle_fighters(callback: CallbackQuery):
             if item['type'] == "opponent":
                 opponents.append(item['id'])
 
-        wep_app_url = 'https://your-webapp-url.com/?data={data}'
+        wep_app_url = 'https://renat2006.github.io?data={data}'
         data = player.deck + opponents
         encoded_data = urllib.parse.quote(json.dumps(data))
         url = wep_app_url.format(data=encoded_data)

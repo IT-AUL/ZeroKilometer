@@ -252,5 +252,598 @@
         ]
       }
     ]
+  },
+  {
+    "chapter_id": "ch1",
+    "title": "Улица Баумана",
+    "video_path": "",
+    "geo_position": "55.792446;49.112733",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Пррривет,что тебя пррривело к столь великому коту, что приближен к императорской семье. Я мудррр и добррр, поэтому готов тебя выслушать",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Я ищу свою любовь, следую зову сердца. Не хочешь ко мне присоединиться?",
+            "video_path": "",
+            "conditions": [],
+            "result": {
+              "items": [
+                {
+                  "type": "ally",
+                  "id": "3",
+                  "name": "Кот Казанский"
+                }
+              ]
+            }
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "А кто ты вообще такой",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q3",
+            "text": "*погладить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_cat",
+            "to_quest": "ask_cat",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "ch2",
+            "text": "Спасибо, я пойду",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": " Благородный мотив, я тоже был молод и понимаю тебя. Да и засиделся я здесь, надо разМЯть мышцы. Помогу тебе",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Понимаю",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Что значит, кто я? Ты разве не слышал о известной династии котов, что спасают произведения искусства, от полчищ мышей",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Учту",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q3",
+        "description": "Багодарррю, за это я нагрражу тебя желанием. Закрой глаза и подумай о соей мечте",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "спасибо, ты очень щедр",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter_id": "ch2",
+    "title": "Спаская башня",
+    "video_path": "",
+    "geo_position": "55.796385;49.108326",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Стой, кто идет? Тут нелья ходить кому не попадя",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Меня зовут Булат, и  мне надо в кремель, не смотря не на что. Так что вы мне не указ",
+            "video_path": "",
+            "conditions": [],
+            "result": {
+            }
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Извините, но меня ждут. Как можно решить этот вопрос?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q4",
+            "text": "А ты собственно кто?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_guard",
+            "to_quest": "ask_guard",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "q3",
+            "text": "Попытатся прорваться",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": " Да как ты смееешь!",
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "Cолдат, любви не помеха!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Можно индеее, у нас проход сводный, мы лишь останвливаем тех, кто кажется нам подозрительным, поэтому будьте добры показать докуметы",
+        "choices": [
+          {
+            "choice_id": "q0",
+            "to_quest": "ch3",
+            "text": "Конечно, вот",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q3",
+        "description": "Кудаа!",
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "На встречу любви!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q4",
+        "description": "Я гордый стражник Казани.Ни кто не сравнится со мной в мастрестве владеня салблей. Но тут я ее редко использую, ибо поставлен охранять вход в кремель",
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "Понятно",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter_id": "ch3",
+    "title": "Башня Сююмбике",
+    "video_path": "",
+    "geo_position": "55.800446;49.105056",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Ой извините, я вас не заметила. Я засмотрелась на башню",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Ничего страшного, как вас зовут и что такого в этой башне?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Осторожнее, так можно и поранится, если что я могу вас проводить до мед пункта",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q3",
+            "text": "Это вы меня извините, я сам засмотрелся на пейзажи",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_suu",
+            "to_quest": "ask_suu",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "q4",
+            "text": "А не могли бы вы проводить меня до библиотеке, там мне надо понять что означают мои сны?",
+            "video_path": "",
+            "conditions": [],
+            "result": {
+              "items": [
+                {
+                  "name": "Диляра",
+                  "id": "2",
+                  "type": "ally"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": " Как, а вы не знаете? Это же известнаяйшая башня Сююбике. Она известна тем, что по легендам с нее спрыгнула Царица Сююбике, когда была взята Казань. А также она наклонена прям как Пизанская башня! ",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Ого!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Не стоит, я не поранилась. Да и меня в косах заплетен, наш нородный амулет. Видишь этот теуголник, в нем спрятана записка,на котор написана мои пожеления. И пока он со мной, ничего страшного не произайдет",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Впервые слышу",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Не стоит, я не поранилась. Да и меня в косах заплетен, наш нородный амулет. Видишь этот теуголник, в нем спрятана записка,на котор написана мои пожеления. И пока он со мной, ничего страшного не произайдет",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Впервые слышу",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q4",
+        "description": "Да, почему нет",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "ch4",
+            "text": "Отлично",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter_id": "ch4",
+    "title": "Кремлевская набережная",
+    "video_path": "",
+    "geo_position": "55.802927;49.109551",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Здравствуй добрый молодец. Не мог бы передать мне свой гребешок, что в руках у твоей спутницы",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q10",
+            "text": "Так я тебе его и отдал",
+            "video_path": "",
+            "conditions": [],
+            "result": {
+              "items": [
+                {
+                  "name": "Рыба-мех",
+                  "type": "opponent",
+                  "id": "4"
+                },
+                {
+                  "name": "Рыба-мех",
+                  "type": "opponent",
+                  "id": "12"
+                },
+                {
+                  "name": "ЮХА",
+                  "type": "opponent",
+                  "id": "12"
+                }
+              ]
+            }
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Держи, я подарю своей спутнице новый",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q3",
+            "text": "А ты кто?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_ana",
+            "to_quest": "ask_ana",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "q4",
+            "text": "Низачто",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": " Понимаешь, уж больно он на мой похож. А для меня он очень важен, ведь он не прстой, а магический",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Неожидано",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q10",
+        "description": "Я тебя победю",
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "В бой",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Спасибо, но считай это была проверка, ты заслужил нанрады. Тперь этот гребен наделеной силой, и  когда ты им расчесыаешся, волосы будут слова лучший шелк ",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "ch5",
+            "text": "Огромное спасибо",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Ну что же не хочешь похорошему, будем по плохому",
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "Ну ну",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q3",
+        "description": " Я Су - Анасы, ну или же водяная. Вот выбралась сюда, дабы погрется на солнышке, да покрасаватся перед людми, а то в реке караси ничего не понимают",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Сасибо, выручили",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter_id": "ch5",
+    "title": "НКЦ",
+    "video_path": "",
+    "geo_position": "55.801543;49.125686",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Здравствуй, мальчик. Что привело тебя в храм знаний и мудрусти",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Я хочу получить ответ на вопрос. Кто является ко мне во снах?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Я хочу узнать, как мне найти любовь",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q4",
+            "text": "А вы вообще кто?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c4",
+            "to_quest": "q3",
+            "text": "Вы можете помочь, не только советом?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_ded",
+            "to_quest": "ask_ded",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "ch5",
+            "text": "Спасибо, я пойду",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": " Ох не зря ты ко ине пришел, считай жизнь свою жизнь спас. Ведь тебя охмурила злой дух Юха. Не спрашивай как я узнал. Мне как, кто прожил уже больше столетия, легко заметь этот блеск в глзах. Он бывает лишь у тех чье сознание уступило магии Юхи. ",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Мдаааа....",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Тебе стоит искать ее, под аркой всех влюбленых, но  перед этим, советую заглянуть в усадьбу Сандецкого. Сейчас там нашли художники и их творенья. И есть один что подскажет, как помочь тебе",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Благодарю за совет",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q4",
+        "description": "Я Аксакал, в переводе белобородый. Вот уже 105  зим что я прожил. И за свою жизнь, я почерпнул не мало мудрости из книг и жизни ",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Абау",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q3",
+        "description": "Кхэ, староват я конечно для беготни, но пропадет твоя светлая да легкомысленная голова. Так уж и быть пройдусь с тобой",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Спасибо,вы меня выручили",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
   }
 ]
