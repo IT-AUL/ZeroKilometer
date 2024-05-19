@@ -36,6 +36,7 @@ players = {}
 quest_managers = {}
 is_talking_with_npc = {}
 translate = Translate()
+finted = {}
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
@@ -101,12 +102,13 @@ async def view_path(message: Message) -> None:
 
 class WebAppDataFilter(Filter):
     async def __call__(self, message: Message, **kwargs):
+        print(message.web_app_data)
         return dict(web_app_data=message.web_app_data) if message.web_app_data else False
 
 
 @dp.message(WebAppDataFilter())
-async def handle_web_app_data(message: types.Message, web_app_data: types.WebAppData):
-    data = json.loads(web_app_data.data)
+async def handle_web_app_data(message: types.Message):
+    data = json.loads(message.web_app_data.data)
     print("rar" + data)
     player = players[message.from_user.id]
     for card in data["cards"]:
@@ -139,7 +141,6 @@ async def check_location(message: Message) -> None:  # check if player near righ
 
 @dp.message()
 async def managing_player_responses(message: Message):
-    print("message", message.text, message.web_app_data.data)
     if is_talking_with_npc[message.from_user.id]:
         # translation = translate.tat_to_rus(message.text)
         answer = ask_question(message.text, players[message.from_user.id].npc)
@@ -158,13 +159,20 @@ async def handle_ask_question(callback: CallbackQuery):
 # (ally/opponent)_id_name
 @dp.callback_query(F.data.endswith("fight"))
 async def handle_fight(callback: CallbackQuery):
-    user_id = callback.from_user.id
-    await callback.message.edit_reply_markup(reply_markup=None)
-    ally_markup = ally_deck(players[user_id])
-    await bot.send_photo(chat_id=callback.message.chat.id,
-                         photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\cards\default_card.png"),
-                         caption="Ваша колода",
-                         reply_markup=ally_markup)
+    if str(callback.from_user.id) not in finted:
+        finted[str(callback.from_user.id)] = True
+        user_id = callback.from_user.id
+        await callback.message.edit_reply_markup(reply_markup=None)
+        ally_markup = ally_deck(players[user_id])
+        await bot.send_photo(chat_id=callback.message.chat.id,
+                             photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\cards\default_card.png"),
+                             caption="Ваша колода",
+                             reply_markup=ally_markup)
+    else:
+        quest_managers[callback.from_user.id].current_chapter_id = "ch5"
+        quest_managers[callback.from_user.id].current_quest_id = "q0"
+        q, m = quest_managers[callback.from_user.id].get_quest_desc_and_choices()
+        await callback.message.edit_text(text=q, reply_markup=m)
 
 
 @dp.callback_query(F.data.startswith("id_"))
