@@ -4,6 +4,7 @@ import logging
 import sys
 import json
 import urllib.parse
+from aiogram.filters import Filter
 
 # Third-party library imports
 from aiogram import Bot, Dispatcher, F, types
@@ -51,10 +52,7 @@ async def start_quest(message: Message) -> None:
         await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
     is_talking_with_npc[user_id] = False
     quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
-    print('START')
-    if quest_managers[user_id].current_chapter.video_path != "":
-        cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
-        await bot.send_video_note(message.chat.id, cat, length=360)
+    await send_photo_or_video_note(user_id, message)
     await message.answer(text=quest_description, reply_markup=markup)
 
 
@@ -98,15 +96,18 @@ async def view_cards(message: Message) -> None:
 
 @dp.message(Command("path"))
 async def view_path(message: Message) -> None:
-    user_id = message.from_user.id
-    # media = FSInputFile(r'C:\Users\galee\PycharmProjects\Hakaton\path.png')
-    # await bot.send_photo(chat_id=user_id, photo=media)
     await message.answer(text="https://yandex.ru/maps/-/CDbHVY~n")
 
 
-@dp.message(F.web_app_data)
-async def battle_result(message: Message) -> None:
-    data = json.loads(message.web_app_data.data)
+class WebAppDataFilter(Filter):
+    async def __call__(self, message: Message, **kwargs):
+        return dict(web_app_data=message.web_app_data) if message.web_app_data else False
+
+
+@dp.message(WebAppDataFilter())
+async def handle_web_app_data(message: types.Message, web_app_data: types.WebAppData):
+    data = json.loads(web_app_data.data)
+    print("rar" + data)
     player = players[message.from_user.id]
     for card in data["cards"]:
         player.items.append({"id": card["id"], "name": card["name"], "type": "ally"})
@@ -126,9 +127,7 @@ async def check_location(message: Message) -> None:  # check if player near righ
 
         await message.answer(text=f"Глава: <b>{user.current_chapter.title}</b>", reply_markup=ReplyKeyboardRemove())
 
-        if quest_managers[user_id].current_chapter.video_path != "":
-            cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
-            await bot.send_video_note(message.chat.id, cat, length=360)
+        await send_photo_or_video_note(user_id, message)
 
         await message.answer(text=quest_description, reply_markup=markup)
     elif geodesic(_location, user.current_chapter.geo_position).meters > DISTANCE:
@@ -140,6 +139,7 @@ async def check_location(message: Message) -> None:  # check if player near righ
 
 @dp.message()
 async def managing_player_responses(message: Message):
+    print("message", message.text, message.web_app_data.data)
     if is_talking_with_npc[message.from_user.id]:
         # translation = translate.tat_to_rus(message.text)
         answer = ask_question(message.text, players[message.from_user.id].npc)
@@ -197,7 +197,7 @@ async def handle_fighters(callback: CallbackQuery):
             if item['type'] == "opponent":
                 opponents.append(item['id'])
 
-        wep_app_url = 'https://renat2006.github.io?data={data}'
+        wep_app_url = 'https://poitzero.netlify.app/?data={data}'
         data = player.deck + opponents
         encoded_data = urllib.parse.quote(json.dumps(data))
         url = wep_app_url.format(data=encoded_data)
@@ -229,9 +229,7 @@ async def apply_choice(callback: types.CallbackQuery):
                 user.current_quest_id = "q0"
                 user.current_quest = user.current_chapter.quests[user.current_quest_id]
 
-                if quest_managers[user_id].current_chapter.video_path != "":
-                    cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
-                    await bot.send_video_note(callback.message.chat.id, cat, length=360)
+                await send_photo_or_video_note(user_id, callback.message)
                 await callback.message.answer(text="<b>Новая локация</b>", reply_markup=next_chapter_button_markup)
                 await callback.message.edit_reply_markup(reply_markup=None)
             else:
@@ -239,9 +237,8 @@ async def apply_choice(callback: types.CallbackQuery):
                 quest_description, markup = user.get_quest_desc_and_choices()
                 if len(choice.result) > 0:
                     players[user_id].apply_changes(**choice.result)
-                if quest_managers[user_id].current_chapter.video_path != "":
-                    cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
-                    await bot.send_video_note(callback.message.chat.id, cat, length=360)
+
+                await send_photo_or_video_note(user_id, callback.message)
                 await callback.message.edit_reply_markup(reply_markup=None)
                 await callback.message.answer(text=choice.text)
                 await callback.message.answer(text=quest_description, reply_markup=markup)
@@ -260,6 +257,15 @@ def ally_deck(player: Player):
     ally_keyboard.button(text="⚔️ Начать ⚔️", callback_data="start_fighting")
     ally_keyboard.adjust(1, True)
     return ally_keyboard.as_markup()
+
+
+async def send_photo_or_video_note(user_id, message):
+    if quest_managers[user_id].current_chapter.video_path != "":
+        cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
+        if quest_managers[user_id].current_chapter.video_path.endswith(".mp4"):
+            await bot.send_video_note(message.chat.id, cat, length=360)
+        else:
+            await bot.send_photo(chat_id=message.chat.id, photo=cat)
 
 
 async def main() -> None:

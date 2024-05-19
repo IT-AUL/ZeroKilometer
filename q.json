@@ -503,8 +503,8 @@
             "result": {}
           },
           {
-            "choice_id": "ask_suu",
-            "to_quest": "ask_suu",
+            "choice_id": "ask_dulara",
+            "to_quest": "ask_dulara",
             "text": "Поговорить",
             "video_path": "",
             "conditions": [],
@@ -615,9 +615,9 @@
                   "id": "12"
                 },
                 {
-                  "name": "ЮХА",
+                  "name": "Су анасы",
                   "type": "opponent",
-                  "id": "12"
+                  "id": "11"
                 }
               ]
             }
@@ -639,8 +639,8 @@
             "result": {}
           },
           {
-            "choice_id": "ask_ana",
-            "to_quest": "ask_ana",
+            "choice_id": "ask_su",
+            "to_quest": "ask_su",
             "text": "Поговорить",
             "video_path": "",
             "conditions": [],
@@ -838,6 +838,184 @@
             "choice_id": "c0",
             "to_quest": "q0",
             "text": "Спасибо,вы меня выручили",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter_id": "ch6",
+    "title": "Государственный музей изобразительных искусств Республики Татарстан",
+    "video_path": "",
+    "geo_position": "55.794946;49.134980",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Добрый день, что привело вас в нашу галерию, я так пологаю вас отпривал, наш мудрец седобородый. Ну что же я вас слушаю",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "?",
+            "video_path": "И что вы можете посеветовать?",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "q2",
+            "text": "Кто вы?",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q4",
+            "text": "А что за галерея",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "ask_sh",
+            "to_quest": "ask_sh",
+            "text": "Поговорить",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c3",
+            "to_quest": "ch7",
+            "text": "Спасибо, я пойду",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": "Все очень просто не боитесь сделать первый шаг,ценнит близко и узнавайте как можно больше о окружающем мире",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Спасибо,это очень ценный совет!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q2",
+        "description": "Я -  Шишкин, Иван Иванович. Я родиля в Татарстане, в Елабуге, а позже учился в Казани. Поэтому это очень люблю этот город, написал не одну карину о своей родине, например:'Ночь на Каме','На даче','Полянка'",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Ни чего себе!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c0",
+            "to_quest": "q3",
+            "text": "Чего?!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q4",
+        "description": "Это Государственный Музей Изобразительных Искусств Республики Татарстан, одним из крупнейших музеев изобразительного искусства в России. Он расположен в бывшем особняке генерал-лейтенанта Сандецкого, который был построен в 18 веке. Коллекция музея насчитывает более 25 000 экспонатов",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Вау",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q3",
+        "description": "Чего чего, я -  Шишкин, Иван Иванович. Я родиля в Татарстане, в Елабуге, а позже учился в Казани. Поэтому это очень люблю этот город, написал не одну карину о своей родине, например:'Ночь на Каме','На даче','Полянка'",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q0",
+            "text": "Ничего себя",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c0",
+            "to_quest": "q3",
+            "text": "Чего?!",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter_id": "ch7",
+    "title": "Арка влюбленных",
+    "video_path": "",
+    "geo_position": "55.794946;49.134980",
+    "quests": [
+      {
+        "quest_id": "q0",
+        "description": "Я ждала тебя!Иди же ко мне",
+        "choices": [
+          {
+            "choice_id": "c0",
+            "to_quest": "q1",
+            "text": "Иду",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c1",
+            "to_quest": "fight",
+            "text": "Я знаю кто ты",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          },
+          {
+            "choice_id": "c2",
+            "to_quest": "q4",
+            "text": "Удачи оставтся",
+            "video_path": "",
+            "conditions": [],
+            "result": {}
+          }
+        ]
+      },
+      {
+        "quest_id": "q1",
+        "description": "Сшшшах",
+        "choices": [
+          {
+            "choice_id": "fight",
+            "to_quest": "fight",
+            "text": "Напасть",
             "video_path": "",
             "conditions": [],
             "result": {}
