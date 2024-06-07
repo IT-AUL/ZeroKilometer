@@ -1,15 +1,15 @@
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, InputMediaPhoto, FSInputFile
-
-from com.hakaton.quest.main import players, quest_managers, is_talking_with_npc, send_photo_or_video_note, bot
+from com.hakaton.quest.game import *
+# from com.hakaton.quest.main import bot
 from com.hakaton.quest.player import Player
 from com.hakaton.quest.quest_manager import QuestManager
 
-r = Router(name="command")
+command_router = Router(name="command")
 
 
-@r.message(CommandStart())
+@command_router.message(CommandStart())
 async def start_quest(message: Message) -> None:
     user_id = message.from_user.id
     if message.from_user.id not in players.keys():
@@ -23,7 +23,7 @@ async def start_quest(message: Message) -> None:
         await message.answer(text=quest_description, reply_markup=markup)
 
 
-@r.message(Command("no_fight"))
+@command_router.message(Command("no_fight"))
 async def no_fight(message: Message) -> None:
     user_id = message.from_user.id
     if not players[user_id].changed:
@@ -34,7 +34,7 @@ async def no_fight(message: Message) -> None:
         await message.answer(text="Вы не можете поменять режим.")
 
 
-@r.message(Command("clear"))
+@command_router.message(Command("clear"))
 async def clear(message: Message) -> None:
     user_id = message.from_user.id
     players[user_id] = Player()
@@ -45,7 +45,7 @@ async def clear(message: Message) -> None:
     await message.answer(text=quest_description, reply_markup=markup)
 
 
-@r.message(Command("cards"))
+@command_router.message(Command("cards"))
 async def view_cards(message: Message) -> None:
     user_id = message.from_user.id
     media = []
@@ -56,11 +56,12 @@ async def view_cards(message: Message) -> None:
                 InputMediaPhoto(
                     media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\cards\{str(it['id'])}.png')))
     if len(media) > 0:
-        await bot.send_media_group(chat_id=user_id, media=media)
+        # await bot.send_media_group(chat_id=user_id, media=media)
+        await message.answer_media_group(media=media)
     else:
         await message.answer(text="У Вас нет карточек.")
 
 
-@r.message(Command("path"))
+@command_router.message(Command("path"))
 async def view_path(message: Message) -> None:
     await message.answer(text="https://yandex.ru/maps/-/CDbHVY~n")

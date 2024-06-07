@@ -1,0 +1,33 @@
+from aiogram.types import FSInputFile, Message
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+from com.hakaton.quest.dialogue import Translate
+from com.hakaton.quest.player import Player
+
+players = {}
+quest_managers = {}
+is_talking_with_npc = {}
+translate = Translate()
+
+
+def ally_deck(player: Player):
+    ally_keyboard = InlineKeyboardBuilder()
+    for item in player.items:
+        if item['type'] == "ally" and item['id'] in player.deck:
+            ally_keyboard.button(text=item["name"] + " ✅", callback_data=f"id_{item['id']}")
+        elif item['type'] == "ally":
+            ally_keyboard.button(text=item["name"] + " ☑️", callback_data=f"id_{item['id']}")
+    ally_keyboard.button(text="⚔️ Начать ⚔️", callback_data="start_fighting")
+    ally_keyboard.adjust(1, True)
+    return ally_keyboard.as_markup()
+
+
+async def send_photo_or_video_note(user_id, message: Message):
+    if quest_managers[user_id].current_chapter.video_path != "":
+        cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
+        if quest_managers[user_id].current_chapter.video_path.endswith(".mp4"):
+            # await bot.send_video_note(message.chat.id, cat, length=360)
+            await message.answer_video_note(cat, length=360)
+        else:
+            # await bot.send_photo(chat_id=message.chat.id, photo=cat)
+            await message.answer_photo(photo=cat)
