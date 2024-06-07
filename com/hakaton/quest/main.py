@@ -7,9 +7,9 @@ import urllib.parse
 from aiogram.filters import Filter
 
 # Third-party library imports
-from aiogram import Bot, Dispatcher, F, types
+from aiogram import Bot, Dispatcher, F, types, Router
 from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
+from aiogram.enums import ParseMode, ContentType
 from aiogram.filters import CommandStart, Command
 from aiogram.types import (
     Message,
@@ -28,6 +28,7 @@ from player import Player
 from quest_manager import QuestManager
 from config import *
 
+print(F.types.web_app_data)
 DISTANCE = 5000000000
 
 dp = Dispatcher()
@@ -37,7 +38,7 @@ quest_managers = {}
 is_talking_with_npc = {}
 translate = Translate()
 finted = {}
-
+r = Router(name="rgrg")
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 next_chapter_button_markup = ReplyKeyboardMarkup(resize_keyboard=True, keyboard=[
@@ -47,14 +48,27 @@ next_chapter_button_markup = ReplyKeyboardMarkup(resize_keyboard=True, keyboard=
 @dp.message(CommandStart())
 async def start_quest(message: Message) -> None:
     user_id = message.from_user.id
-    if message.from_user.id not in players.keys():
-        players[user_id] = Player()
-        quest_managers[user_id] = QuestManager(player=players[user_id])
-        await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
-    is_talking_with_npc[user_id] = False
-    quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
-    await send_photo_or_video_note(user_id, message)
-    await message.answer(text=quest_description, reply_markup=markup)
+    if str(message.from_user.id) in finted:
+        print("fighterFFFFFFFFFFFFFF")
+        quest_managers[
+            message.from_user.id].current_chapter_id = f'ch{int(quest_managers[message.from_user.id].current_chapter_id[2:]) + 1}'
+        print(quest_managers[message.from_user.id].current_chapter_id)
+        quest_managers[message.from_user.id].current_chapter = quest_managers[message.from_user.id].chapters[
+            quest_managers[message.from_user.id].current_chapter_id]
+        quest_managers[message.from_user.id].current_quest_id = "q0"
+
+        q, m = quest_managers[message.from_user.id].get_quest_desc_and_choices()
+        await message.answer(text=q, reply_markup=m)
+    else:
+        if message.from_user.id not in players.keys():
+            players[user_id] = Player()
+            quest_managers[user_id] = QuestManager(player=players[user_id])
+            await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
+        if not players[user_id].changed_location:
+            is_talking_with_npc[user_id] = False
+            quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
+            await send_photo_or_video_note(user_id, message)
+            await message.answer(text=quest_description, reply_markup=markup)
 
 
 @dp.message(Command("no_fight"))
@@ -100,20 +114,10 @@ async def view_path(message: Message) -> None:
     await message.answer(text="https://yandex.ru/maps/-/CDbHVY~n")
 
 
-class WebAppDataFilter(Filter):
-    async def __call__(self, message: Message, **kwargs):
-        print(message.web_app_data)
-        return dict(web_app_data=message.web_app_data) if message.web_app_data else False
-
-
-@dp.message(WebAppDataFilter())
+@dp.message(F.web_app_data)
 async def handle_web_app_data(message: types.Message):
-    data = json.loads(message.web_app_data.data)
-    print("rar" + data)
-    player = players[message.from_user.id]
-    for card in data["cards"]:
-        player.items.append({"id": card["id"], "name": card["name"], "type": "ally"})
-    await message.answer(text="Карточки получены.")
+    print("tttttt")
+    await message.answer(message.web_app_data.data)
 
 
 @dp.message(F.location)
@@ -210,10 +214,10 @@ async def handle_fighters(callback: CallbackQuery):
         encoded_data = urllib.parse.quote(json.dumps(data))
         url = wep_app_url.format(data=encoded_data)
 
-        fight_markup = InlineKeyboardBuilder()
-        fight_markup.button(text="Перейти", web_app=WebAppInfo(url=url))
+        fight_markup = KeyboardButton(text="Перейти", web_app=WebAppInfo(url=url))
+        # fight_markup.button(text="Перейти", web_app=WebAppInfo(url=url))
         print(url)
-        await callback.message.answer(text="Перейти", reply_markup=fight_markup.as_markup())
+        await callback.message.answer(text="Перейти", reply_markup=ReplyKeyboardMarkup(keyboard=[[fight_markup]]))
     else:
         await callback.answer("У Вас должно быть выбрано три карты")
 
@@ -277,6 +281,8 @@ async def send_photo_or_video_note(user_id, message):
 
 
 async def main() -> None:
+    r.message.register(handle_web_app_data)
+    dp.include_router(r)
     await dp.start_polling(bot)
 
 

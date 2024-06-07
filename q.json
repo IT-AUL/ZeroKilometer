@@ -362,10 +362,27 @@
           {
             "choice_id": "c0",
             "to_quest": "q1",
-            "text": "Меня зовут Булат, и  мне надо в кремель, не смотря не на что. Так что вы мне не указ",
+            "text": "Меня зовут Булат, и  мне надо в Кремль, не смотря не на что. Так что вы мне не указ",
             "video_path": "",
             "conditions": [],
             "result": {
+              "items": [
+                {
+                  "name": "Стражник",
+                  "id": "7",
+                  "type": "opponent"
+                },
+                {
+                  "name": "Стражник",
+                  "id": "8",
+                  "type": "opponent"
+                },
+                {
+                  "name": "Стражник",
+                  "id": "9",
+                  "type": "opponent"
+                }
+              ]
             }
           },
           {
@@ -382,7 +399,25 @@
             "text": "А ты собственно кто?",
             "video_path": "",
             "conditions": [],
-            "result": {}
+            "result": {
+              "items": [
+                {
+                  "name": "Стражник",
+                  "id": "7",
+                  "type": "opponent"
+                },
+                {
+                  "name": "Стражник",
+                  "id": "8",
+                  "type": "opponent"
+                },
+                {
+                  "name": "Стражник",
+                  "id": "9",
+                  "type": "opponent"
+                }
+              ]
+            }
           },
           {
             "choice_id": "ask_guard",
@@ -394,11 +429,29 @@
           },
           {
             "choice_id": "c3",
-            "to_quest": "q3",
+            "to_quest": "q1",
             "text": "Попытатся прорваться",
             "video_path": "",
             "conditions": [],
-            "result": {}
+            "result": {
+              "items": [
+                {
+                  "name": "Стражник",
+                  "id": "7",
+                  "type": "opponent"
+                },
+                {
+                  "name": "Стражник",
+                  "id": "8",
+                  "type": "opponent"
+                },
+                {
+                  "name": "Стражник",
+                  "id": "9",
+                  "type": "opponent"
+                }
+              ]
+            }
           }
         ]
       },
@@ -640,11 +693,29 @@
           },
           {
             "choice_id": "c3",
-            "to_quest": "q4",
+            "to_quest": "q10",
             "text": "Низачто",
             "video_path": "",
             "conditions": [],
-            "result": {}
+            "result": {
+              "items": [
+                {
+                  "name": "Рыба-мех",
+                  "type": "opponent",
+                  "id": "4"
+                },
+                {
+                  "name": "Рыба-мех",
+                  "type": "opponent",
+                  "id": "12"
+                },
+                {
+                  "name": "Су анасы",
+                  "type": "opponent",
+                  "id": "11"
+                }
+              ]
+            }
           }
         ]
       },
