@@ -14,13 +14,13 @@ async def apply_choice(callback: CallbackQuery):
     user_id = callback.from_user.id
     user = quest_managers[user_id]
     for choice in user.current_quest.choices:
-        is_talking_with_npc[user_id] = False
+        quest_managers[user_id].is_talking_with_npc = False
 
         # i compare unique combination of current chapter, quest and choice id with current choice
         compare_data = user.current_chapter_id + ";" + user.current_quest_id + ";" + choice.choice_id
         if compare_data == callback.data:
             if choice.to_quest.startswith("ch"):
-                players[user_id].changed_location = True
+                quest_managers[user_id].player.changed_location = True
 
                 user.current_chapter_id = choice.to_quest
                 user.current_chapter = user.chapters[user.current_chapter_id]
@@ -34,7 +34,7 @@ async def apply_choice(callback: CallbackQuery):
                 user.current_quest_id = choice.to_quest
                 quest_description, markup = user.get_quest_desc_and_choices()
                 if len(choice.result) > 0:
-                    players[user_id].apply_changes(**choice.result)
+                    quest_managers[user_id].player.apply_changes(**choice.result)
 
                 await send_photo_or_video_note(user_id, callback.message)
                 await callback.message.edit_reply_markup(reply_markup=None)

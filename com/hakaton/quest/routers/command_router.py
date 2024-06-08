@@ -1,9 +1,7 @@
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message, InputMediaPhoto, FSInputFile
+from aiogram.types import InputMediaPhoto
 from com.hakaton.quest.game import *
-# from com.hakaton.quest.main import bot
-from com.hakaton.quest.player import Player
 from com.hakaton.quest.quest_manager import QuestManager
 
 command_router = Router(name="command")
@@ -12,12 +10,11 @@ command_router = Router(name="command")
 @command_router.message(CommandStart())
 async def start_quest(message: Message) -> None:
     user_id = message.from_user.id
-    if message.from_user.id not in players.keys():
-        players[user_id] = Player()
-        quest_managers[user_id] = QuestManager(player=players[user_id])
+    if message.from_user.id not in quest_managers.keys():
+        quest_managers[user_id] = QuestManager(CHAPTERS)
         await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
-    if not players[user_id].changed_location:
-        is_talking_with_npc[user_id] = False
+    if not quest_managers[user_id].player.changed_location:
+        quest_managers[user_id].is_talking_with_npc = False
         quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
         await send_photo_or_video_note(user_id, message)
         await message.answer(text=quest_description, reply_markup=markup)
@@ -26,9 +23,9 @@ async def start_quest(message: Message) -> None:
 @command_router.message(Command("no_fight"))
 async def no_fight(message: Message) -> None:
     user_id = message.from_user.id
-    if not players[user_id].changed:
-        players[user_id].will_fight = 0
-        players[user_id].changed = True
+    if not quest_managers[user_id].player.changed:
+        quest_managers[user_id].player.will_fight = 0
+        quest_managers[user_id].player.changed = True
         await message.answer(text="Вы включили мирное прохождение")
     else:
         await message.answer(text="Вы не можете поменять режим.")
@@ -37,10 +34,8 @@ async def no_fight(message: Message) -> None:
 @command_router.message(Command("clear"))
 async def clear(message: Message) -> None:
     user_id = message.from_user.id
-    players[user_id] = Player()
-    quest_managers[user_id] = QuestManager(player=players[user_id])
+    quest_managers[user_id] = QuestManager(CHAPTERS)
     await message.answer(text=f"Глава: <b>{quest_managers[user_id].current_chapter.title}</b>")
-    is_talking_with_npc[user_id] = False
     quest_description, markup = quest_managers[user_id].get_quest_desc_and_choices()
     await message.answer(text=quest_description, reply_markup=markup)
 
@@ -49,14 +44,13 @@ async def clear(message: Message) -> None:
 async def view_cards(message: Message) -> None:
     user_id = message.from_user.id
     media = []
-    for it in players[user_id].items:
+    for it in quest_managers[user_id].player.items:
         print(it)
         if str(it["type"]) == "ally":
             media.append(
                 InputMediaPhoto(
                     media=FSInputFile(fr'C:\Users\galee\PycharmProjects\Hakaton\cards\{str(it['id'])}.png')))
     if len(media) > 0:
-        # await bot.send_media_group(chat_id=user_id, media=media)
         await message.answer_media_group(media=media)
     else:
         await message.answer(text="У Вас нет карточек.")

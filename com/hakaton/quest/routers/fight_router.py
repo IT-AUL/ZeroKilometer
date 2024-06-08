@@ -2,12 +2,10 @@ import json
 import urllib
 
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, FSInputFile, InputMediaPhoto, KeyboardButton, WebAppInfo, ReplyKeyboardMarkup
+from aiogram.types import CallbackQuery, InputMediaPhoto, KeyboardButton, WebAppInfo, ReplyKeyboardMarkup
 
 from com.hakaton.quest.game import *
 import urllib.parse
-
-# from com.hakaton.quest.main import bot
 
 fight_router = Router(name="fight_router")
 
@@ -17,11 +15,7 @@ fight_router = Router(name="fight_router")
 async def handle_fight(callback: CallbackQuery):
     user_id = callback.from_user.id
     await callback.message.edit_reply_markup(reply_markup=None)
-    ally_markup = ally_deck(players[user_id])
-    # await bot.send_photo(chat_id=callback.message.chat.id,
-    #                      photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\cards\default_card.png"),
-    #                      caption="Ваша колода",
-    #                      reply_markup=ally_markup)
+    ally_markup = ally_deck(quest_managers[user_id].player)
     await callback.message.answer_photo(
         photo=FSInputFile(r"C:\Users\galee\PycharmProjects\Hakaton\cards\default_card.png"),
         caption="Ваша колода",
@@ -31,7 +25,7 @@ async def handle_fight(callback: CallbackQuery):
 @fight_router.callback_query(F.data.startswith("id_"))
 async def handle_fighters(callback: CallbackQuery):
     user_id = callback.from_user.id
-    player = players[user_id]
+    player = quest_managers[user_id].player
     if str(callback.data[3:]) in player.deck:
         player.deck.remove(str(callback.data[3:]))
 
@@ -51,7 +45,7 @@ async def handle_fighters(callback: CallbackQuery):
 @fight_router.callback_query(F.data == "start_fighting")
 async def handle_fighters(callback: CallbackQuery):
     user_id = callback.from_user.id
-    player = players[user_id]
+    player = quest_managers[user_id].player
     if len(player.deck) == 3:
         opponents = []
         for item in player.items:
@@ -65,6 +59,8 @@ async def handle_fighters(callback: CallbackQuery):
 
         fight_markup = KeyboardButton(text="Начать бой", web_app=WebAppInfo(url=url))
         print(url)
-        await callback.message.answer(text="Перейти", reply_markup=ReplyKeyboardMarkup(keyboard=[[fight_markup]]))
+        await callback.message.answer(text="Перейти",
+                                      reply_markup=ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True,
+                                                                       keyboard=[[fight_markup]]))
     else:
         await callback.answer("У Вас должно быть выбрано три карты")

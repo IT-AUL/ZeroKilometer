@@ -3,6 +3,6 @@ class Choice:
         self.choice_id: str = choice_id
         self.to_quest: str = to_quest
         self.text: str = text
-        self.video_path = video_path
-        self.conditions = conditions
+        self.video_path: str = video_path
+        self.conditions: list = conditions
         self.result: str = result

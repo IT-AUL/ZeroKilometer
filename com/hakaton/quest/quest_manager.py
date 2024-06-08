@@ -9,7 +9,7 @@ from player import Player
 from quest import Quest
 
 
-def load_chapters(quests_file):
+def load_chapters(quests_file='q.json'):
     with open(quests_file, encoding='utf-8') as file:
         chapters = dict()
         for chapter_json in json.load(file):
@@ -37,15 +37,16 @@ def load_chapters(quests_file):
 
 class QuestManager:
     player: Player
+    is_talking_with_npc: bool = False
 
-    def __init__(self, quests_file='q.json', player=None):
-        self.chapters = load_chapters(quests_file)
+    def __init__(self, chapters):
+        self.chapters = chapters
         self.current_chapter_id = "ch0"
         self.current_chapter = self.chapters[self.current_chapter_id]
         self.current_quest_id = "q0"
         self.current_quest = self.current_chapter.quests[self.current_quest_id]
         self.current_choices = [choice.choice_id for choice in self.current_quest.choices]
-        self.player = player
+        self.player = Player()
 
     def get_current_quest(self):
         self.current_quest = self.current_chapter.quests[self.current_quest_id]

@@ -3,11 +3,12 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from com.hakaton.quest.dialogue import Translate
 from com.hakaton.quest.player import Player
+from quest_manager import load_chapters
 
-players = {}
 quest_managers = {}
-is_talking_with_npc = {}
 translate = Translate()
+
+CHAPTERS = load_chapters()
 
 
 def ally_deck(player: Player):
@@ -26,8 +27,6 @@ async def send_photo_or_video_note(user_id, message: Message):
     if quest_managers[user_id].current_chapter.video_path != "":
         cat = FSInputFile(quest_managers[user_id].current_chapter.video_path)
         if quest_managers[user_id].current_chapter.video_path.endswith(".mp4"):
-            # await bot.send_video_note(message.chat.id, cat, length=360)
             await message.answer_video_note(cat, length=360)
         else:
-            # await bot.send_photo(chat_id=message.chat.id, photo=cat)
             await message.answer_photo(photo=cat)
