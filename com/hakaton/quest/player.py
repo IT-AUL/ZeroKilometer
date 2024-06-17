@@ -30,4 +30,3 @@ class Player:
         for it in items:
             if not any((i['id'] == it['id'] and i['type'] == 'ally') for i in self.items):
                 self.items.extend(items)
-        print(self.items)

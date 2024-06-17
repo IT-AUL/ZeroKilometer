@@ -52,10 +52,11 @@ async def handle_fighters(callback: CallbackQuery):
             if item['type'] == "opponent":
                 opponents.append(item['id'])
 
-        wep_app_url = 'https://poitzero.netlify.app/?data={data}'
+        wep_app_url = 'https://poitzero.netlify.app/?data={data}&info={info}'
         data = player.deck + opponents
+        info = str(quest_managers[user_id].current_quest.choices[0].to_quest)
         encoded_data = urllib.parse.quote(json.dumps(data))
-        url = wep_app_url.format(data=encoded_data)
+        url = wep_app_url.format(data=encoded_data, info=info)
 
         fight_markup = KeyboardButton(text="Начать бой", web_app=WebAppInfo(url=url))
         print(url)
