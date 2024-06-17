@@ -6,7 +6,7 @@ from com.hakaton.quest.game import *
 
 location_router = Router(name="location_router")
 
-DISTANCE = 5000000000
+DISTANCE = 500
 
 
 @location_router.message(F.location)

@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="Начал переписывать под web app">
-      <change afterPath="$PROJECT_DIR$/quest/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quest/js/src/player.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quest/js/src/quest_manager.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quest/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b8e55cf-1f08-48de-8349-ff9181129b72.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1b8e55cf-1f08-48de-8349-ff9181129b72.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/database/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/fight/character.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/fight/choose.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/fight/file.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/fight/img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/routers/fight_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/routers/fight_router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/routers/web_app_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/routers/web_app_router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/element.js" beforeDir="false" afterPath="$PROJECT_DIR$/quest/js/src/element.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/player.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/q.json" beforeDir="false" afterPath="$PROJECT_DIR$/q.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,14 +31,12 @@
     &quot;assignee&quot;: &quot;DanisGaleev&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="9b92c778-487c-4369-a919-14355e5bad14" />
-        <option name="url" value="https://github.com/IT-AUL/aksakal_pro.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DanisGaleev/KazanGameBot.git&quot;,
+    &quot;accountId&quot;: &quot;9b92c778-487c-4369-a919-14355e5bad14&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -235,7 +221,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.17890.14" />
+        <option value="bundled-python-sdk-5b207ade9991-7e9c3bbb6e34-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.17890.14" />
       </set>
     </attachedChunks>
   </component>
@@ -334,7 +321,16 @@
       <workItem from="1718088710716" duration="1244000" />
       <workItem from="1718605446807" duration="35000" />
       <workItem from="1718605512824" duration="629000" />
-      <workItem from="1718615848085" duration="628000" />
+      <workItem from="1718615848085" duration="3352000" />
+      <workItem from="1718622643996" duration="1793000" />
+      <workItem from="1718625731116" duration="319000" />
+      <workItem from="1718651664920" duration="108000" />
+      <workItem from="1718651996716" duration="137000" />
+      <workItem from="1718652299785" duration="295000" />
+      <workItem from="1718652813765" duration="53000" />
+      <workItem from="1718652932789" duration="17000" />
+      <workItem from="1718653063404" duration="23000" />
+      <workItem from="1718653106445" duration="182000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -654,7 +650,7 @@
     <SUITE FILE_PATH="coverage/Hakaton$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1716233990201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$database.coverage" NAME="database Coverage Results" MODIFIED="1716050849265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/database" />
     <SUITE FILE_PATH="coverage/Hakaton$w.coverage" NAME="w Coverage Results" MODIFIED="1715096687664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$main.coverage" NAME="main Coverage Results" MODIFIED="1718605645853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$main.coverage" NAME="main Coverage Results" MODIFIED="1718618741734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$model_ask.coverage" NAME="model_ask Coverage Results" MODIFIED="1713782845025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$config.coverage" NAME="config Coverage Results" MODIFIED="1713807934369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
