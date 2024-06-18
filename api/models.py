@@ -4,9 +4,9 @@ from api import db
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), unique=True, nullable=False)
-    hashed_password = db.Column(db.String(300), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    username = db.Column(db.String(80), nullable=False)
+    progress = db.Column(db.Text, nullable=True)
     inventory = db.Column(db.Text, nullable=False, default=json.dumps([{
         "name": "Булат",
         "id": "1",
@@ -21,6 +21,9 @@ class User(db.Model):
         "type": "ally"
     }]))
 
-    def __init__(self, username, hashed_password):
+    def __init__(self, id, username):
+        self.id = id
         self.username = username
-        self.hashed_password = hashed_password
+
+    def __repr__(self):
+        return '<User %r>' % self.id

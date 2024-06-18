@@ -17,6 +17,7 @@ async def handle_web_app_data(message: types.Message):
     info = str(data['info'])
 
     quest_managers[message.from_user.id].player.apply_changes(clear="True")
+    quest_managers[user_id].player.deck = []
     if data['data'] != 'lose':
         defeated_enemies = list(data['data'])
         print("defeated_enemies", defeated_enemies)
