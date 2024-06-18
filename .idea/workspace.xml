@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Some api">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b8e55cf-1f08-48de-8349-ff9181129b72.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b8e55cf-1f08-48de-8349-ff9181129b72/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqlDataSources.xml" beforeDir="false" />
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add api for post or get progress&#10;[+] For add or delete user">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/db.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/resource.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/resource.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/routers/web_app_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/routers/web_app_router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -359,7 +349,7 @@
       <workItem from="1718701777804" duration="403000" />
       <workItem from="1718719694189" duration="11000" />
       <workItem from="1718719750769" duration="5692000" />
-      <workItem from="1718728109229" duration="3234000" />
+      <workItem from="1718728109229" duration="7226000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -649,7 +639,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718691679045</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="[+] Add api for post or get progress&#10;[+] For add or delete user">
+      <option name="closed" value="true" />
+      <created>1718732328731</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1718732328731</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -686,7 +684,8 @@
     <MESSAGE value="Начал переписывать под web app" />
     <MESSAGE value="[*] Changed max distance value" />
     <MESSAGE value="[+] Some api" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Some api" />
+    <MESSAGE value="[+] Add api for post or get progress&#10;[+] For add or delete user" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Add api for post or get progress&#10;[+] For add or delete user" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$m.coverage" NAME="m Coverage Results" MODIFIED="1716234027691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

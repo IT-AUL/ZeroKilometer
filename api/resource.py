@@ -2,7 +2,6 @@ from importlib.resources import Resource
 
 from flask import request, jsonify
 from flask_restful import reqparse
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from api import db
 from api.models import User
@@ -17,9 +16,12 @@ CHAPTERS = {}
 5 clear_data delete(username) -> delete user
 """
 
+register_user_parser = reqparse.RequestParser()
+register_user_parser.add_argument('username', type=str, required=True)
 
 class Register(Resource):
     def post(self):
+
 
 
 class CheckUser(Resource):
