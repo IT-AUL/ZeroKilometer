@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="Начал переписывать под web app">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b8e55cf-1f08-48de-8349-ff9181129b72.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1b8e55cf-1f08-48de-8349-ff9181129b72.xml" afterDir="false" />
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Changed max distance value">
+      <change afterPath="$PROJECT_DIR$/api/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/db.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/resource.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -69,7 +71,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/galee/PycharmProjects/Hakaton/cards&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/galee/PycharmProjects/Hakaton&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -86,11 +88,11 @@
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton\api" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\quest\js" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\js" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\js\src" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
-      <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -331,6 +333,11 @@
       <workItem from="1718652932789" duration="17000" />
       <workItem from="1718653063404" duration="23000" />
       <workItem from="1718653106445" duration="182000" />
+      <workItem from="1718653304065" duration="305000" />
+      <workItem from="1718655695267" duration="149000" />
+      <workItem from="1718659319712" duration="5000" />
+      <workItem from="1718659343438" duration="965000" />
+      <workItem from="1718690536959" duration="1049000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -604,7 +611,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717858219736</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="[*] Changed max distance value">
+      <option name="closed" value="true" />
+      <created>1718653569151</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1718653569151</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -636,7 +651,8 @@
     <MESSAGE value="Исправил ошибки&#10;Добавил поддержку боевки" />
     <MESSAGE value="Переделал структуру" />
     <MESSAGE value="Начал переписывать под web app" />
-    <option name="LAST_COMMIT_MESSAGE" value="Начал переписывать под web app" />
+    <MESSAGE value="[*] Changed max distance value" />
+    <option name="LAST_COMMIT_MESSAGE" value="[*] Changed max distance value" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$m.coverage" NAME="m Coverage Results" MODIFIED="1716234027691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
