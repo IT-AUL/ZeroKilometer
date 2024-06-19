@@ -5,25 +5,39 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, CommandObject
 from aiogram.types import Message
+from aiogram.utils.deep_linking import create_start_link
+from aiogram.utils.payload import decode_payload
 
 from config import *
 
 dp = Dispatcher()
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
-https: // t.me / bot_user_name?start = erhrehrherhh
+link = None
+
+
+@dp.message(CommandStart(deep_link=True))
+async def start_with_sponsor(message: Message, command: CommandObject):
+    args = command.args
+    try:
+        payload = decode_payload(args)
+        await message.answer(payload)
+        await message.answer("ans")
+    except Exception as e:
+        await message.answer("error")
 
 
 @dp.message(CommandStart())
-async def start(message: Message) -> None:
-    args = message.text.split()
-    if args and len(args) >= 2:
-        await message.answer(args[1])
+async def start_without_sponsor(message: Message):
+    await message.answer("ans")
 
 
 async def main() -> None:
+    global link
+    link = await create_start_link(bot, 'dvizheniye_pervih', encode=True)
+    print(link)
     await dp.start_polling(bot)
 
 

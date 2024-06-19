@@ -17,18 +17,20 @@ class RegisterUser(Resource):
         user_id = args['id']
         username = args['username']
 
-        user = User.query.filter_by(id=user_id).first()
+        user = db.session.execute(db.select(User).where(User.id == user_id)).scalar()
+
+        # user = User.query.filter_by(id=user_id).first()
         if user:
-            return jsonify({"status": False})
+            return jsonify({"status": False}), 208
 
         user = User(user_id, username)
         try:
             db.session.add(user)
             db.session.commit()
-            return jsonify({"status": True})
+            return jsonify({"status": True}), 201
         except Exception as e:
             db.session.rollback()
-            return jsonify({"error": str(e)})
+            return jsonify({"error": str(e)}), 500
 
 
 delete_user_parser = reqparse.RequestParser()
@@ -40,16 +42,17 @@ class DeleteUser(Resource):
         args = delete_user_parser.parse_args()
         user_id = args['user_id']
 
-        user = User.query.filter_by(id=user_id)
+        user = db.session.execute(db.select(User).where(User.id == user_id)).scalar()
+        # user = User.query.filter_by(id=user_id)
         if not user:
-            return jsonify({"status": False})
+            return jsonify({"status": False}), 208
         try:
             user.delete()
             db.session.commit()
-            return jsonify({"status": True})
+            return jsonify({"status": True}), 202
         except Exception as e:
             db.session.rollback()
-            return jsonify({"error": str(e)})
+            return jsonify({"error": str(e)}), 500
 
 
 choice_apply = reqparse.RequestParser()
@@ -66,48 +69,67 @@ class ApplyChoice(Resource):
         user_id = args['user_id']
         next_id = args['next_id']
 
-        if not user_id or not User.query.filter_by(id=user_id).first() or not next_id:
-            return jsonify({"error": "incorrect user_id, next_id"})
-        user = User.query.filter_by(id=user_id).first()
+        user = db.session.execute(db.select(User).where(User.id == user_id)).scalar()
 
-        chapter = CHAPTERS[user.progress[0]]
-        quest = chapter.quests[user.progress[1]]
-        choices = quest.choices
-        if next_id.startswith('q'):
-            if not any([next_id == i.to_quest for i in choices]):
-                return jsonify({"error": "incorrect choice_id"})
+        if not user:
+            return jsonify({"error": "User not found"}), 400
+        # user = User.query.filter_by(id=user_id).first()
 
-            result = filter(lambda x: x.id == next_id, choices)[0].result
-            for key in result.keys():
-                if key == "items":
-                    user.inventory += result[key]
-            user.progress = [chapter.id, next_id]
-            db.session.commit()
+        chapter = CHAPTERS[user.progress[0]]  # user current chapter
+        quest = chapter.quests[user.progress[1]]  # user current quest
+        choices = quest.choices  # current quest choices
 
-            return jsonify(
-                {"chapter": chapter, "quest": chapter.quests[next_id], "choices": chapter.quests[next_id].choices})
-        elif next_id.startswith('ch'):
-            if not any(next_id == i.id for i in CHAPTERS.values()):
-                return jsonify({"error": "incorrect choice_id"})
+        if not any([choice.id == next_id for choice in choices]):
+            return jsonify({"error": "Choice not found"}), 400
 
-            result = filter(lambda x: x.id == next_id, choices)[0].result
+        ch = filter(lambda choice: choice.id == next_id, choices)[0]
+
+        if ch.to_quest.startswith('q'):
+            result = ch.result
             for key in result.keys():
                 if key == "items":
                     user.inventory += result[key]
 
-            user.progress = [next_id, "q0"]
-            db.session.commit()
-            return jsonify({"chapter": CHAPTERS[next_id], "quest": CHAPTERS[next_id].quests['q0'],
-                            "choices": CHAPTERS[next_id].quests['q0'].choices})
+            try:
+                user.progress = [chapter.id, ch.to_quest]
+                db.session.commit()
+                quest = chapter.quests[user.progress[1]]
+                choices = quest.choices
+
+                return jsonify({"chapter": chapter, "quest": quest, "choices": choices}), 202
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({"error": str(e)}), 500
+
+        elif ch.to_quest.startswith('ch'):
+
+            result = ch.result
+            for key in result.keys():
+                if key == "items":
+                    user.inventory += result[key]
+
+            try:
+                user.progress = [ch.to_quest, "q0"]
+                db.session.commit()
+
+                chapter = CHAPTERS[user.progress[0]]
+                quest = chapter.quests[user.progress[1]]
+                choices = quest.choices
+
+                return jsonify({"chapter": chapter, "quest": quest, "choices": choices})
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({"error": str(e)}), 500
 
     def get(self):
         args = choice_get.parse_args()
 
         user_id = args['user_id']
 
-        user = User.query.filter_by(id=user_id).first()
+        user = db.session.execute(db.select(User).where(User.id == user_id)).scalar()
+        # user = User.query.filter_by(id=user_id).first()
         if not user:
-            return jsonify({"error": "User not found"})
+            return jsonify({"error": "User not found"}), 400
 
         chapter = CHAPTERS[user.progress[0]]
         quest = chapter.quests[user.progress[1]]
