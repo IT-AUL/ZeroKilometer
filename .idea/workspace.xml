@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Some rewrite app and api">
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress">
+      <change afterPath="$PROJECT_DIR$/api/objects/chapter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/objects/choice.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/objects/quest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/objects/quest_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/resource.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/resource.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/hakaton/quest/quest_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/com/hakaton/quest/quest_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/q.json" beforeDir="false" afterPath="$PROJECT_DIR$/q.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,53 +66,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Python tests.Python tests in test_app.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.__init__ (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.__init__.executor&quot;: &quot;Run&quot;,
-    &quot;Python.circle.executor&quot;: &quot;Run&quot;,
-    &quot;Python.config.executor&quot;: &quot;Run&quot;,
-    &quot;Python.database.executor&quot;: &quot;Run&quot;,
-    &quot;Python.dialogue.executor&quot;: &quot;Run&quot;,
-    &quot;Python.editor.executor&quot;: &quot;Run&quot;,
-    &quot;Python.m.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main (1).executor&quot;: &quot;Profiler&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.model_ask.executor&quot;: &quot;Run&quot;,
-    &quot;Python.player.executor&quot;: &quot;Run&quot;,
-    &quot;Python.solver.executor&quot;: &quot;Run&quot;,
-    &quot;Python.w.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ww.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ее.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/galee/PycharmProjects/Bot&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Python tests.Python tests in test_app.py.executor": "Run",
+    "Python.__init__ (1).executor": "Run",
+    "Python.__init__.executor": "Run",
+    "Python.circle.executor": "Run",
+    "Python.config.executor": "Run",
+    "Python.database.executor": "Run",
+    "Python.dialogue.executor": "Run",
+    "Python.editor.executor": "Run",
+    "Python.m.executor": "Run",
+    "Python.main (1).executor": "Profiler",
+    "Python.main.executor": "Run",
+    "Python.model_ask.executor": "Run",
+    "Python.player.executor": "Run",
+    "Python.solver.executor": "Run",
+    "Python.w.executor": "Run",
+    "Python.ww.executor": "Run",
+    "Python.ее.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore_missing_gitignore": "true",
+    "last_opened_file_path": "C:/Users/galee/PycharmProjects/Hakaton/api",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "settings.nodejs",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton\api" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\cards" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\objects" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\app" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\quest\js" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\js" />
-      <recent name="C:\Users\galee\PycharmProjects\Hakaton\js\src" />
     </key>
   </component>
   <component name="RunManager" selected="Python.__init__ (1)">
@@ -224,7 +232,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests in test_app.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test_app.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="Hakaton" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -244,7 +252,7 @@
       <list>
         <item itemvalue="Python.__init__ (1)" />
         <item itemvalue="Python.__init__" />
-        <item itemvalue="Python tests.Python tests in test_app.py" />
+        <item itemvalue="Python tests.Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test_app.py" />
         <item itemvalue="Python.solver" />
         <item itemvalue="Python.m" />
       </list>
@@ -377,7 +385,7 @@
       <workItem from="1718783032267" duration="7916000" />
       <workItem from="1718805868537" duration="761000" />
       <workItem from="1718821835160" duration="4120000" />
-      <workItem from="1718832489782" duration="1122000" />
+      <workItem from="1718832489782" duration="3015000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -699,7 +707,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718823324069</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress">
+      <option name="closed" value="true" />
+      <created>1718834011167</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1718834011167</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -738,7 +754,8 @@
     <MESSAGE value="[+] Some api" />
     <MESSAGE value="[+] Add api for post or get progress&#10;[+] For add or delete user" />
     <MESSAGE value="[*] Some rewrite app and api" />
-    <option name="LAST_COMMIT_MESSAGE" value="[*] Some rewrite app and api" />
+    <MESSAGE value="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/npc_manager_py$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718739994571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />

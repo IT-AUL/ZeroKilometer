@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from api.objects.quest_manager import load_chapters
 
 db = SQLAlchemy()
 api = Api()
+CHAPTERS = load_chapters()
 
 
 def create_app():

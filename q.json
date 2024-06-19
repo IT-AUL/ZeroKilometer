@@ -2,7 +2,7 @@
   {
     "chapter_id": "ch0",
     "title": "Площадь Тукая",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "50.842243;49.132724",
     "quests": [
       {
@@ -11,49 +11,49 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Что мне делать?! Я ничего не понимаю!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Меня привела сюда любовь",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "Мне интересен город",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "А чем ты известен?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "ask_tykay",
-            "to_quest": "ask_tykay",
+            "next_id": "ask_tykay",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c4",
-            "to_quest": "ch1",
+            "next_id": "ch1",
             "text": "Спасибо, я пойду",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -65,9 +65,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Понимаю",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -79,9 +79,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Учту",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -93,49 +93,49 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q5",
+            "next_id": "q5",
             "text": "Что надо делать?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q6",
+            "next_id": "q6",
             "text": "Как понять, куда идти?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q7",
+            "next_id": "q7",
             "text": "Как сражаться?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "q8",
+            "next_id": "q8",
             "text": "Что за карты?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c4",
-            "to_quest": "q9",
+            "next_id": "q9",
             "text": "Система боя",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c5",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Я всё понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -147,9 +147,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Ничего себе!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -161,9 +161,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -175,9 +175,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "will_fight": 0
@@ -191,9 +191,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -205,9 +205,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -219,9 +219,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "will_fight": 1
@@ -235,9 +235,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Понял",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -248,7 +248,7 @@
   {
     "chapter_id": "ch1",
     "title": "Улица Баумана",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.792446;49.112733",
     "quests": [
       {
@@ -257,9 +257,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Я ищу свою любовь, следую зову сердца. Не хочешь ко мне присоединиться?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -273,33 +273,33 @@
           },
           {
             "choice_id": "c1",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "А кто ты вообще такой?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "*погладить*",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "ask_cat",
-            "to_quest": "ask_cat",
+            "next_id": "ask_cat",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "ch2",
+            "next_id": "ch2",
             "text": "Спасибо, я пойду.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -311,9 +311,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Понимаю.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -325,9 +325,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Учту.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -339,9 +339,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Спасибо, ты очень щедр.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -352,7 +352,7 @@
   {
     "chapter_id": "ch2",
     "title": "Спасская башня",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.796385;49.108326",
     "quests": [
       {
@@ -361,9 +361,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Меня зовут Булат, и мне надо в Кремль, несмотря ни на что. Так что вы мне не указ.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -387,17 +387,17 @@
           },
           {
             "choice_id": "c1",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "Извините, но меня ждут. Как можно решить этот вопрос?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "А ты, собственно, кто?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -421,17 +421,17 @@
           },
           {
             "choice_id": "ask_guard",
-            "to_quest": "ask_guard",
+            "next_id": "ask_guard",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Попытаться прорваться",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -461,9 +461,9 @@
         "choices": [
           {
             "choice_id": "fight",
-            "to_quest": "ch3",
+            "next_id": "ch3",
             "text": "Солдат, любви не помеха!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -475,9 +475,9 @@
         "choices": [
           {
             "choice_id": "q0",
-            "to_quest": "ch3",
+            "next_id": "ch3",
             "text": "Конечно, вот.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -489,9 +489,9 @@
         "choices": [
           {
             "choice_id": "fight",
-            "to_quest": "fight",
+            "next_id": "fight",
             "text": "Навстречу любви!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -503,9 +503,9 @@
         "choices": [
           {
             "choice_id": "fight",
-            "to_quest": "fight",
+            "next_id": "fight",
             "text": "Понятно.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -516,7 +516,7 @@
   {
     "chapter_id": "ch3",
     "title": "Башня Сююмбике",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.800446;49.105056",
     "quests": [
       {
@@ -525,41 +525,41 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Ничего страшного. Как вас зовут и что такого в этой башне?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "Будьте осторожнее. Так можно и пораниться. Если что, я могу вас проводить до медпункта.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "Простите, это вы меня извините. Я сам засмотрелся на пейзажи.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "ask_dulara",
-            "to_quest": "ask_dulara",
+            "next_id": "ask_dulara",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Не могли бы вы провести меня до библиотеки? Там мне нужно понять, что означают мои сны.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -579,9 +579,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Ого!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -593,9 +593,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Впервые слышу.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -607,9 +607,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Удивительно.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -621,9 +621,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "ch4",
+            "next_id": "ch4",
             "text": "Отлично.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -634,7 +634,7 @@
   {
     "chapter_id": "ch4",
     "title": "Кремлевская набережная",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.802927;49.109551",
     "quests": [
       {
@@ -643,9 +643,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q10",
+            "next_id": "q10",
             "text": "Так я тебе его и отдал.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -669,33 +669,33 @@
           },
           {
             "choice_id": "c1",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "Держи, я подарю своей спутнице новый.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "А ты кто?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "ask_su",
-            "to_quest": "ask_su",
+            "next_id": "ask_su",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "q10",
+            "next_id": "q10",
             "text": "Ни за что.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {
               "items": [
@@ -725,9 +725,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Неожиданно.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -739,9 +739,9 @@
         "choices": [
           {
             "choice_id": "fight",
-            "to_quest": "ch5",
+            "next_id": "ch5",
             "text": "В бой.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -753,9 +753,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "ch5",
+            "next_id": "ch5",
             "text": "Огромное спасибо.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -767,9 +767,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Спасибо, выручили.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -780,7 +780,7 @@
   {
     "chapter_id": "ch5",
     "title": "НКЦ",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.801543;49.125686",
     "quests": [
       {
@@ -789,49 +789,49 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Я хочу получить ответ на вопрос: кто является ко мне во снах?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "Я хочу узнать, как мне найти любовь.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "А вы вообще кто?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c4",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "Вы можете помочь, не только советом?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "ask_ded",
-            "to_quest": "ask_ded",
+            "next_id": "ask_ded",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "ch5",
+            "next_id": "ch5",
             "text": "Спасибо, я пойду.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -843,9 +843,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Мда...",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -857,9 +857,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Благодарю за совет.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -871,9 +871,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Абау.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -885,9 +885,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Спасибо, вы меня выручили.",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -898,7 +898,7 @@
   {
     "chapter_id": "ch6",
     "title": "Государственный музей изобразительных искусств Республики Татарстан",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.794946;49.134980",
     "quests": [
       {
@@ -907,41 +907,41 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "И что вы можете посоветовать?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q2",
+            "next_id": "q2",
             "text": "Кто вы?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "А что за галерея?",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "ask",
-            "to_quest": "ask",
+            "next_id": "ask",
             "text": "Поговорить",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c3",
-            "to_quest": "ch7",
+            "next_id": "ch7",
             "text": "Спасибо, я пойду",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -953,9 +953,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Спасибо, это очень ценный совет!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -967,17 +967,17 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Ничего себе!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "Чего?!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -989,9 +989,9 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Вау!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -1003,17 +1003,17 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q0",
+            "next_id": "q0",
             "text": "Ничего себе",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "q3",
+            "next_id": "q3",
             "text": "Чего?!",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -1024,7 +1024,7 @@
   {
     "chapter_id": "ch7",
     "title": "Арка влюбленных",
-    "video_path": "",
+    "res_path": "",
     "geo_position": "55.794946;49.134980",
     "quests": [
       {
@@ -1033,25 +1033,25 @@
         "choices": [
           {
             "choice_id": "c0",
-            "to_quest": "q1",
+            "next_id": "q1",
             "text": "Иду",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c1",
-            "to_quest": "fight",
+            "next_id": "fight",
             "text": "Я знаю, кто ты",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           },
           {
             "choice_id": "c2",
-            "to_quest": "q4",
+            "next_id": "q4",
             "text": "Удачи остаться",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }
@@ -1063,9 +1063,9 @@
         "choices": [
           {
             "choice_id": "fight",
-            "to_quest": "fight",
+            "next_id": "fight",
             "text": "Напасть",
-            "video_path": "",
+            "res_path": "",
             "conditions": [],
             "result": {}
           }

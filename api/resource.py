@@ -1,10 +1,8 @@
 from flask import jsonify
 from flask_restful import reqparse, Resource  # Correct import
 
-from api import db
+from api import db, CHAPTERS
 from api.models import User
-
-CHAPTERS = {}
 
 register_user_parser = reqparse.RequestParser()
 register_user_parser.add_argument('id', type=str, required=True, help="Unique telegram user ID")
