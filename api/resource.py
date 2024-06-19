@@ -1,44 +1,55 @@
-from importlib.resources import Resource
-
-from flask import request, jsonify
-from flask_restful import reqparse
+from flask import jsonify
+from flask_restful import reqparse, Resource  # Correct import
 
 from api import db
 from api.models import User
 
 CHAPTERS = {}
 
-"""
-1 user_init post(username, password) -> save user to db
-2 check_user post(username, password, username_only=True) -> check if user is exist or if password is correct
-3 get_info_by_choice post(cur_chapter, cur_quest, next_id) -> apply choice_result and return next chapter and quest data
-4 get_info post() -> get last chapter and quest
-5 clear_data delete(username) -> delete user
-"""
-
 register_user_parser = reqparse.RequestParser()
-register_user_parser.add_argument('username', type=str, required=True)
+register_user_parser.add_argument('id', type=str, required=True, help="Unique telegram user ID")
+register_user_parser.add_argument('username', type=str, required=True, help="Telegram username")
 
-class Register(Resource):
+
+class RegisterUser(Resource):
     def post(self):
+        args = register_user_parser.parse_args()
+        user_id = args['id']
+        username = args['username']
 
+        user = User.query.filter_by(id=user_id).first()
+        if user:
+            return jsonify({"status": False})
 
-
-class CheckUser(Resource):
-    def post(self):
+        user = User(user_id, username)
         try:
-            username = request.json['username']
-            password = request.json['password']
-            username_only = request.json['username_only']
-
-            user = User.query.filter_by(username=username).first()
-            if username_only:
-                return jsonify({"status": True, "data": user is not None})
-            psw = User.query.filter_by(username=username).first().hash_password
-
-            return jsonify({"status": True, "data": user is not None and check_password_hash(psw, password)})
+            db.session.add(user)
+            db.session.commit()
+            return jsonify({"status": True})
         except Exception as e:
-            return jsonify({"status": False, "data": str(e)})
+            db.session.rollback()
+            return jsonify({"error": str(e)})
+
+
+delete_user_parser = reqparse.RequestParser()
+delete_user_parser.add_argument('user_id', type=str, help='Unique telegram user ID')
+
+
+class DeleteUser(Resource):
+    def delete(self):
+        args = delete_user_parser.parse_args()
+        user_id = args['user_id']
+
+        user = User.query.filter_by(id=user_id)
+        if not user:
+            return jsonify({"status": False})
+        try:
+            user.delete()
+            db.session.commit()
+            return jsonify({"status": True})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)})
 
 
 choice_apply = reqparse.RequestParser()
@@ -49,13 +60,13 @@ choice_get = reqparse.RequestParser()
 choice_get.add_argument('user_id', type=str, help='Unique telegram user ID')
 
 
-class Choice(Resource):
+class ApplyChoice(Resource):
     def post(self):
         args = choice_apply.parse_args()
         user_id = args['user_id']
         next_id = args['next_id']
 
-        if not user_id or not User.query.filter_by(user_id=user_id).first() or not next_id:
+        if not user_id or not User.query.filter_by(id=user_id).first() or not next_id:
             return jsonify({"error": "incorrect user_id, next_id"})
         user = User.query.filter_by(id=user_id).first()
 
@@ -63,7 +74,6 @@ class Choice(Resource):
         quest = chapter.quests[user.progress[1]]
         choices = quest.choices
         if next_id.startswith('q'):
-
             if not any([next_id == i.to_quest for i in choices]):
                 return jsonify({"error": "incorrect choice_id"})
 
@@ -99,24 +109,7 @@ class Choice(Resource):
         if not user:
             return jsonify({"error": "User not found"})
 
-        chapter = CHAPTERS[user.progess[0]]
-        quest = chapter.quests[user.progess[1]]
+        chapter = CHAPTERS[user.progress[0]]
+        quest = chapter.quests[user.progress[1]]
         choices = quest.choices
         return jsonify({"chapter": chapter, "quest": quest, "choices": choices})
-
-
-delete_user_parser = reqparse.RequestParser()
-delete_user_parser.add_argument('user_id', type=str, help='Unique telegram user ID')
-
-
-class DeleteUser(Resource):
-    def delete(self):
-        args = delete_user_parser.parse_args()
-        user_id = args['user_id']
-
-        try:
-            User.query.filter_by(id=user_id).delete()
-            db.session.commit()
-            return jsonify({"status": True})
-        except Exception as e:
-            return jsonify({"error": str(e)})

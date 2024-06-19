@@ -1,12 +1,10 @@
 import json
-
 from api import db
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=False)
     username = db.Column(db.String(80), nullable=False)
-    progress = db.Column(db.Text, nullable=True)
+    progress = db.Column(db.JSON, nullable=True, default=['ch0', 'q0'])
     inventory = db.Column(db.Text, nullable=False, default=json.dumps([{
         "name": "Булат",
         "id": "1",
