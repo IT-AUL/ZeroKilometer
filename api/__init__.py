@@ -1,10 +1,9 @@
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from api.objects.quest_manager import load_chapters
+from api.quest_modules.quest_manager import load_chapters
 
 db = SQLAlchemy()
-api = Api()
 CHAPTERS = load_chapters()
 
 
@@ -22,7 +21,7 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    api.init_app(app)
+    api = Api(app)
     from api.resource import RegisterUser
 
     api.add_resource(RegisterUser, "/api/register")

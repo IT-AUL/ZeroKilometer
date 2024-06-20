@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask_restful import reqparse, Resource  # Correct import
+from flask_restful import reqparse, Resource
 
 from api import db, CHAPTERS
 from api.models import User

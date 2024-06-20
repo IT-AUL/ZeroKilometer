@@ -1,8 +1,8 @@
 import json
 
-from api.objects.chapter import Chapter
-from api.objects.choice import Choice
-from api.objects.quest import Quest
+from api.quest_modules.chapter import Chapter
+from api.quest_modules.choice import Choice
+from api.quest_modules.quest import Quest
 
 
 def load_chapters(quests_file='q.json'):
