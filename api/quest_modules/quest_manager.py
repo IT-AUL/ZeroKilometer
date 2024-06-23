@@ -3,12 +3,15 @@ import json
 from api.quest_modules.chapter import Chapter
 from api.quest_modules.choice import Choice
 from api.quest_modules.quest import Quest
+from api.quest_modules.data import Data
 
 
 def load_chapters(quests_file='q.json'):
     with open(quests_file, encoding='utf-8') as file:
+        data = json.load(file)
+        uuid = str(data['uuid'])
         chapters = dict()
-        for chapter_json in json.load(file):
+        for chapter_json in data['chapters']:
             chapter_id = str(chapter_json["chapter_id"])
             title = str(chapter_json["title"])
             res_path = str(chapter_json["res_path"])
@@ -28,4 +31,4 @@ def load_chapters(quests_file='q.json'):
                     choice.append(Choice(choice_id, next_id, text, r_path, conditions, result))
                 quests[quest_id] = Quest(quest_id, description, choice)
             chapters[chapter_id] = Chapter(chapter_id, title, res_path, geo_position, quests)
-        return chapters
+        return Data(uuid, chapters)

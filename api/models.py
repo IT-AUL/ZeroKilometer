@@ -1,23 +1,12 @@
-import json
+from sqlalchemy.ext.mutable import MutableDict, MutableList
+
 from api import db
 
+
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False)
-    progress = db.Column(db.JSON, nullable=True, default=['ch0', 'q0'])
-    inventory = db.Column(db.Text, nullable=False, default=json.dumps([{
-        "name": "Булат",
-        "id": "1",
-        "type": "ally"
-    }, {
-        "name": "Тычкан",
-        "id": "13",
-        "type": "ally"
-    }, {
-        "name": "Бака",
-        "id": "14",
-        "type": "ally"
-    }]))
+    progress = db.Column(MutableList.as_mutable(db.JSON), default=list)
 
     def __init__(self, id, username):
         self.id = id

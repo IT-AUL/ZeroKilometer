@@ -4,19 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Web app to bot&#10;[+] Chapter loader">
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Fixed some bugs">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/q.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/quest_modules/data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/request.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/objects/chapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/quest_modules/chapter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/objects/choice.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/quest_modules/choice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/objects/quest.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/quest_modules/quest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/objects/quest_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/quest_modules/quest_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest/js/src/element.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest/js/src/player.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest/js/src/quest_manager.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quest/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/quest_modules/quest_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/quest_modules/quest_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/resource.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/resource.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/q.json" beforeDir="false" afterPath="$PROJECT_DIR$/q.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +71,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Python tests.Python tests in test.py.executor&quot;: &quot;Run&quot;,
     &quot;Python tests.Python tests in test_app.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.FlaskApi.executor&quot;: &quot;Run&quot;,
     &quot;Python.__init__ (1).executor&quot;: &quot;Run&quot;,
     &quot;Python.__init__.executor&quot;: &quot;Run&quot;,
     &quot;Python.circle.executor&quot;: &quot;Run&quot;,
@@ -84,6 +86,7 @@
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;Python.model_ask.executor&quot;: &quot;Run&quot;,
     &quot;Python.player.executor&quot;: &quot;Run&quot;,
+    &quot;Python.request.executor&quot;: &quot;Run&quot;,
     &quot;Python.solver.executor&quot;: &quot;Run&quot;,
     &quot;Python.w.executor&quot;: &quot;Run&quot;,
     &quot;Python.ww.executor&quot;: &quot;Run&quot;,
@@ -93,7 +96,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/galee/PycharmProjects/Hakaton/api&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/galee/PycharmProjects/Hakaton&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -105,20 +108,20 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\cards" />
-      <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\com\hakaton\quest" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\objects" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api" />
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton" />
+      <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\objects" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\app" />
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\quest\js" />
-      <recent name="C:\Users\galee\PycharmProjects\Hakaton\js" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.FlaskApi">
+  <component name="RunManager" selected="Python.request">
     <configuration name="FlaskApi" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Hakaton" />
       <option name="ENV_FILES" value="" />
@@ -188,6 +191,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="request" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Hakaton" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/api" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/api/request.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test_app.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="Hakaton" />
       <option name="ENV_FILES" value="" />
@@ -204,16 +230,36 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="Hakaton" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/api" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/api/test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.request" />
       <item itemvalue="Python.FlaskApi" />
       <item itemvalue="Python.TelegramBot" />
+      <item itemvalue="Python tests.Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test.py" />
       <item itemvalue="Python tests.Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test_app.py" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.TelegramBot" />
+        <item itemvalue="Python.request" />
         <item itemvalue="Python.FlaskApi" />
+        <item itemvalue="Python tests.Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test.py" />
+        <item itemvalue="Python.TelegramBot" />
         <item itemvalue="Python tests.Python tests in C:/Users/galee/PycharmProjects/Hakaton/api/test_app.py" />
       </list>
     </recent_temporary>
@@ -347,7 +393,13 @@
       <workItem from="1718821835160" duration="4120000" />
       <workItem from="1718832489782" duration="3151000" />
       <workItem from="1718835686770" duration="3000" />
-      <workItem from="1718879932806" duration="1545000" />
+      <workItem from="1718879932806" duration="2141000" />
+      <workItem from="1718905483176" duration="10092000" />
+      <workItem from="1718958630853" duration="2939000" />
+      <workItem from="1719085226959" duration="8932000" />
+      <workItem from="1719144534516" duration="2675000" />
+      <workItem from="1719148000105" duration="1090000" />
+      <workItem from="1719155955383" duration="2321000" />
     </task>
     <task id="LOCAL-00001" summary="[+] Basic code for quest handling&#10;[+] Simple quest as example">
       <option name="closed" value="true" />
@@ -685,7 +737,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718835664175</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="[*] Fixed some bugs">
+      <option name="closed" value="true" />
+      <created>1718881794122</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1718881794122</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -726,11 +786,12 @@
     <MESSAGE value="[*] Some rewrite app and api" />
     <MESSAGE value="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress" />
     <MESSAGE value="[+] Web app to bot&#10;[+] Chapter loader" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Web app to bot&#10;[+] Chapter loader" />
+    <MESSAGE value="[*] Fixed some bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="[*] Fixed some bugs" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/npc_manager_py$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718739994571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$.coverage" NAME=" Coverage Results" MODIFIED="1718789612329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$.coverage" NAME=" Coverage Results" MODIFIED="1719138327559" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
     <SUITE FILE_PATH="coverage/Hakaton$main.coverage" NAME="main Coverage Results" MODIFIED="1718089769675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$player.coverage" NAME="player Coverage Results" MODIFIED="1716057916594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
@@ -744,6 +805,8 @@
     <SUITE FILE_PATH="coverage/Hakaton$.coverage" NAME="ее Coverage Results" MODIFIED="1716031083529" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$model_ask.coverage" NAME="model_ask Coverage Results" MODIFIED="1713782845025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$m.coverage" NAME="m Coverage Results" MODIFIED="1716234027691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$FlaskApi.coverage" NAME="FlaskApi Coverage Results" MODIFIED="1719145222917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$request.coverage" NAME="request Coverage Results" MODIFIED="1719158275914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
     <SUITE FILE_PATH="coverage/npc_manager_py$main.coverage" NAME="main Coverage Results" MODIFIED="1718618741734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$database.coverage" NAME="database Coverage Results" MODIFIED="1716050849265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/database" />
     <SUITE FILE_PATH="coverage/Hakaton$config.coverage" NAME="config Coverage Results" MODIFIED="1713807934369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
