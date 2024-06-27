@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Auth</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+    <div id="content">
+        <p id="message"></p>
+        <div id="edit-username" style="display: none;">
+            <input type="text" id="username" placeholder="New Username">
+            <button onclick="updateUsername()">Update Username</button>
+        </div>
+        <div>
+            <p>Or authenticate with:</p>
+            <a href="{{ url_for('login') }}">Telegram Login Widget</a>
+        </div>
+    </div>
+</body>
+</html>

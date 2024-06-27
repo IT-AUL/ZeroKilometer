@@ -1,12 +1,19 @@
+from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict, MutableList
+from sqlalchemy.orm import Mapped, mapped_column
 
 from api import db
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False)
-    progress = db.Column(MutableList.as_mutable(db.JSON), default=list)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(nullable=False)
+    progress: Mapped[MutableDict] = mapped_column(MutableDict.as_mutable(JSON), nullable=True, default=dict)
+    inventory: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
+
+    # id = db.Column(db.Integer, primary_key=True)
+    # username = db.Column(db.String(80), nullable=False)
+    # progress = db.Column(MutableList.as_mutable(db.JSON), default=list)
 
     def __init__(self, id, username):
         self.id = id
@@ -14,3 +21,17 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.id
+
+
+class Quest(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    plot: Mapped[str] = mapped_column(nullable=True)
+
+    def __init__(self, id, name, plot):
+        self.id = id
+        self.name = name
+        self.plot = plot
+
+    def __repr__(self):
+        return '<Quest %r>' % self.id

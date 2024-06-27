@@ -15,3 +15,4 @@ response = requests.post(url, headers=headers, json=data)
 # Print response
 print(response.status_code)
 print(response.json())
+print(requests.get("http://localhost:5000/api/quest").json())

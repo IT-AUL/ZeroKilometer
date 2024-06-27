@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authenticated</title>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+    <div id="content">
+        <p id="message">Welcome, {{ username }}</p>
+        <div id="edit-username">
+            <input type="text" id="username" placeholder="New Username">
+            <button onclick="updateUsername()">Update Username</button>
+        </div>
+    </div>
+</body>
+</html>
