@@ -9,11 +9,7 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(nullable=False)
     progress: Mapped[MutableDict] = mapped_column(MutableDict.as_mutable(JSON), nullable=True, default=dict)
-    inventory: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
-
-    # id = db.Column(db.Integer, primary_key=True)
-    # username = db.Column(db.String(80), nullable=False)
-    # progress = db.Column(MutableList.as_mutable(db.JSON), default=list)
+    quests: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
 
     def __init__(self, id, username):
         self.id = id
@@ -35,3 +31,6 @@ class Quest(db.Model):
 
     def __repr__(self):
         return '<Quest %r>' % self.id
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "plot": self.plot}

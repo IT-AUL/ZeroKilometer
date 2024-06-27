@@ -1,7 +1,7 @@
 import requests
 
 # Define the URL of your Flask application endpoint
-url = 'http://localhost:5000/api/user'  # Replace with your actual endpoint URL
+url = 'http://localhost:5000/auth'  # Replace with your actual endpoint URL
 
 # Data to be sent as JSON
 data = {
