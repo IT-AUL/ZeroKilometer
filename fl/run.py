@@ -1,11 +1,13 @@
 # run.py
+from dotenv import load_dotenv, dotenv_values
+
 from fl import create_app
 from fl.models import db
 
+load_dotenv()
+
 app = create_app()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'secret!'
+app.config.from_mapping(dotenv_values())
 
 with app.app_context():
     db.init_app(app)
@@ -13,4 +15,4 @@ with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

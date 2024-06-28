@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, session, make_response, render_template
 from .models import db, User, Quest
 import hashlib
@@ -18,8 +21,8 @@ main = Blueprint('main', __name__)
 # def get_users():
 #     users = User.query.all()
 #     return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])
-
-TELEGRAM_BOT_TOKEN = "7435214024:AAG0KurMZHe4vePGYfdXT9Z32EyAmNSnYcY"
+load_dotenv()
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
 
 @main.route('/')
