@@ -1,6 +1,6 @@
 import base64
 
-from flask import jsonify, send_file
+from flask import jsonify
 from flask_restful import reqparse, Resource
 
 from api import db, bucket

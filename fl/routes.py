@@ -1,25 +1,30 @@
+from flask import Blueprint, jsonify, request, session, make_response, render_template
+from .models import db, User, Quest
 import hashlib
 import hmac
 import json
-import os
 from operator import itemgetter
 from urllib.parse import parse_qsl
-from . import db, uuid
-
-from dotenv import load_dotenv
-from flask import render_template, request, session, make_response, jsonify, Blueprint
-
-from models import User, Quest
+import uuid
 
 main = Blueprint('main', __name__)
 
-load_dotenv()
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+# @main.route('/')
+# def index():
+#     return "Hello, World!"
+#
+#
+# @main.route('/users')
+# def get_users():
+#     users = User.query.all()
+#     return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])
+
+TELEGRAM_BOT_TOKEN = "7435214024:AAG0KurMZHe4vePGYfdXT9Z32EyAmNSnYcY"
 
 
 @main.route('/')
 def index():
-    return render_template('templates/index.html')
+    return render_template('index.html')
 
 
 @main.route('/auth', methods=['POST'])
@@ -162,68 +167,3 @@ def check(token: str, init_data: str):
         key=secret_key.digest(), msg=data_check_string.encode(), digestmod=hashlib.sha256
     ).hexdigest()
     return calculated_hash == hash_, user_data
-# import json
-# from operator import itemgetter
-# from typing import Any
-# from urllib.parse import parse_qsl
-# from flask import Flask, render_template, request, session, make_response, jsonify
-# import hashlib
-# import hmac
-#
-# app = Flask(__name__)
-# app.secret_key = 'your_secret_key'
-# TELEGRAM_BOT_TOKEN = "7435214024:AAG0KurMZHe4vePGYfdXT9Z32EyAmNSnYcY"
-# TELEGRAM_BOT_SECRET = hashlib.sha256(TELEGRAM_BOT_TOKEN.encode()).digest()
-#
-#
-# def check(token: str, init_data: str) -> tuple[bool, Any]:
-#     try:
-#         parsed_data = dict(parse_qsl(init_data))
-#     except ValueError:
-#         return False, None
-#     try:
-#         user_data = json.loads(parsed_data['user'])
-#     except (ValueError, KeyError):
-#         return False, None
-#     user_id = str(user_data['id'])
-#     if "hash" not in parsed_data:
-#         return False, None
-#     hash_ = parsed_data.pop('hash')
-#     data_check_string = "\n".join(
-#         f"{k}={v}" for k, v in sorted(parsed_data.items(), key=itemgetter(0))
-#     )
-#     secret_key = hmac.new(
-#         key=b"WebAppData", msg=token.encode(), digestmod=hashlib.sha256
-#     )
-#     calculated_hash = hmac.new(
-#         key=secret_key.digest(), msg=data_check_string.encode(), digestmod=hashlib.sha256
-#     ).hexdigest()
-#     return calculated_hash == hash_, user_id
-#
-#
-# @app.route("/")
-# def index():
-#     return render_template('index.html')
-#
-#
-# @app.route('/auth', methods=['POST'])
-# def auth():
-#     data = request.json
-#     print(data)
-#     res, ui = check(TELEGRAM_BOT_TOKEN, data)
-#     if data and res:
-#         print("you are right")
-#         session['auth'] = ui
-#         response = {
-#             "message": "Authentication Successful",
-#             "status": "success"
-#         }
-#         return make_response(jsonify(response), 200)
-#     else:
-#         session['auth'] = False
-#         response = {
-#             "message": "Authentication Failed",
-#             "status": "error"
-#         }
-#         return make_response(jsonify(response), 401)
-#

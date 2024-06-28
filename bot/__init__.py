@@ -17,7 +17,7 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 link = None
 
-wep_app_url = "https://1c51-178-204-204-86.ngrok-free.app/"
+wep_app_url = "https://9c80-178-204-204-86.ngrok-free.app/"
 
 
 @dp.message(CommandStart(deep_link=True))

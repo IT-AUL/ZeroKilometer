@@ -1,8 +1,9 @@
 from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy.orm import Mapped, mapped_column
+from flask_sqlalchemy import SQLAlchemy
 
-from api import db
+db = SQLAlchemy()
 
 
 class User(db.Model):
