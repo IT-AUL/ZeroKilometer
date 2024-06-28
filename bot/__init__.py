@@ -17,7 +17,7 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 link = None
 
-wep_app_url = "https://kilometr-zero.netlify.app?dvizheniye_pervih={dvizheniye_pervih}"
+wep_app_url = "https://1c51-178-204-204-86.ngrok-free.app/"
 
 
 @dp.message(CommandStart(deep_link=True))
@@ -30,7 +30,6 @@ async def start_with_sponsor(message: Message, command: CommandObject):
         else:
             wep_app_url.format(dvizheniye_pervih=False)
         await handle(wep_app_url, message)
-        message.ini
 
     except Exception as e:
         await message.answer(f"error {str(e)}")
@@ -58,4 +57,3 @@ async def main() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())
-

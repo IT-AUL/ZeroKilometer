@@ -2,7 +2,7 @@ from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 
-from api import db
+from . import db
 
 
 class User(db.Model):
