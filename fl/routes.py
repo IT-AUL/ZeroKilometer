@@ -10,30 +10,21 @@ from operator import itemgetter
 from urllib.parse import parse_qsl
 import uuid
 
-main = Blueprint('main', __name__)
-
-# @main.route('/')
-# def index():
-#     return "Hello, World!"
-#
-#
-# @main.route('/users')
-# def get_users():
-#     users = User.query.all()
-#     return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
+main = Blueprint('main', __name__)
 
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    quests = Quest.query.all()
+    return render_template('index.html', quests=quests)
 
 
 @main.route('/auth', methods=['POST'])
 def auth():
     data = request.json
-    print(data)
     res, data = check(TELEGRAM_BOT_TOKEN, data)
 
     if res:
@@ -128,11 +119,17 @@ def quest_delete():
             return make_response(
                 jsonify({"message": "You do not have the rights to delete this quest", "status": "error"}), 403)
 
-        db.session.delete(quest)
-        user.quests.remove(quest_id)
-        db.session.commit()
+        try:
+            os.remove(quest.plot)
+            db.session.delete(quest)
+            user.quests.remove(quest_id)
+            db.session.commit()
 
-        return make_response(jsonify({"message": "Quest is deleted", "status": "success"}), 200)
+            return make_response(jsonify({"message": "Quest is deleted", "status": "success"}), 200)
+        except:
+            db.session.rollback()
+            return make_response(
+                jsonify({"message": "An error occurred during the deletion process", "status": "error"}), 500)
     return make_response(jsonify({"message": "Unauthenticated", "status": "error"}), 401)
 
 
@@ -156,7 +153,6 @@ def check(token: str, init_data: str):
         user_data = json.loads(parsed_data['user'])
     except (ValueError, KeyError):
         return False, None
-    print(user_data)
     if "hash" not in parsed_data:
         return False, None
     hash_ = parsed_data.pop('hash')

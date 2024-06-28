@@ -1,4 +1,3 @@
-# run.py
 from dotenv import load_dotenv, dotenv_values
 
 from fl import create_app
