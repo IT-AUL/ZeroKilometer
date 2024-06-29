@@ -2,6 +2,8 @@ import os
 
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, session, make_response, render_template
+from werkzeug.utils import secure_filename
+
 from .models import db, User, Quest
 import hashlib
 import hmac
@@ -12,6 +14,11 @@ import uuid
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
+ALLOWED_EXTENSIONS = {'json'}
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 main = Blueprint('main', __name__)
 
@@ -82,24 +89,36 @@ def quest_add():
         quest_id = request.json['quest_id']
         name = request.json['name']
         plot = request.json['plot']
-        if not Quest.query.get(quest_id):
-            quest = Quest(quest_id, name, plot)
-            db.session.add(quest)
-            db.session.commit()
-
-            user = User.query.get(user_id)
-            user.quests.append(quest.id)
-            db.session.commit()
-        else:
-            if quest_id in User.query.get(user_id).quests:
-                quest = Quest.query.get(quest_id)
-                quest.name = name
-                quest.plot = plot
+        if 'file' not in request.files:
+            return make_response(jsonify({"message": "Missing file", 'status': 'error'}), 400)
+        # file = request.files['file']
+        # if file.filename == '':
+        #     return make_response(jsonify({"message": "No selected file", 'status': 'error'}), 400)
+        if plot:
+            file_path = os.path.join(UPLOAD_FOLDER, quest_id, '.json')
+            if not Quest.query.get(quest_id):
+                with open(file_path, 'x') as f:
+                    f.write(plot)
+                quest = Quest(quest_id, name, quest_id)
+                db.session.add(quest)
                 db.session.commit()
-                return make_response(jsonify({"message": "Quest is already registered", "status": "success"}), 200)
+
+                user = User.query.get(user_id)
+                user.quests.append(quest.id)
+                db.session.commit()
             else:
-                return make_response(
-                    jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
+                if quest_id in User.query.get(user_id).quests:
+                    os.remove(file_path)
+                    with open(file_path, 'w') as f:
+                        f.write(plot)
+                    quest = Quest.query.get(quest_id)
+                    quest.name = name
+                    # quest.plot = plot
+                    db.session.commit()
+                    return make_response(jsonify({"message": "Quest is already registered", "status": "success"}), 200)
+                else:
+                    return make_response(
+                        jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
     return make_response(jsonify({"message": "Unauthenticated", "status": "error"}), 401)
 
 
