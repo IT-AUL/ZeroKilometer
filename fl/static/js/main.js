@@ -1,6 +1,5 @@
 window.Telegram.WebApp.ready();
 const initData = Telegram.WebApp.initData || '';
-const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
 console.log("start");
 if (initData) {
     console.log("receive");
@@ -9,7 +8,7 @@ if (initData) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(initData)
+        body: JSON.stringify({user_data: initData})
     })
         .then(response => response.json())
         .then(data => {

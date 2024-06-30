@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, session, make_response, render_template
-from werkzeug.utils import secure_filename
+from marshmallow import ValidationError
 
 from .models import db, User, Quest
 import hashlib
@@ -12,10 +12,14 @@ from operator import itemgetter
 from urllib.parse import parse_qsl
 import uuid
 
+from .schemas import QuestSchema, UserAuth
+
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
-ALLOWED_EXTENSIONS = {'json'}
+UPLOAD_FOLDER = os.getenv('PLOT_FOLDER')
+
+quest_schema = QuestSchema()
+user_auth = UserAuth()
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -31,17 +35,20 @@ def index():
 
 @main.route('/auth', methods=['POST'])
 def auth():
-    data = request.json
-    res, data = check(TELEGRAM_BOT_TOKEN, data)
+    try:
+        data = user_auth.load(request.json)
+    except ValidationError as e:
+        return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+    res, user_data = check(TELEGRAM_BOT_TOKEN, data["user_data"])
 
     if res:
-        user = User.query.get(data['id'])
+        user = User.query.get(user_data['id'])
         if not user:
-            user = User(data['id'], data['username'])
+            user = User(user_data['id'], user_data['username'])
             db.session.add(user)
             db.session.commit()
 
-        session['auth'] = data['id']
+        session['auth'] = user_data['id']
         response = {
             "message": "Authentication Successful",
             "status": "success"
@@ -86,11 +93,15 @@ def quest_uuid():
 def quest_add():
     if 'auth' in session:
         user_id = session['auth']
-        quest_id = request.json['quest_id']
-        name = request.json['name']
-        plot = request.json['plot']
-        if 'file' not in request.files:
-            return make_response(jsonify({"message": "Missing file", 'status': 'error'}), 400)
+        try:
+            data = quest_schema.load(request.json)
+        except ValidationError as e:
+            return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+        quest_id = data['quest_id']
+        name = data['name']
+        plot = data['plot']
+        # if 'file' not in request.files:
+        #     return make_response(jsonify({"message": "Missing file", 'status': 'error'}), 400)
         # file = request.files['file']
         # if file.filename == '':
         #     return make_response(jsonify({"message": "No selected file", 'status': 'error'}), 400)
