@@ -2,6 +2,8 @@ import os
 
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, session, make_response, render_template
+from flask_cors import CORS
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from marshmallow import ValidationError
 
 from .models import db, User, Quest
@@ -25,6 +27,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 main = Blueprint('main', __name__)
+CORS(main)
 
 
 @main.route('/')
@@ -49,10 +52,13 @@ def auth():
             db.session.commit()
 
         session['auth'] = user_data['id']
+        access_token = create_access_token(identity=user_data['id'])
         response = {
             "message": "Authentication Successful",
-            "status": "success"
+            "status": "success",
+            "access_token": access_token
         }
+        print(session)
         return make_response(jsonify(response), 200)
     else:
         session['auth'] = False
@@ -64,29 +70,30 @@ def auth():
 
 
 @main.route("/quest_list")
+@jwt_required()
 def quest_list():
-    if 'auth' in session:
-        quest_data = {}
-        quests = Quest.query.all()
-        for quest in quests:
-            quest_data[quest.id] = quest.name
-        response = {
-            "quests": quest_data,
-            "status": "success"
-        }
-        return make_response(jsonify(response), 200)
-    return make_response(jsonify({"message": "Unauthenticated", "status": "error"}), 401)
+    print(get_jwt_identity())
+    # if 'auth' in session:
+    quest_data = {}
+    quests = Quest.query.all()
+    for quest in quests:
+        quest_data[quest.id] = quest.name
+    response = {
+        "quests": quest_data,
+        "status": "success"
+    }
+    return make_response(jsonify(response), 200)
+    # return make_response(jsonify({"message": "Unauthenticated", "status": "error"}), 401)
 
 
 @main.route("/quest_uuid")
+@jwt_required()
 def quest_uuid():
-    if 'auth' in session:
-        response = {
-            "uuid": str(uuid.uuid4()),
-            "status": "success"
-        }
-        return make_response(jsonify(response), 200)
-    return make_response(jsonify({"message": "Unauthenticated", "status": "error"}), 401)
+    response = {
+        "uuid": str(uuid.uuid4()),
+        "status": "success"
+    }
+    return make_response(jsonify(response), 200)
 
 
 @main.route("/quest_add", methods=['POST'])
@@ -175,6 +182,7 @@ def quest_get():
 
 
 def check(token: str, init_data: str):
+    print(init_data)
     try:
         parsed_data = dict(parse_qsl(init_data))
     except ValueError:

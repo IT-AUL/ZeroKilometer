@@ -2,7 +2,6 @@ window.Telegram.WebApp.ready();
 const initData = Telegram.WebApp.initData || '';
 console.log("start");
 if (initData) {
-    console.log("receive");
     fetch('/auth', {
         method: 'POST',
         headers: {
