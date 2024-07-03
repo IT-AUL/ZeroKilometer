@@ -3,10 +3,10 @@ import os
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, make_response, render_template
 from flask_cors import CORS
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 from marshmallow import ValidationError
 
-from .models import db, User, Quest
+from .models import db, User, Quest, GeoPoint
 import hashlib
 import hmac
 import json
@@ -19,6 +19,8 @@ from .schemas import QuestSchema, UserAuth
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 UPLOAD_FOLDER = os.getenv('PLOT_FOLDER')
+
+ALLOWED_EXTENSIONS_PROMO = {'png', 'jpg', 'jpeg'}
 
 quest_schema = QuestSchema()
 user_auth = UserAuth()
@@ -34,6 +36,14 @@ CORS(main)
 def index():
     quests = Quest.query.all()
     return render_template('index.html', quests=quests)
+
+
+@main.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    current_user = get_jwt_identity()
+    new_access_token = create_access_token(identity=current_user)
+    return jsonify(access_token=new_access_token), 200
 
 
 @main.route('/auth', methods=['POST'])
@@ -52,10 +62,12 @@ def auth():
             db.session.commit()
 
         access_token = create_access_token(identity=user_data['id'])
+        refresh_token = create_refresh_token(identity=user_data['id'])
         response = {
             "message": "Authentication Successful",
             "status": "success",
-            "access_token": access_token
+            "access_token": access_token,
+            "refresh_token": refresh_token
         }
         return make_response(jsonify(response), 200)
     else:
@@ -90,48 +102,43 @@ def quest_uuid():
     return make_response(jsonify(response), 200)
 
 
-@main.route("/quest_add", methods=['POST'])
+@main.route("/quest_save", methods=['POST'])
 @jwt_required()
 def quest_add():
     user_id = get_jwt_identity()
-    try:
-        data = quest_schema.load(request.json)
-    except ValidationError as e:
-        return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+    data = request.form.get('json')
+    data = json.loads(data)
+    quest_id = str(data.get("quest_id", None))
+    if quest_id is None:
+        return make_response(jsonify({"message": "Missing quest id"}), 400)
+    quest = Quest.query.get(quest_id)
+    if not quest:
+        quest = Quest(quest_id)
+        quest.user_id = user_id
+        db.session.add(quest)
+        db.session.commit()
+    else:
+        user = User.query.filter_by(id=user_id).first()
+        if not any(q.id == quest_id for q in user.quests):
+            return make_response(
+                jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
 
-    quest_id = data['quest_id']
-    name = data['name']
-    plot = data['plot']
-
-    # if 'file' not in request.files:
-    #     return make_response(jsonify({"message": "Missing file", 'status': 'error'}), 400)
-    # file = request.files['file']
-    # if file.filename == '':
-    #     return make_response(jsonify({"message": "No selected file", 'status': 'error'}), 400)
-    if plot:
-        file_path = os.path.join(UPLOAD_FOLDER, quest_id, '.json')
-        if not Quest.query.get(quest_id):
-            with open(file_path, 'x') as f:
-                f.write(plot)
-            quest = Quest(quest_id, name, quest_id)
-            db.session.add(quest)
-            db.session.commit()
-            user = User.query.get(user_id)
-            user.quests.append(quest.id)
-            db.session.commit()
-        else:
-            if quest_id in User.query.get(user_id).quests:
-                os.remove(file_path)
-                with open(file_path, 'w') as f:
-                    f.write(plot)
-                quest = Quest.query.get(quest_id)
-                quest.name = name
-                # quest.plot = plot
-                db.session.commit()
-                return make_response(jsonify({"message": "Quest is already registered", "status": "success"}), 200)
-            else:
-                return make_response(
-                    jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
+    quest.title_draft = data.get('title', None)
+    quest.description_draft = data.get('description', None)
+    quest.geopoints_draft.clear()
+    quest.link_to_promo_draft = None
+    for g_id in data.get('geopoints', []):
+        quest.geopoints_draft.append(GeoPoint.query.get(g_id))
+    if 'promo' in request.files and request.files['promo'].filename != '' and allowed_file(
+            request.files['promo'].filename, ALLOWED_EXTENSIONS_PROMO):
+        # save file
+        quest.link_to_promo_draft = f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+    db.session.commit()
+    response = {
+        "message": "Quest Added",
+        "status": "success"
+    }
+    return make_response(jsonify(response), 200)
 
 
 @main.route("/quest_delete", methods=['POST'])
@@ -192,3 +199,8 @@ def check(token: str, init_data: str):
         key=secret_key.digest(), msg=data_check_string.encode(), digestmod=hashlib.sha256
     ).hexdigest()
     return calculated_hash == hash_, user_data
+
+
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in allowed_extensions

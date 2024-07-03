@@ -9,4 +9,5 @@ def create_app():
     app.register_blueprint(main)
 
     jwt = JWTManager(app)
+
     return app

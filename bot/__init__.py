@@ -15,7 +15,7 @@ from config import *
 dp = Dispatcher()
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
-wep_app_url = "https://7244-188-225-101-83.ngrok-free.app/"
+wep_app_url = "https://3b6b-188-225-101-83.ngrok-free.app/"
 
 
 @dp.message(CommandStart())
