@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add new db">
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add quest saving&#10;[+] New token system">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +122,7 @@
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.TelegramBot">
+  <component name="RunManager" selected="Python.Site">
     <configuration name="Site" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Hakaton" />
       <option name="ENV_FILES" value="" />
@@ -446,15 +442,8 @@
       <workItem from="1719941119073" duration="10010000" />
       <workItem from="1719957322662" duration="8492000" />
       <workItem from="1720018011071" duration="1488000" />
-      <workItem from="1720029901587" duration="9293000" />
-    </task>
-    <task id="LOCAL-00006" summary="[+] Conditions for every choice&#10;[+] Ending&#10;[+] Connection to neural network for speaking&#10;[+] Many players supporting">
-      <option name="closed" value="true" />
-      <created>1713852808260</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1713852808260</updated>
+      <workItem from="1720029901587" duration="11287000" />
+      <workItem from="1720046156306" duration="324000" />
     </task>
     <task id="LOCAL-00007" summary="[+]">
       <option name="closed" value="true" />
@@ -840,7 +829,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720029960340</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="[+] Add quest saving&#10;[+] New token system">
+      <option name="closed" value="true" />
+      <created>1720040025982</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1720040025983</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -862,7 +859,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[+] Some documentation" />
     <MESSAGE value="[+] Conditions for every choice&#10;[+] Ending&#10;[+] Connection to neural network for speaking&#10;[+] Many players supporting" />
     <MESSAGE value="[+]" />
     <MESSAGE value="[+] Add geolocation" />
@@ -887,14 +883,15 @@
     <MESSAGE value="[+] Add schema for user_auth&#10;[*] Deleted unnecessary files" />
     <MESSAGE value="[+] Add jwt auth" />
     <MESSAGE value="[+] Add new db" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Add new db" />
+    <MESSAGE value="[+] Add quest saving&#10;[+] New token system" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Add quest saving&#10;[+] New token system" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$player.coverage" NAME="player Coverage Results" MODIFIED="1716057916594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$Site.coverage" NAME="Site Coverage Results" MODIFIED="1720038006639" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fl" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$Site.coverage" NAME="Site Coverage Results" MODIFIED="1720046479790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fl" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$TelegramBot.coverage" NAME="TelegramBot Coverage Results" MODIFIED="1720040999960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bot" />
     <SUITE FILE_PATH="coverage/Hakaton$w.coverage" NAME="w Coverage Results" MODIFIED="1715096687664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$TelegramBot.coverage" NAME="TelegramBot Coverage Results" MODIFIED="1720033563727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bot" />
     <SUITE FILE_PATH="coverage/Hakaton$editor.coverage" NAME="editor Coverage Results" MODIFIED="1713954619214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$.coverage" NAME="ее Coverage Results" MODIFIED="1716031083529" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$m.coverage" NAME="m Coverage Results" MODIFIED="1716234027691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

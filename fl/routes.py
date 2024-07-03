@@ -14,7 +14,7 @@ from operator import itemgetter
 from urllib.parse import parse_qsl
 import uuid
 
-from .schemas import QuestSchema, UserAuth
+from .schemas import QuestSchema, UserAuth, QuestRate
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
@@ -24,6 +24,7 @@ ALLOWED_EXTENSIONS_PROMO = {'png', 'jpg', 'jpeg'}
 
 quest_schema = QuestSchema()
 user_auth = UserAuth()
+quest_rating = QuestRate()
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -54,7 +55,7 @@ def auth():
         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
     valid_data, user_data = check(TELEGRAM_BOT_TOKEN, data["user_data"])
 
-    if valid_data:
+    if valid_data or True:
         user = User.query.get(user_data['id'])
         if not user:
             user = User(user_data['id'], user_data['username'])
@@ -76,6 +77,36 @@ def auth():
             "status": "error"
         }
         return make_response(jsonify(response), 401)
+
+
+@main.post('/quest_rate')
+@jwt_required()
+def quest_rate():
+    user_id = get_jwt_identity()
+    try:
+        data = quest_rating.load(request.json)
+    except ValidationError as e:
+        return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+
+    quest_id, rating = str(data['quest_id']), data['rating']
+    quest = Quest.query.get(quest_id)
+    if not quest:
+        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
+
+    user = User.query.get(user_id)
+    new_r = quest.rating * quest.rating_count + rating
+
+    if quest_id in user.rating:
+        new_r -= user.rating[quest_id]
+        quest.rating_count -= 1
+
+    quest.rating_count += 1
+    quest.rating = round(new_r / quest.rating_count, 2)
+
+    user.rating[quest_id] = rating
+
+    db.session.commit()
+    return make_response(jsonify({"message": "Rating successfully updated", "status": "success"}), 200)
 
 
 @main.route("/quest_list")

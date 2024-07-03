@@ -8,3 +8,8 @@ class QuestSchema(Schema):
 
 class UserAuth(Schema):
     user_data = fields.Str(required=True)
+
+
+class QuestRate(Schema):
+    quest_id = fields.UUID(required=True)
+    rating = fields.Integer(required=True)
