@@ -13,7 +13,8 @@ import json
 from operator import itemgetter
 from urllib.parse import parse_qsl
 import uuid
-from .storage import load_quests_list, delete_quest_res, upload_file, load_quest_for_edit
+from .storage import load_quests_list, delete_quest_res, upload_file, load_quest_for_edit, delete_geopoint_res, \
+    copy_file
 from .schemas import QuestSchema, UserAuth, QuestRate
 
 load_dotenv()
@@ -28,6 +29,9 @@ quest_rating = QuestRate()
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+    os.makedirs(f'{UPLOAD_FOLDER}/user_profile')
+    os.makedirs(f'{UPLOAD_FOLDER}/quest')
+    os.makedirs(f'{UPLOAD_FOLDER}/geopoint')
 
 main = Blueprint('main', __name__)
 CORS(main)
@@ -50,7 +54,9 @@ def refresh():
 @main.route('/auth', methods=['POST'])
 def auth():
     try:
-        data = user_auth.load(request.json)
+        data = request.form.get('json')
+        data = user_auth.load(json.loads(data))
+        # data = user_auth.load(request.json)
     except ValidationError as e:
         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
     valid_data, user_data = check(TELEGRAM_BOT_TOKEN, data["user_data"])
@@ -59,6 +65,8 @@ def auth():
         user = User.query.get(user_data['id'])
         if not user:
             user = User(user_data['id'], user_data['username'])
+            user.link_to_profile_picture = f"user_profile/user_profile.{request.files['profile'].filename.split('.')[1]}"
+            upload_file(request.files['profile'], user.link_to_profile_picture)
             db.session.add(user)
             db.session.commit()
 
@@ -112,17 +120,8 @@ def quest_rate():
 @main.route("/quest_list")
 @jwt_required()
 def quest_list():
-    quest_data = {}
-    ans = load_quests_list(0, 1)
+    ans = load_quests_list(0, 2)
     return send_file(ans['message'], download_name="file.zip")
-    # quests = Quest.query.all()
-    # for quest in quests:
-    #     quest_data[quest.id] = quest.name
-    # response = {
-    #     "quests": quest_data,
-    #     "status": "success"
-    # }
-    # return make_response(jsonify(response), 200)
 
 
 @main.route("/quest_uuid")
@@ -138,7 +137,8 @@ def quest_uuid():
 @main.get("/quest_edit/<quest_id>")
 @jwt_required()
 def quest_edit(quest_id):
-    return send_file(load_quest_for_edit(Quest.query.get(quest_id))['message'], download_name="file.zip")
+    return make_response(send_file(load_quest_for_edit(Quest.query.get(quest_id))['message'], download_name="file.zip"),
+                         200)
 
 
 @main.route("/quest_save", methods=['POST'])
@@ -162,19 +162,19 @@ def quest_save():
             return make_response(
                 jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
 
-    print(delete_quest_res(quest, True))
+    delete_quest_res(quest, True)
     quest.title_draft = data.get('title', None)
     quest.description_draft = data.get('description', None)
     quest.geopoints_draft.clear()
     quest.link_to_promo_draft = None
     for g_id in data.get('geopoints', []):
         quest.geopoints_draft.append(GeoPoint.query.get(g_id))
-
+    print(request.files.getlist('promo'))
     if 'promo' in request.files and request.files['promo'].filename != '' and allowed_file(
             request.files['promo'].filename, ALLOWED_EXTENSIONS_PROMO):
         # save file
-        upload_file(request.files['promo'], f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}")
-        quest.link_to_promo_draft = f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+        quest.link_to_promo_draft = f"quest/{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+        upload_file(request.files['promo'], quest.link_to_promo_draft)
 
     db.session.commit()
     response = {
@@ -200,7 +200,7 @@ def quest_publish():
         return make_response(jsonify({"message": "Not all data is filled in", "status": "error"}), 400)
 
     quest.prepare_for_publishing()
-    quest.upload(True)
+    copy_file(quest.link_to_promo_draft, quest.link_to_promo)
     db.session.commit()
 
     return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)
@@ -216,13 +216,13 @@ def quest_delete():
     if not user or not quest:
         return make_response(
             jsonify({"message": "The user is not specified or the quest is not found", "status": "error"}), 404)
-    if quest_id not in user.quests:
+    if quest.user_id != user_id:
         return make_response(
             jsonify({"message": "You do not have the rights to delete this quest", "status": "error"}), 403)
     try:
-        os.remove(quest.plot)
+        delete_quest_res(quest, True)
+        delete_quest_res(quest, False)
         db.session.delete(quest)
-        user.quests.remove(quest_id)
         db.session.commit()
         return make_response(jsonify({"message": "Quest is deleted", "status": "success"}), 200)
     except:
@@ -231,14 +231,48 @@ def quest_delete():
             jsonify({"message": "An error occurred during the deletion process", "status": "error"}), 500)
 
 
-@main.route("/quest_get", methods=['POST'])
+@main.route("/geopoint_save", methods=['POST'])
 @jwt_required()
-def quest_get():
-    quest_id = request.json['quest_id']
-    quest = Quest.query.get(quest_id)
-    if not quest:
-        return make_response(jsonify({"message": "The quest is not found", "status": "error"}), 404)
-    return make_response(jsonify({"quest": quest.to_dict(), "status": "success"}), 200)
+def geopoint_save():
+    user_id = get_jwt_identity()
+    data = request.form.get('json')
+    data = json.loads(data)
+
+    geopoint_id = str(data.get("geopoint_id", None))
+    if geopoint_id is None:
+        return make_response(jsonify({"message": "Missing geopoint id"}), 400)
+    geopoint = GeoPoint.query.get(geopoint_id)
+    if not geopoint:
+        geopoint = GeoPoint(geopoint_id)
+        geopoint.user_id = user_id
+        db.session.add(geopoint)
+        db.session.commit()
+    else:
+        user = User.query.filter_by(id=user_id).first()
+        if not any(geo.id == geopoint_id for geo in user.geo_points):
+            return make_response(
+                jsonify({"message": "You do not have the rights to edit this geopoint", "status": "error"}), 403)
+
+    delete_geopoint_res(geopoint, True)
+    geopoint.title_draft = data.get('title', None)
+    geopoint.coords_draft = data.get('coords', None)
+    geopoint.description_draft = data.get('description', None)
+    geopoint.links_to_media_draft.clear()
+    geopoint.link_to_promo_draft = None
+    geopoint.link_to_audio_draft = None
+
+    # if 'promo' in request.files and request.files['promo'].filename != '' and allowed_file(
+    #         request.files['promo'].filename, ALLOWED_EXTENSIONS_PROMO):
+    #     # save file
+    #     upload_file(request.files['promo'], f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}")
+    #     quest.link_to_promo_draft = f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+
+    db.session.commit()
+    response = {
+        "message": "Quest Added",
+        "status": "success"
+    }
+    return make_response(jsonify(response), 200)
 
 
 def check(token: str, init_data: str):

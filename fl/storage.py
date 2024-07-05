@@ -1,3 +1,4 @@
+import enum
 import json
 import os
 import zipfile
@@ -7,7 +8,7 @@ import boto3
 from dotenv import load_dotenv
 from werkzeug.datastructures.file_storage import FileStorage
 
-from fl.models import Quest, User
+from fl.models import Quest, User, GeoPoint
 
 load_dotenv()
 session = boto3.session.Session()
@@ -28,53 +29,113 @@ def upload_file(file: FileStorage, object_name: str) -> dict:
         path = os.path.join(UPLOAD_FOLDER, object_name)
         file.save(path)
         s3.upload_file(path, BUCKET_NAME, object_name)
-
         os.remove(path)
         return {"message": "File uploaded", "status": "success"}
+    except Exception as e:
+        print(str(e))
+        return {"message": str(e), "status": "error"}
+
+
+def copy_file(object_name: str, to_object: str) -> dict:
+    try:
+        obj = s3.get_object(Bucket=BUCKET_NAME, Key=object_name)
+        s3.put_object(Bucket=BUCKET_NAME, Key=to_object, Body=obj['Body'].read())
+
+        return {"message": "File copied", "status": "success"}
     except Exception as e:
         return {"message": str(e), "status": "error"}
 
 
 def delete_quest_res(quest: Quest, is_draft: bool = False):
+    # for_deletion = []
+    # try:
+    #     if is_draft:
+    #         if quest.link_to_promo_draft:
+    #             for_deletion.append({'Key': quest.link_to_promo_draft})
+    #         s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
+    #     else:
+    #         if quest.link_to_promo:
+    #             for_deletion.append({'Key': quest.link_to_promo})
+    #         s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
+    #     return {"message": "Quest deleted", "status": "success"}
+    # except Exception as e:
+    #     return {"message": str(e), "status": "error"}
+    for_deletion = []
+
+    try:
+        link_to_promo = quest.link_to_promo_draft if is_draft else quest.link_to_promo
+        if link_to_promo:
+            for_deletion.append({'Key': link_to_promo})
+
+        if for_deletion:
+            s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
+
+        return {"message": "Quest deleted", "status": "success"}
+
+    except Exception as e:
+        return {"message": str(e), "status": "error"}
+
+
+def delete_geopoint_res(geopoint: GeoPoint, is_draft: bool = False):
     for_deletion = []
     try:
+        # if is_draft:
+        #     if geopoint.link_to_promo_draft:
+        #         for_deletion.append({'Key': geopoint.link_to_promo_draft})
+        #     if geopoint.links_to_media_draft and len(geopoint.links_to_media_draft) > 0:
+        #         for_deletion.append({'Key': geo_link} for geo_link in geopoint.links_to_media_draft)
+        #     if geopoint.link_to_audio_draft:
+        #         for_deletion.append({'Key': geopoint.link_to_audio_draft})
+        # else:
+        #     if geopoint.link_to_promo:
+        #         for_deletion.append({'Key': geopoint.link_to_promo})
+        #     if geopoint.links_to_media and len(geopoint.links_to_media) > 0:
+        #         for_deletion.append({'Key': geo_link} for geo_link in geopoint.links_to_media)
+        #     if geopoint.link_to_audio:
+        #         for_deletion.append({'Key': geopoint.link_to_audio})
+        # s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
+        # return {"message": "Quest deleted", "status": "success"}
+
         if is_draft:
-            if quest.link_to_promo_draft:
-                for_deletion.append({'Key': quest.link_to_promo_draft})
-            s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
+            links = [
+                geopoint.link_to_promo_draft,
+                geopoint.link_to_audio_draft
+            ]
+            media_links = geopoint.links_to_media_draft
         else:
-            if quest.link_to_promo:
-                for_deletion.append({'Key': quest.link_to_promo})
-            s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
-        return {"message": "Quest deleted", "status": "success"}
+            links = [
+                geopoint.link_to_promo,
+                geopoint.link_to_audio
+            ]
+            media_links = geopoint.links_to_media
+
+        for link in links:
+            if link:
+                for_deletion.append({'Key': link})
+
+        if media_links:
+            for_deletion.extend({'Key': geo_link} for geo_link in media_links)
+
+        s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
+        return {"message": "Geopoint deleted", "status": "success"}
     except Exception as e:
         return {"message": str(e), "status": "error"}
 
 
 def load_quest_for_edit(quest: Quest):
     files_to_upload = []
-
     try:
         if quest.link_to_promo:
-            local_path = os.path.join(UPLOAD_FOLDER, quest.link_to_promo)
-            files_to_upload.append((local_path, quest.link_to_promo))
+            files_to_upload.append(quest.link_to_promo)
 
         if quest.link_to_promo_draft:
-            local_path = os.path.join(UPLOAD_FOLDER, quest.link_to_promo_draft)
-            files_to_upload.append((local_path, quest.link_to_promo_draft))
-        print(files_to_upload)
+            files_to_upload.append(quest.link_to_promo_draft)
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
-            for local_path, s3_object_name in files_to_upload:
-                print(local_path, s3_object_name)
+            for s3_object_name in files_to_upload:
                 rsp = s3.get_object(Bucket=BUCKET_NAME, Key=s3_object_name)
-                zip_ref.writestr(s3_object_name, rsp['Body'].read())
-                # s3.get_object(local_path, BUCKET_NAME, s3_object_name)
-                print("egegeg")
-                # zip_ref.write(local_path, s3_object_name)
-                print("qqq")
-                # os.remove(local_path)
-                print("yyy")
+                zip_ref.writestr(f'{quest.id}/{s3_object_name}', rsp['Body'].read())
+
             json_data = {"quest_id": quest.id,
                          "title": quest.title,
                          "description": quest.description,
@@ -83,7 +144,7 @@ def load_quest_for_edit(quest: Quest):
                          "description_draft": quest.description_draft,
                          "geopoints_draft": quest.geopoints_draft, }
             json_bytes = json.dumps(json_data).encode('utf-8')
-            zip_ref.writestr('data.json', json_bytes)
+            zip_ref.writestr(f'{quest.id}/data.json', json_bytes)
 
         zip_buffer.seek(0)
 
@@ -97,21 +158,20 @@ def load_quest_for_view(quest: Quest):
     files_to_upload = []
 
     try:
-        local_path = os.path.join(UPLOAD_FOLDER, quest.link_to_promo)
-        files_to_upload.append((local_path, quest.link_to_promo))
+        files_to_upload.append(quest.link_to_promo)
 
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
-            for local_path, s3_object_name in files_to_upload:
-                s3.upload_file(local_path, BUCKET_NAME, s3_object_name)
-                zip_ref.write(local_path, s3_object_name)
-                os.remove(local_path)
+            for s3_object_name in files_to_upload:
+                rsp = s3.get_object(Bucket=BUCKET_NAME, Key=s3_object_name)
+                zip_ref.writestr(f'{quest.id}/{s3_object_name}', rsp['Body'].read())
+
             json_data = {"quest_id": quest.id,
                          "title": quest.title,
                          "description": quest.description,
                          "geopoints": quest.geopoints}
             json_bytes = json.dumps(json_data).encode('utf-8')
-            zip_ref.writestr('data.json', json_bytes)
+            zip_ref.writestr(f'{quest.id}/data.json', json_bytes)
 
         zip_buffer.seek(0)
 
@@ -123,34 +183,31 @@ def load_quest_for_view(quest: Quest):
 
 def load_quests_list(offset: int, limit: int = 5):
     files_to_upload = []
-    json_data = {}
+    # json_data = {}
     try:
         quests = Quest.query.offset(offset).limit(limit).all()
         for quest in quests:
-            json_data[quest.id] = {
-                "title": quest.title,
-                "description": quest.description,
-                "rating": quest.rating,
-                "rating_count": quest.rating_count,
-                "author_name": User.query.get(quest.user_id).username,
-            }
             # add quest promo
-            # local_path = os.path.join(UPLOAD_FOLDER, quest.link_to_promo)
-            # files_to_upload.append((local_path, quest.link_to_promo))
+            # files_to_upload.append(quest.link_to_promo)
 
             # add user logo
-
-            # local_path = os.path.join(UPLOAD_FOLDER, User.query.get(quest.user_id).link_to_profile_picture)
-            # files_to_upload.append((local_path, User.query.get(quest.user_id).link_to_profile_picture))
+            files_to_upload.append(User.query.get(quest.user_id).link_to_profile_picture)
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
-            for local_path, s3_object_name in files_to_upload:
-                s3.upload_file(local_path, BUCKET_NAME, s3_object_name)
-                zip_ref.write(local_path, s3_object_name)
-                os.remove(local_path)
-            print(json_data)
-            json_bytes = json.dumps(json_data).encode('utf-8')
-            zip_ref.writestr('data.json', json_bytes)
+            for quest, s3_object_name in zip(quests, files_to_upload):
+                rsp = s3.get_object(Bucket=BUCKET_NAME, Key=s3_object_name)
+                zip_ref.writestr(f'{quest.id}/{s3_object_name}', rsp['Body'].read())
+
+                json_data = {
+                    "title": quest.title,
+                    "description": quest.description,
+                    "rating": quest.rating,
+                    "rating_count": quest.rating_count,
+                    "author_name": User.query.get(quest.user_id).username,
+                }
+
+                json_bytes = json.dumps(json_data).encode('utf-8')
+                zip_ref.writestr(f'{quest.id}/data.json', json_bytes)
 
         zip_buffer.seek(0)
         return {"message": zip_buffer, "status": "success"}

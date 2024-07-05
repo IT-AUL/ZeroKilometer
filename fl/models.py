@@ -17,7 +17,6 @@ quest_geopoint_draft = db.Table('quest_geopoint_draft',
 
 
 class User(db.Model):
-
     __tablename__ = 'user'
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -64,23 +63,16 @@ class Quest(db.Model):
         return '<Quest %r>' % self.id
 
     def ready_for_publish(self) -> bool:
-        return self.title and self.link_to_promo and self.description and len(self.geopoints) > 0
+        return self.title_draft and self.link_to_promo_draft and self.description_draft and len(
+            self.geopoints_draft) > 0
 
     def prepare_for_publishing(self):
-        self.title = self.title
-        self.link_to_promo = self.link_to_promo_draft
+        self.title = self.title_draft
+        self.link_to_promo = f'quest/{self.id}_promo.{self.link_to_promo_draft.split(".")[-1]}'
         self.description = self.description_draft
         self.geopoints.clear()
         self.geopoints.extend(self.geopoints_draft)
 
-    def upload(self, is_publish=False):  # save to yandex storage
-        if is_publish:
-            pass
-        else:
-            pass
-
-    def delete_old(self): # delete old res in yandex storage
-        pass
 
 class GeoPoint(db.Model):
     __tablename__ = 'geopoint'
@@ -103,9 +95,8 @@ class GeoPoint(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    def __init__(self, id, title):
+    def __init__(self, id):
         self.id = id
-        self.title = title
 
     def __repr__(self):
         return '<GeoPoint %r>' % self.id
