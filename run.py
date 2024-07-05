@@ -8,6 +8,13 @@ from fl.models import db
 
 load_dotenv()
 
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+    os.makedirs(f'{UPLOAD_FOLDER}/user_profile')
+    os.makedirs(f'{UPLOAD_FOLDER}/quest')
+    os.makedirs(f'{UPLOAD_FOLDER}/geopoint')
+
 app = create_app()
 app.config.from_mapping(dotenv_values())
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_EXPIRES')))

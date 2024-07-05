@@ -244,6 +244,54 @@ def load_quests_list(offset: int, limit: int = 5):
         return {"message": str(e), "status": "error"}
 
 
+def load_quest_geopoint(quest: Quest, is_draft: bool = False):
+    try:
+        geopoints = quest.geopoints
+        if is_draft:
+            geopoints.extend(quest.geopoints_draft)
+
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
+            for geopoint in geopoints:
+                ans = load_geopoint(geopoint, is_draft=is_draft)
+                if ans['status'] == 'success':
+                    ans = ans['message']
+                    for path, content in ans['files']:
+                        path = path.split('/', 1)[-1]
+                        zip_ref.writestr(f'{geopoint.id}/{path}', content)
+                    zip_ref.writestr(f'{geopoint.id}/data.json', ans['data'])
+                else:
+                    raise Exception(ans['message'])
+        zip_buffer.seek(0)
+        return {"message": zip_buffer, "status": "success"}
+
+    except Exception as e:
+        return {"message": str(e), "status": "error"}
+
+
+def load_user_geopoint(user_id: int, is_draft: bool = True):
+    try:
+        geopoints = User.query.get(user_id).geo_points
+
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
+            for geopoint in geopoints:
+                ans = load_geopoint(geopoint, is_draft=is_draft)
+                if ans['status'] == 'success':
+                    ans = ans['message']
+                    for path, content in ans['files']:
+                        path = path.split('/', 1)[-1]
+                        zip_ref.writestr(f'{geopoint.id}/{path}', content)
+                    zip_ref.writestr(f'{geopoint.id}/data.json', ans['data'])
+                else:
+                    raise Exception(ans['message'])
+        zip_buffer.seek(0)
+        return {"message": zip_buffer, "status": "success"}
+
+    except Exception as e:
+        return {"message": str(e), "status": "error"}
+
+
 def load_geopoints_list(offset: int, limit: int = 5):
     files_to_upload = []
     # json_data = {}
