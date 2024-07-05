@@ -1,6 +1,6 @@
-from sqlalchemy import JSON, Column, ForeignKey, Table, Integer
+from sqlalchemy import JSON
 from sqlalchemy.ext.mutable import MutableDict, MutableList
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -17,6 +17,9 @@ quest_geopoint_draft = db.Table('quest_geopoint_draft',
 
 
 class User(db.Model):
+
+    __tablename__ = 'user'
+
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(nullable=False)
     link_to_profile_picture: Mapped[str] = mapped_column(nullable=True)
@@ -60,6 +63,24 @@ class Quest(db.Model):
     def __repr__(self):
         return '<Quest %r>' % self.id
 
+    def ready_for_publish(self) -> bool:
+        return self.title and self.link_to_promo and self.description and len(self.geopoints) > 0
+
+    def prepare_for_publishing(self):
+        self.title = self.title
+        self.link_to_promo = self.link_to_promo_draft
+        self.description = self.description_draft
+        self.geopoints.clear()
+        self.geopoints.extend(self.geopoints_draft)
+
+    def upload(self, is_publish=False):  # save to yandex storage
+        if is_publish:
+            pass
+        else:
+            pass
+
+    def delete_old(self): # delete old res in yandex storage
+        pass
 
 class GeoPoint(db.Model):
     __tablename__ = 'geopoint'

@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Blueprint, jsonify, request, make_response, render_template
+from flask import Blueprint, jsonify, request, make_response, render_template, send_file
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 from marshmallow import ValidationError
@@ -13,12 +13,12 @@ import json
 from operator import itemgetter
 from urllib.parse import parse_qsl
 import uuid
-
+from .storage import load_quests_list, delete_quest_res, upload_file, load_quest_for_edit
 from .schemas import QuestSchema, UserAuth, QuestRate
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-UPLOAD_FOLDER = os.getenv('PLOT_FOLDER')
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
 
 ALLOWED_EXTENSIONS_PROMO = {'png', 'jpg', 'jpeg'}
 
@@ -113,14 +113,16 @@ def quest_rate():
 @jwt_required()
 def quest_list():
     quest_data = {}
-    quests = Quest.query.all()
-    for quest in quests:
-        quest_data[quest.id] = quest.name
-    response = {
-        "quests": quest_data,
-        "status": "success"
-    }
-    return make_response(jsonify(response), 200)
+    ans = load_quests_list(0, 1)
+    return send_file(ans['message'], download_name="file.zip")
+    # quests = Quest.query.all()
+    # for quest in quests:
+    #     quest_data[quest.id] = quest.name
+    # response = {
+    #     "quests": quest_data,
+    #     "status": "success"
+    # }
+    # return make_response(jsonify(response), 200)
 
 
 @main.route("/quest_uuid")
@@ -133,9 +135,15 @@ def quest_uuid():
     return make_response(jsonify(response), 200)
 
 
+@main.get("/quest_edit/<quest_id>")
+@jwt_required()
+def quest_edit(quest_id):
+    return send_file(load_quest_for_edit(Quest.query.get(quest_id))['message'], download_name="file.zip")
+
+
 @main.route("/quest_save", methods=['POST'])
 @jwt_required()
-def quest_add():
+def quest_save():
     user_id = get_jwt_identity()
     data = request.form.get('json')
     data = json.loads(data)
@@ -154,22 +162,48 @@ def quest_add():
             return make_response(
                 jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
 
+    print(delete_quest_res(quest, True))
     quest.title_draft = data.get('title', None)
     quest.description_draft = data.get('description', None)
     quest.geopoints_draft.clear()
     quest.link_to_promo_draft = None
     for g_id in data.get('geopoints', []):
         quest.geopoints_draft.append(GeoPoint.query.get(g_id))
+
     if 'promo' in request.files and request.files['promo'].filename != '' and allowed_file(
             request.files['promo'].filename, ALLOWED_EXTENSIONS_PROMO):
         # save file
+        upload_file(request.files['promo'], f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}")
         quest.link_to_promo_draft = f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+
     db.session.commit()
     response = {
         "message": "Quest Added",
         "status": "success"
     }
     return make_response(jsonify(response), 200)
+
+
+@main.route("/quest_publish", methods=['POST'])
+@jwt_required()
+def quest_publish():
+    user_id = get_jwt_identity()
+    quest_id = request.json['quest_id']
+
+    quest = Quest.query.get(quest_id)
+    user = User.query.get(user_id)
+
+    if not quest or not any(q.id == quest_id for q in user.quests):
+        return make_response(jsonify({"message": "Quest can't be published", "status": "error"}), 403)
+
+    if not quest.ready_for_publish():
+        return make_response(jsonify({"message": "Not all data is filled in", "status": "error"}), 400)
+
+    quest.prepare_for_publishing()
+    quest.upload(True)
+    db.session.commit()
+
+    return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)
 
 
 @main.route("/quest_delete", methods=['POST'])
