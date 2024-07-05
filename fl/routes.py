@@ -120,7 +120,7 @@ def quest_rate():
 @main.route("/quest_list")
 @jwt_required()
 def quest_list():
-    ans = load_quests_list(0, 2)
+    ans = load_quests_list(0, 5)
     return send_file(ans['message'], download_name="file.zip")
 
 

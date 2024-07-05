@@ -55,6 +55,7 @@ class Quest(db.Model):
     rating: Mapped[float] = mapped_column(nullable=False, default=0)
     rating_count: Mapped[int] = mapped_column(nullable=False, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    published: Mapped[bool] = mapped_column(default=False, nullable=False)
 
     def __init__(self, id):
         self.id = id
@@ -72,6 +73,7 @@ class Quest(db.Model):
         self.description = self.description_draft
         self.geopoints.clear()
         self.geopoints.extend(self.geopoints_draft)
+        self.published = True
 
 
 class GeoPoint(db.Model):
