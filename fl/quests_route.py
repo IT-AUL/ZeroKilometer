@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
-from .models import db, User, Quest, GeoPoint
+from .models import db, User, Quest, Location
 import json
 import uuid
 from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file
@@ -130,11 +130,11 @@ def quest_save():
     quest.title_draft = data.get('title', None)
     quest.description_draft = data.get('description', None)
 
-    quest.geopoints_draft.clear()
+    quest.locations_draft.clear()
     quest.link_to_promo_draft = None
 
-    for g_id in data.get('geopoints', []):
-        quest.geopoints_draft.append(GeoPoint.query.get(g_id))
+    for loc_id in data.get('locations', []):
+        quest.locations_draft.append(Location.query.get(loc_id))
 
     if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
         # save file

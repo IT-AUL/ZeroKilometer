@@ -13,7 +13,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
     os.makedirs(f'{UPLOAD_FOLDER}/user_profile')
     os.makedirs(f'{UPLOAD_FOLDER}/quest')
-    os.makedirs(f'{UPLOAD_FOLDER}/geopoint')
+    os.makedirs(f'{UPLOAD_FOLDER}/location')
 
 app = create_app()
 app.config.from_mapping(dotenv_values())
