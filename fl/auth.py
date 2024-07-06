@@ -7,13 +7,10 @@ from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identi
 from marshmallow import ValidationError
 
 from .models import db, User
-import hashlib
-import hmac
 import json
-from operator import itemgetter
-from urllib.parse import parse_qsl
 from .storage import upload_file
 from .schemas import UserAuth
+from .tools import is_user_valid
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
@@ -39,7 +36,7 @@ def auth():
         data = user_auth.load(json.loads(data))
     except ValidationError as e:
         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
-    valid_data, user_data = check(TELEGRAM_BOT_TOKEN, data["user_data"])
+    valid_data, user_data = is_user_valid(TELEGRAM_BOT_TOKEN, data["user_data"])
 
     if valid_data or True:
         user = User.query.get(user_data['id'])
@@ -79,27 +76,3 @@ def save_progress():
     user.progress[quest_id] = ()
     db.session.commit()
     return make_response(jsonify({"message": "Saved user progress", "status": "success"}), 200)
-
-
-def check(token: str, init_data: str):
-    try:
-        parsed_data = dict(parse_qsl(init_data))
-    except ValueError:
-        return False, None
-    try:
-        user_data = json.loads(parsed_data['user'])
-    except (ValueError, KeyError):
-        return False, None
-    if "hash" not in parsed_data:
-        return False, None
-    hash_ = parsed_data.pop('hash')
-    data_check_string = "\n".join(
-        f"{k}={v}" for k, v in sorted(parsed_data.items(), key=itemgetter(0))
-    )
-    secret_key = hmac.new(
-        key=b"WebAppData", msg=token.encode(), digestmod=hashlib.sha256
-    )
-    calculated_hash = hmac.new(
-        key=secret_key.digest(), msg=data_check_string.encode(), digestmod=hashlib.sha256
-    ).hexdigest()
-    return calculated_hash == hash_, user_data

@@ -1,3 +1,4 @@
+import os
 import uuid
 
 from dotenv import load_dotenv
@@ -9,7 +10,7 @@ from .models import db, User, GeoPoint, Quest
 import json
 from .storage import delete_geopoint_res, load_user_geopoint, upload_file, copy_file, load_quest_geopoint
 from .schemas import QuestSchema, QuestRate
-from .tools import allowed_file
+from .tools import is_file_allowed
 
 load_dotenv()
 
@@ -19,9 +20,9 @@ quest_rating = QuestRate()
 geopoint_bp = Blueprint('geopoint_bp', __name__)
 CORS(geopoint_bp)
 
-ALLOWED_IMAGE = {'png', 'jpg', 'jpeg'}
-ALLOWED_FILES = {'mp4', 'png', 'jpg', 'jpeg', 'avi'}
-AUDIO_FILES = {'mp3', 'wav', 'ogg'}
+PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
+MEDIA_FILES = set(os.getenv('MEDIA_FILES').split(','))
+AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
 
 
 @geopoint_bp.get("/user_geopoints")
@@ -64,19 +65,19 @@ def geopoint_save():
     geopoint.link_to_promo_draft = None
     geopoint.link_to_audio_draft = None
 
-    if 'promo' in request.files and allowed_file(request.files['promo'].filename, ALLOWED_IMAGE):
+    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
         print(request.files['promo'])
         geopoint.link_to_promo_draft = f"geopoint/{geopoint.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
         upload_file(request.files['promo'], geopoint.link_to_promo_draft)
 
-    if 'audio' in request.files and allowed_file(request.files['audio'].filename, AUDIO_FILES):
+    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
         geopoint.link_to_promo_draft = f"geopoint/{geopoint.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
         upload_file(request.files['audio'], geopoint.link_to_promo_draft)
 
     if 'media' in request.files:
         cnt = 0
         for media in request.files.getlist('media'):
-            if allowed_file(media.filename, ALLOWED_FILES):
+            if is_file_allowed(media.filename, MEDIA_FILES):
                 geopoint.links_to_media_draft.append(
                     f"geopoint/{geopoint.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
                 upload_file(media, geopoint.links_to_media_draft[-1])
@@ -115,7 +116,7 @@ def quest_publish():
         copy_file(link_c, link)
     db.session.commit()
 
-    return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)
+    return make_response(jsonify({"message": "The geopoint was successfully published", "status": "success"}), 200)
 
 
 @geopoint_bp.get("/quest_geopoints")
@@ -138,3 +139,23 @@ def quest_geopoints():
     ans = load_quest_geopoint(quest, is_draft)
     if ans['status'] == 'success':
         return make_response(send_file(ans['message'], download_name='file.zip'), 200)
+
+
+@geopoint_bp.delete("/geopoint_delete")
+@jwt_required()
+def geo_point_delete():
+    user_id = get_jwt_identity()
+    geopoint_id = request.json['geopoint_id']
+    geopoint: GeoPoint = GeoPoint.query.get(geopoint_id)
+    if not geopoint or geopoint.user_id != user_id:
+        return make_response(jsonify({"message": "You can't delete this geopoint", "status": "error"}), 403)
+
+    for quest in User.query.get(user_id).quests:
+        if geopoint in quest.geopoints and len(quest.geopoints) == 1:
+            quest.published = False
+    delete_geopoint_res(geopoint, True)
+    delete_geopoint_res(geopoint, False)
+    db.session.delete(geopoint)
+    db.session.commit()
+
+    return make_response(jsonify({"message": "Geopoint deleted", "status": "success"}), 200)

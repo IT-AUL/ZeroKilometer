@@ -22,7 +22,7 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=int(os.getenv('JWT_REFR
 
 with app.app_context():
     db.init_app(app)
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
 
 if __name__ == '__main__':

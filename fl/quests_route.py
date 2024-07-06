@@ -1,3 +1,5 @@
+import os
+
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, make_response, send_file
 from flask_cors import CORS
@@ -7,9 +9,9 @@ from marshmallow import ValidationError
 from .models import db, User, Quest, GeoPoint
 import json
 import uuid
-from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest
+from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file
 from .schemas import QuestSchema, QuestRate
-from .tools import allowed_file
+from .tools import is_file_allowed
 
 load_dotenv()
 
@@ -19,7 +21,7 @@ quest_rating = QuestRate()
 quest_bp = Blueprint('quest_bp', __name__)
 CORS(quest_bp)
 
-ALLOWED_IMAGE = {'png', 'jpg', 'jpeg'}
+PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
 
 
 @quest_bp.post('/quest_rate')
@@ -82,7 +84,8 @@ def quest_edit():
     if Quest.query.get(quest_id).user_id != user_id:
         return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
     return make_response(
-        send_file(load_quest(Quest.query.get(quest_id), is_draft=True)['message'], download_name="file.zip"),
+        send_file(load_quest_file(Quest.query.get(quest_id), is_draft=True, add_author=False)['message'],
+                  download_name="file.zip"),
         200)
 
 
@@ -90,14 +93,15 @@ def quest_edit():
 @jwt_required()
 def quest_view():
     user_id = get_jwt_identity()
-    quest_id = request.args.get('quest_id', type=uuid.UUID)
+    quest_id = request.args.get('quest_id', type=str)
 
     if not Quest.query.get(quest_id):
         return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
     if not Quest.query.get(quest_id).published:
         return make_response(jsonify({"message": "You can't play this quest now", "status": "error"}), 403)
     return make_response(
-        send_file(load_quest(Quest.query.get(quest_id), add_author=True)['message'], download_name="file.zip"),
+        send_file(load_quest_file(Quest.query.get(quest_id), is_draft=False, add_author=True)['message'],
+                  download_name="file.zip"),
         200)
 
 
@@ -132,7 +136,7 @@ def quest_save():
     for g_id in data.get('geopoints', []):
         quest.geopoints_draft.append(GeoPoint.query.get(g_id))
 
-    if 'promo' in request.files and allowed_file(request.files['promo'].filename, ALLOWED_IMAGE):
+    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
         # save file
         quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
         upload_file(request.files['promo'], quest.link_to_promo_draft)

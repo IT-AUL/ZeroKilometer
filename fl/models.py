@@ -1,4 +1,5 @@
 from sqlalchemy import JSON
+from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 from flask_sqlalchemy import SQLAlchemy

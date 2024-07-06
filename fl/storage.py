@@ -93,7 +93,7 @@ def delete_geopoint_res(geopoint: GeoPoint, is_draft: bool = False):
 
 def load_quests_list(offset: int, limit: int = 5):
     try:
-        quests = Quest.query.limit(limit).offset(offset).all()
+        quests = Quest.query.filter_by(published=True).offset(offset).limit(limit).all()
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
             for quest in quests:
@@ -157,38 +157,33 @@ def load_user_geopoint(user_id: int, is_draft: bool = True):
         return {"message": str(e), "status": "error"}
 
 
-def load_geopoints_list(offset: int, limit: int = 5):
-    files_to_upload = []
-    # json_data = {}
-    try:
-        quests = Quest.query.filter_by(published=True).offset(offset).limit(limit).all()
-        for quest in quests:
-            # add quest promo
-            # files_to_upload.append(quest.link_to_promo)
-
-            # add user logo
-            files_to_upload.append(User.query.get(quest.user_id).link_to_profile_picture)
-        zip_buffer = BytesIO()
-        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
-            for quest, s3_object_name in zip(quests, files_to_upload):
-                rsp = s3.get_object(Bucket=BUCKET_NAME, Key=s3_object_name)
-                zip_ref.writestr(f'{quest.id}/{s3_object_name}', rsp['Body'].read())
-                json_data = {
-                    "quest_id": quest.id,
-                    "title": quest.title,
-                    "description": quest.description,
-                    "rating": quest.rating,
-                    "rating_count": quest.rating_count,
-                    "author_name": User.query.get(quest.user_id).username,
-                }
-
-                json_bytes = json.dumps(json_data).encode('utf-8')
-                zip_ref.writestr(f'{quest.id}/data.json', json_bytes)
-
-        zip_buffer.seek(0)
-        return {"message": zip_buffer, "status": "success"}
-    except Exception as e:
-        return {"message": str(e), "status": "error"}
+# def load_йгуыеы_list(offset: int, limit: int = 5):
+#     files_to_upload = []
+#     try:
+#         quests = Quest.query.filter_by(published=True).offset(offset).limit(limit).all()
+#         for quest in quests:
+#             files_to_upload.append(User.query.get(quest.user_id).link_to_profile_picture)
+#         zip_buffer = BytesIO()
+#         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
+#             for quest, s3_object_name in zip(quests, files_to_upload):
+#                 rsp = s3.get_object(Bucket=BUCKET_NAME, Key=s3_object_name)
+#                 zip_ref.writestr(f'{quest.id}/{s3_object_name}', rsp['Body'].read())
+#                 json_data = {
+#                     "quest_id": quest.id,
+#                     "title": quest.title,
+#                     "description": quest.description,
+#                     "rating": quest.rating,
+#                     "rating_count": quest.rating_count,
+#                     "author_name": User.query.get(quest.user_id).username,
+#                 }
+#
+#                 json_bytes = json.dumps(json_data).encode('utf-8')
+#                 zip_ref.writestr(f'{quest.id}/data.json', json_bytes)
+#
+#         zip_buffer.seek(0)
+#         return {"message": zip_buffer, "status": "success"}
+#     except Exception as e:
+#         return {"message": str(e), "status": "error"}
 
 
 def load_quest(quest: Quest, is_draft: bool = False, add_author: bool = False):
@@ -216,23 +211,24 @@ def load_quest(quest: Quest, is_draft: bool = False, add_author: bool = False):
             "quest_id": quest.id,
             "title": quest.title,
             "description": quest.description,
-            "geopoints": quest.geopoints
+            "geopoints": [geo.id for geo in quest.geopoints]
         }
         if is_draft:
             json_data["title_draft"] = quest.title_draft
             json_data["description_draft"] = quest.description_draft
-            json_data["geopoints_draft"] = quest.geopoints_draft
-
+            json_data["geopoints_draft"] = [geo.id for geo in quest.geopoints_draft]
+        print("eegegggg")
         if add_author:
             json_data['rating'] = quest.rating
             json_data['rating_count'] = quest.rating_count
             json_data["author_name"] = User.query.get(quest.user_id).username
-
         ans["data"] = json.dumps(json_data).encode('utf-8')
-
+        print("egege")
+        print("eet")
         return {"message": ans, "status": "success"}
 
     except Exception as e:
+        print(str(e))
         return {"message": str(e), "status": "error"}
 
 
@@ -286,6 +282,26 @@ def load_geopoint(geopoint: GeoPoint, is_draft: bool = False, add_author: bool =
         ans["data"] = json.dumps(json_data).encode('utf-8')
 
         return {"message": ans, "status": "success"}
+
+    except Exception as e:
+        return {"message": str(e), "status": "error"}
+
+
+def load_quest_file(quest, is_draft: bool, add_author: bool):
+    try:
+        ans = load_quest(quest, is_draft, add_author)
+        zip_buffer = BytesIO()
+        print("egeg")
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
+            if ans['status'] == 'success':
+                ans = ans['message']
+                for path, content in ans['files']:
+                    path = path.split('/', 2)[-1]
+                    zip_ref.writestr(f'{quest.id}/{path}', content)
+                zip_ref.writestr(f'{quest.id}/data.json', ans['data'])
+
+        zip_buffer.seek(0)
+        return {"message": zip_buffer, "status": "success"}
 
     except Exception as e:
         return {"message": str(e), "status": "error"}
