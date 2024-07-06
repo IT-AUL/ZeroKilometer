@@ -45,7 +45,7 @@ def auth():
         user = User.query.get(user_data['id'])
         if not user:
             user = User(user_data['id'], user_data['username'])
-            user.link_to_profile_picture = f"user_profile/user_profile.{request.files['profile'].filename.split('.')[1]}"
+            user.link_to_profile_picture = f"user_profile/{user.id}/user_profile.{request.files['profile'].filename.split('.')[1]}"
             upload_file(request.files['profile'], user.link_to_profile_picture)
             db.session.add(user)
             db.session.commit()

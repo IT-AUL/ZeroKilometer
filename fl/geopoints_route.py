@@ -5,12 +5,11 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from .models import db, User, GeoPoint
 import json
-from .storage import delete_geopoint_res, load_user_geopoint
+from .storage import delete_geopoint_res, load_user_geopoint, upload_file
 from .schemas import QuestSchema, QuestRate
+from .tools import allowed_file
 
 load_dotenv()
-
-ALLOWED_EXTENSIONS_PROMO = {'png', 'jpg', 'jpeg'}
 
 quest_schema = QuestSchema()
 quest_rating = QuestRate()
@@ -18,8 +17,12 @@ quest_rating = QuestRate()
 geopoint_bp = Blueprint('geopoint_bp', __name__)
 CORS(geopoint_bp)
 
+ALLOWED_IMAGE = {'png', 'jpg', 'jpeg'}
+ALLOWED_FILES = {'mp4', 'png', 'jpg', 'jpeg', 'avi'}
+AUDIO_FILES = {'mp3', 'wav', 'ogg'}
 
-@geopoint_bp.get("/all_geopoints")
+
+@geopoint_bp.get("/user_geopoints")
 @jwt_required()
 def all_geopoint():
     user_id = get_jwt_identity()
@@ -33,8 +36,8 @@ def geopoint_save():
     data = request.form.get('json')
     data = json.loads(data)
 
-    geopoint_id = str(data.get("geopoint_id", None))
-    if geopoint_id is None:
+    geopoint_id = data.get("geopoint_id", None)
+    if not geopoint_id:
         return make_response(jsonify({"message": "Missing geopoint id"}), 400)
     geopoint = GeoPoint.query.get(geopoint_id)
     if not geopoint:
@@ -56,15 +59,30 @@ def geopoint_save():
     geopoint.link_to_promo_draft = None
     geopoint.link_to_audio_draft = None
 
-    # if 'promo' in request.files and request.files['promo'].filename != '' and allowed_file(
-    #         request.files['promo'].filename, ALLOWED_EXTENSIONS_PROMO):
-    #     # save file
-    #     upload_file(request.files['promo'], f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}")
-    #     quest.link_to_promo_draft = f"{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+    print(request.files['promo'].filename.split('.')[-1], 'promo' in request.files,
+          allowed_file(request.files['promo'], ALLOWED_IMAGE))
+
+    if 'promo' in request.files and allowed_file(request.files['promo'].filename, ALLOWED_IMAGE):
+        print(request.files['promo'])
+        geopoint.link_to_promo_draft = f"geopoint/{geopoint.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
+        upload_file(request.files['promo'], geopoint.link_to_promo_draft)
+
+    if 'audio' in request.files and allowed_file(request.files['audio'].filename, AUDIO_FILES):
+        geopoint.link_to_promo_draft = f"geopoint/{geopoint.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+        upload_file(request.files['audio'], geopoint.link_to_promo_draft)
+
+    if 'media' in request.files:
+        cnt = 0
+        for media in request.files.getlist('media'):
+            if allowed_file(media.filename, ALLOWED_FILES):
+                geopoint.links_to_media_draft.append(
+                    f"geopoint/{geopoint.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
+                upload_file(media, geopoint.links_to_media_draft[-1])
+                cnt += 1
 
     db.session.commit()
     response = {
-        "message": "Quest Added",
+        "message": "Geopoint Added",
         "status": "success"
     }
     return make_response(jsonify(response), 200)

@@ -26,10 +26,8 @@ UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
 
 def upload_file(file: FileStorage, object_name: str) -> dict:
     try:
-        path = os.path.join(UPLOAD_FOLDER, object_name)
-        file.save(path)
-        s3.upload_file(path, BUCKET_NAME, object_name)
-        os.remove(path)
+        print("erere")
+        s3.put_object(Bucket=BUCKET_NAME, Key=object_name, Body=file)
         return {"message": "File uploaded", "status": "success"}
     except Exception as e:
         print(str(e))
@@ -88,38 +86,6 @@ def delete_geopoint_res(geopoint: GeoPoint, is_draft: bool = False):
 
         s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
         return {"message": "Geopoint deleted", "status": "success"}
-    except Exception as e:
-        return {"message": str(e), "status": "error"}
-
-
-def load_quest_for_edit(quest: Quest):
-    files_to_upload = []
-    try:
-        if quest.link_to_promo:
-            files_to_upload.append(quest.link_to_promo)
-
-        if quest.link_to_promo_draft:
-            files_to_upload.append(quest.link_to_promo_draft)
-        zip_buffer = BytesIO()
-        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
-            for s3_object_name in files_to_upload:
-                rsp = s3.get_object(Bucket=BUCKET_NAME, Key=s3_object_name)
-                zip_ref.writestr(f'{quest.id}/{s3_object_name}', rsp['Body'].read())
-
-            json_data = {"quest_id": quest.id,
-                         "title": quest.title,
-                         "description": quest.description,
-                         "geopoints": quest.geopoints,
-                         "title_draft": quest.title_draft,
-                         "description_draft": quest.description_draft,
-                         "geopoints_draft": quest.geopoints_draft, }
-            json_bytes = json.dumps(json_data).encode('utf-8')
-            zip_ref.writestr(f'{quest.id}/data.json', json_bytes)
-
-        zip_buffer.seek(0)
-
-        return {"message": zip_buffer, "status": "success"}
-
     except Exception as e:
         return {"message": str(e), "status": "error"}
 
@@ -225,15 +191,15 @@ def load_geopoint_for_view(geopoint: GeoPoint):
 
 def load_quests_list(offset: int, limit: int = 5):
     try:
-        quests = Quest.query.filter_by(published=True).limit(limit).offset(offset).all()
+        quests = Quest.query.limit(limit).offset(offset).all()
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
             for quest in quests:
-                ans = load_quest(quest, is_draft=True, add_author=True)
+                ans = load_quest(quest, is_draft=False, add_author=True)
                 if ans['status'] == 'success':
                     ans = ans['message']
                     for path, content in ans['files']:
-                        path = path.split('/', 1)[-1]
+                        path = path.split('/', 2)[-1]
                         zip_ref.writestr(f'{quest.id}/{path}', content)
                     zip_ref.writestr(f'{quest.id}/data.json', ans['data'])
                 else:
@@ -271,23 +237,20 @@ def load_quest_geopoint(quest: Quest, is_draft: bool = False):
 
 def load_user_geopoint(user_id: int, is_draft: bool = True):
     try:
-        geopoints = User.query.get(user_id).geo_points
-
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
-            for geopoint in geopoints:
-                ans = load_geopoint(geopoint, is_draft=is_draft)
+            geopoints = User.query.get(user_id).geo_points
+            for geo in geopoints:
+                ans = load_geopoint(geo, is_draft=is_draft)
                 if ans['status'] == 'success':
                     ans = ans['message']
                     for path, content in ans['files']:
-                        path = path.split('/', 1)[-1]
-                        zip_ref.writestr(f'{geopoint.id}/{path}', content)
-                    zip_ref.writestr(f'{geopoint.id}/data.json', ans['data'])
-                else:
-                    raise Exception(ans['message'])
+                        path = path.split('/', 2)[-1]
+                        zip_ref.writestr(f'{geo.id}/{path}', content)
+                    zip_ref.writestr(f'{geo.id}/data.json', ans['data'])
+
         zip_buffer.seek(0)
         return {"message": zip_buffer, "status": "success"}
-
     except Exception as e:
         return {"message": str(e), "status": "error"}
 

@@ -7,18 +7,19 @@ from marshmallow import ValidationError
 from .models import db, User, Quest, GeoPoint
 import json
 import uuid
-from .storage import load_quests_list, delete_quest_res, upload_file, load_quest_for_edit, copy_file
+from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest
 from .schemas import QuestSchema, QuestRate
+from .tools import allowed_file
 
 load_dotenv()
-
-ALLOWED_EXTENSIONS_PROMO = {'png', 'jpg', 'jpeg'}
 
 quest_schema = QuestSchema()
 quest_rating = QuestRate()
 
 quest_bp = Blueprint('quest_bp', __name__)
 CORS(quest_bp)
+
+ALLOWED_IMAGE = {'png', 'jpg', 'jpeg'}
 
 
 @quest_bp.post('/quest_rate')
@@ -51,14 +52,16 @@ def quest_rate():
     return make_response(jsonify({"message": "Rating successfully updated", "status": "success"}), 200)
 
 
-@quest_bp.route("/quest_list")
+@quest_bp.get("/quest_list")
 @jwt_required()
 def quest_list():
-    ans = load_quests_list(0, 5)
+    offset = request.args.get('offset', 0, type=int)
+    limit = request.args.get('limit', 10, type=int)
+    ans = load_quests_list(offset, limit)
     return send_file(ans['message'], download_name="file.zip")
 
 
-@quest_bp.route("/quest_uuid")
+@quest_bp.get("/uuid")
 @jwt_required()
 def quest_uuid():
     response = {
@@ -68,14 +71,22 @@ def quest_uuid():
     return make_response(jsonify(response), 200)
 
 
-@quest_bp.get("/quest_edit/<quest_id>")
+@quest_bp.get("/quest_edit")
 @jwt_required()
-def quest_edit(quest_id):
-    return make_response(send_file(load_quest_for_edit(Quest.query.get(quest_id))['message'], download_name="file.zip"),
-                         200)
+def quest_edit():
+    user_id = get_jwt_identity()
+    quest_id = request.args.get('quest_id', type=uuid.UUID)
+
+    if not Quest.query.get(quest_id):
+        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
+    if Quest.query.get(quest_id).user_id != user_id:
+        return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
+    return make_response(
+        send_file(load_quest(Quest.query.get(quest_id), is_draft=True)['message'], download_name="file.zip"),
+        200)
 
 
-@quest_bp.route("/quest_save", methods=['POST'])
+@quest_bp.post("/quest_save")
 @jwt_required()
 def quest_save():
     user_id = get_jwt_identity()
@@ -99,15 +110,16 @@ def quest_save():
     delete_quest_res(quest, True)
     quest.title_draft = data.get('title', None)
     quest.description_draft = data.get('description', None)
+
     quest.geopoints_draft.clear()
     quest.link_to_promo_draft = None
+
     for g_id in data.get('geopoints', []):
         quest.geopoints_draft.append(GeoPoint.query.get(g_id))
-    print(request.files.getlist('promo'))
-    if 'promo' in request.files and request.files['promo'].filename != '' and allowed_file(
-            request.files['promo'].filename, ALLOWED_EXTENSIONS_PROMO):
+
+    if 'promo' in request.files and allowed_file(request.files['promo'].filename, ALLOWED_IMAGE):
         # save file
-        quest.link_to_promo_draft = f"quest/{quest_id}_promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+        quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
         upload_file(request.files['promo'], quest.link_to_promo_draft)
 
     db.session.commit()
@@ -163,8 +175,3 @@ def quest_delete():
         db.session.rollback()
         return make_response(
             jsonify({"message": "An error occurred during the deletion process", "status": "error"}), 500)
-
-
-def allowed_file(filename, allowed_extensions):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in allowed_extensions
