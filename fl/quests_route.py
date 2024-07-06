@@ -86,6 +86,21 @@ def quest_edit():
         200)
 
 
+@quest_bp.get("/quest_view")
+@jwt_required()
+def quest_view():
+    user_id = get_jwt_identity()
+    quest_id = request.args.get('quest_id', type=uuid.UUID)
+
+    if not Quest.query.get(quest_id):
+        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
+    if not Quest.query.get(quest_id).published:
+        return make_response(jsonify({"message": "You can't play this quest now", "status": "error"}), 403)
+    return make_response(
+        send_file(load_quest(Quest.query.get(quest_id), add_author=True)['message'], download_name="file.zip"),
+        200)
+
+
 @quest_bp.post("/quest_save")
 @jwt_required()
 def quest_save():
@@ -130,13 +145,13 @@ def quest_save():
     return make_response(jsonify(response), 200)
 
 
-@quest_bp.route("/quest_publish", methods=['POST'])
+@quest_bp.post("/quest_publish")
 @jwt_required()
 def quest_publish():
     user_id = get_jwt_identity()
     quest_id = request.json['quest_id']
 
-    quest = Quest.query.get(quest_id)
+    quest: Quest = Quest.query.get(quest_id)
     user = User.query.get(user_id)
 
     if not quest or not any(q.id == quest_id for q in user.quests):
@@ -152,7 +167,7 @@ def quest_publish():
     return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)
 
 
-@quest_bp.route("/quest_delete", methods=['POST'])
+@quest_bp.delete("/quest_delete")
 @jwt_required()
 def quest_delete():
     user_id = get_jwt_identity()

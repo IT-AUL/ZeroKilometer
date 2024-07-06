@@ -65,11 +65,11 @@ class Quest(db.Model):
 
     def ready_for_publish(self) -> bool:
         return self.title_draft and self.link_to_promo_draft and self.description_draft and len(
-            self.geopoints_draft) > 0
+            self.geopoints_draft) > 0 and all(geo.published for geo in self.geopoints_draft)
 
     def prepare_for_publishing(self):
         self.title = self.title_draft
-        self.link_to_promo = f'quest/{self.id}_promo.{self.link_to_promo_draft.split(".")[-1]}'
+        self.link_to_promo = f'quest/{self.id}/promo.{self.link_to_promo_draft.split(".")[-1]}'
         self.description = self.description_draft
         self.geopoints.clear()
         self.geopoints.extend(self.geopoints_draft)
@@ -97,8 +97,29 @@ class GeoPoint(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    published: Mapped[bool] = mapped_column(default=False, nullable=False)
+
     def __init__(self, id):
         self.id = id
 
     def __repr__(self):
         return '<GeoPoint %r>' % self.id
+
+    def ready_for_publish(self) -> bool:
+        return bool(self.title_draft and self.coords_draft and self.link_to_promo_draft and self.description_draft)
+
+    def prepare_for_publishing(self):
+        self.title = self.title_draft
+        self.coords = self.coords_draft
+        self.link_to_promo = f'geopoint/{self.id}/promo.{self.link_to_promo_draft.split(".")[-1]}'
+        self.description = self.description_draft
+        if self.link_to_audio_draft:
+            self.link_to_audio = f'geopoint/{self.id}/audio.{self.link_to_audio_draft.split(".")[-1]}'
+        else:
+            self.link_to_audio = None
+        self.links_to_media.clear()
+        cnt = 0
+        for media in self.links_to_media_draft:
+            self.links_to_media.append(f'geopoint/{self.id}/media_{cnt}.{media.split(".")[-1]}')
+            cnt += 1
+        self.published = True

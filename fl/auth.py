@@ -20,11 +20,11 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
 user_auth = UserAuth()
 
-auth_bp = Blueprint('auth_bp', __name__)
-CORS(auth_bp)
+user_bp = Blueprint('user_bp', __name__)
+CORS(user_bp)
 
 
-@auth_bp.route('/refresh', methods=['POST'])
+@user_bp.post('/refresh')
 @jwt_required(refresh=True)
 def refresh():
     current_user = get_jwt_identity()
@@ -32,7 +32,7 @@ def refresh():
     return jsonify(access_token=new_access_token), 200
 
 
-@auth_bp.route('/auth', methods=['POST'])
+@user_bp.post('/auth')
 def auth():
     try:
         data = request.form.get('json')
@@ -65,6 +65,20 @@ def auth():
             "status": "error"
         }
         return make_response(jsonify(response), 401)
+
+
+@user_bp.put('/save_progress')
+@jwt_required()
+def save_progress():
+    user_id = get_jwt_identity()
+    data = request.json
+
+    quest_id = data['quest_id']
+    user: User = User.query.get(user_id)
+
+    user.progress[quest_id] = ()
+    db.session.commit()
+    return make_response(jsonify({"message": "Saved user progress", "status": "success"}), 200)
 
 
 def check(token: str, init_data: str):
