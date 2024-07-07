@@ -32,7 +32,7 @@ def user_locations():
     return make_response(send_file(load_user_locations(user_id)['message'], download_name="file.zip"), 200)
 
 
-@location_bp.post("/save_location")
+@location_bp.put("/save_location")
 @jwt_required()
 def save_location():
     user_id = get_jwt_identity()
@@ -41,7 +41,8 @@ def save_location():
 
     location_id = data.get("location_id", None)
     if not location_id:
-        return make_response(jsonify({"message": "Missing location id"}), 400)
+        return make_response(jsonify({"message": "Missing location_id"}), 400)
+
     location: Location = Location.query.get(location_id)
     if not location:
         location = Location(location_id)
@@ -66,7 +67,6 @@ def save_location():
     location.link_to_audio_draft = None
 
     if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
-        print(request.files['promo'])
         location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
         upload_file(request.files['promo'], location.link_to_promo_draft)
 
@@ -91,7 +91,7 @@ def save_location():
     return make_response(jsonify(response), 200)
 
 
-@location_bp.put("/publish_location")
+@location_bp.post("/publish_location")
 @jwt_required()
 def publish_location():
     user_id = get_jwt_identity()
@@ -107,7 +107,6 @@ def publish_location():
         return make_response(jsonify({"message": "Not all data is filled in", "status": "error"}), 400)
 
     ans = delete_location_res(location)
-    print(ans)
     location.prepare_for_publishing()
     copy_file(location.link_to_promo_draft, location.link_to_promo)
     if location.link_to_audio:
@@ -130,11 +129,14 @@ def quest_locations():
         return make_response(jsonify({"message": "quest_id is required", "status": "error"}), 400)
 
     quest: Quest = Quest.query.get(quest_id)
-    if not quest or not quest.published:
+    if not quest:
         return make_response(jsonify({"message": "Quest not found", "status": "error"}), 400)
 
     if is_draft and quest.user_id != user_id:
         return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
+
+    if not quest.published and quest.user_id != user_id:
+        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 400)
 
     ans = load_quest_locations(quest, is_draft)
     if ans['status'] == 'success':

@@ -24,9 +24,9 @@ CORS(quest_bp)
 PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
 
 
-@quest_bp.post('/quest_rate')
+@quest_bp.post('/rate_quest')
 @jwt_required()
-def quest_rate():
+def rate_quest():
     user_id = get_jwt_identity()
     try:
         data = quest_rating.load(request.json)
@@ -73,9 +73,9 @@ def quest_uuid():
     return make_response(jsonify(response), 200)
 
 
-@quest_bp.get("/quest_edit")
+@quest_bp.get("/edit_quest")
 @jwt_required()
-def quest_edit():
+def edit_quest():
     user_id = get_jwt_identity()
     quest_id = request.args.get('quest_id', type=uuid.UUID)
 
@@ -89,9 +89,9 @@ def quest_edit():
         200)
 
 
-@quest_bp.get("/quest_view")
+@quest_bp.get("/view_quest")
 @jwt_required()
-def quest_view():
+def view_quest():
     user_id = get_jwt_identity()
     quest_id = request.args.get('quest_id', type=str)
 
@@ -105,9 +105,9 @@ def quest_view():
         200)
 
 
-@quest_bp.post("/quest_save")
+@quest_bp.put("/save_quest")
 @jwt_required()
-def quest_save():
+def save_quest():
     user_id = get_jwt_identity()
     data = request.form.get('json')
     data = json.loads(data)
@@ -149,9 +149,9 @@ def quest_save():
     return make_response(jsonify(response), 200)
 
 
-@quest_bp.post("/quest_publish")
+@quest_bp.post("/publish_quest")
 @jwt_required()
-def quest_publish():
+def publish_quest():
     user_id = get_jwt_identity()
     quest_id = request.json['quest_id']
 
@@ -171,9 +171,9 @@ def quest_publish():
     return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)
 
 
-@quest_bp.delete("/quest_delete")
+@quest_bp.delete("/delete_quest")
 @jwt_required()
-def quest_delete():
+def delete_quest():
     user_id = get_jwt_identity()
     quest_id = request.json['quest_id']
     user = User.query.get(user_id)
@@ -190,7 +190,7 @@ def quest_delete():
         db.session.delete(quest)
         db.session.commit()
         return make_response(jsonify({"message": "Quest is deleted", "status": "success"}), 200)
-    except:
+    except Exception as e:
         db.session.rollback()
         return make_response(
             jsonify({"message": "An error occurred during the deletion process", "status": "error"}), 500)

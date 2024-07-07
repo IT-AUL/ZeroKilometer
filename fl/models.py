@@ -1,5 +1,4 @@
 from sqlalchemy import JSON
-from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 from flask_sqlalchemy import SQLAlchemy
@@ -65,8 +64,8 @@ class Quest(db.Model):
         return '<Quest %r>' % self.id
 
     def ready_for_publish(self) -> bool:
-        return self.title_draft and self.link_to_promo_draft and self.description_draft and len(
-            self.locations_draft) > 0 and all(loc.published for loc in self.locations_draft)
+        return (bool(self.title_draft and self.link_to_promo_draft and self.description_draft) and
+                len(self.locations_draft) > 0 and all(loc.published for loc in self.locations_draft))
 
     def prepare_for_publishing(self):
         self.title = self.title_draft

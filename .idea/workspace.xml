@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add checking to publishing if no geopoint in quest">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Remamed geopoint to location">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/geopoints_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/location_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/location_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/location_route.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/quests_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/quests_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -268,11 +264,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main" />
       <item itemvalue="Python.Site" />
       <item itemvalue="Python.TelegramBot" />
       <item itemvalue="Python.code" />
       <item itemvalue="Python.config" />
+      <item itemvalue="Python.main" />
       <item itemvalue="Python.req" />
     </list>
     <recent_temporary>
@@ -468,15 +464,9 @@
       <workItem from="1720269854958" duration="1384000" />
       <workItem from="1720278188335" duration="6484000" />
       <workItem from="1720297675032" duration="30000" />
-      <workItem from="1720301903291" duration="1752000" />
-    </task>
-    <task id="LOCAL-00016" summary="[+] Map">
-      <option name="closed" value="true" />
-      <created>1715623805729</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1715623805729</updated>
+      <workItem from="1720301903291" duration="3873000" />
+      <workItem from="1720384892273" duration="27000" />
+      <workItem from="1720385493463" duration="144000" />
     </task>
     <task id="LOCAL-00017" summary="[+] WepApp site">
       <option name="closed" value="true" />
@@ -862,7 +852,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720297612400</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="[*] Remamed geopoint to location">
+      <option name="closed" value="true" />
+      <created>1720303985948</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1720303985949</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -884,7 +882,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Переделал структуру" />
     <MESSAGE value="Начал переписывать под web app" />
     <MESSAGE value="[*] Changed max distance value" />
     <MESSAGE value="[+] Some api" />
@@ -909,7 +906,8 @@
     <MESSAGE value="[+] Add ful support of geopoint saving" />
     <MESSAGE value="[+] Add user progress saving" />
     <MESSAGE value="[+] Add checking to publishing if no geopoint in quest" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Add checking to publishing if no geopoint in quest" />
+    <MESSAGE value="[*] Remamed geopoint to location" />
+    <option name="LAST_COMMIT_MESSAGE" value="[*] Remamed geopoint to location" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
