@@ -24,7 +24,7 @@ CORS(quest_bp)
 PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
 
 
-@quest_bp.post('/rate_quest')
+@quest_bp.post('/rate_quest')  # rate quest
 @jwt_required()
 def rate_quest():
     user_id = get_jwt_identity()
@@ -54,7 +54,7 @@ def rate_quest():
     return make_response(jsonify({"message": "Rating successfully updated", "status": "success"}), 200)
 
 
-@quest_bp.get("/quest_list")
+@quest_bp.get("/quest_list")  # return all quests
 @jwt_required()
 def quest_list():
     offset = request.args.get('offset', 0, type=int)
@@ -63,7 +63,7 @@ def quest_list():
     return send_file(ans['message'], download_name="file.zip")
 
 
-@quest_bp.get("/uuid")
+@quest_bp.get("/uuid")  # return uuid for quest or location
 @jwt_required()
 def quest_uuid():
     response = {
@@ -73,7 +73,7 @@ def quest_uuid():
     return make_response(jsonify(response), 200)
 
 
-@quest_bp.get("/edit_quest")
+@quest_bp.get("/edit_quest")  # return quest for editing
 @jwt_required()
 def edit_quest():
     user_id = get_jwt_identity()
@@ -89,7 +89,7 @@ def edit_quest():
         200)
 
 
-@quest_bp.get("/view_quest")
+@quest_bp.get("/view_quest")  # return quest for viewing
 @jwt_required()
 def view_quest():
     user_id = get_jwt_identity()
@@ -105,7 +105,7 @@ def view_quest():
         200)
 
 
-@quest_bp.put("/save_quest")
+@quest_bp.put("/save_quest")  # add new quest/save quest
 @jwt_required()
 def save_quest():
     user_id = get_jwt_identity()
@@ -149,7 +149,7 @@ def save_quest():
     return make_response(jsonify(response), 200)
 
 
-@quest_bp.post("/publish_quest")
+@quest_bp.post("/publish_quest")  # publish quest if it readies to it
 @jwt_required()
 def publish_quest():
     user_id = get_jwt_identity()
@@ -171,7 +171,7 @@ def publish_quest():
     return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)
 
 
-@quest_bp.delete("/delete_quest")
+@quest_bp.delete("/delete_quest")  # delete quest
 @jwt_required()
 def delete_quest():
     user_id = get_jwt_identity()

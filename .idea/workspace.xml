@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Remamed geopoint to location">
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Renamed routes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/user_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/location_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/location_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/quests_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/quests_route.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -264,11 +265,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.main" />
       <item itemvalue="Python.Site" />
       <item itemvalue="Python.TelegramBot" />
       <item itemvalue="Python.code" />
       <item itemvalue="Python.config" />
-      <item itemvalue="Python.main" />
       <item itemvalue="Python.req" />
     </list>
     <recent_temporary>
@@ -467,14 +468,7 @@
       <workItem from="1720301903291" duration="3873000" />
       <workItem from="1720384892273" duration="27000" />
       <workItem from="1720385493463" duration="144000" />
-    </task>
-    <task id="LOCAL-00017" summary="[+] WepApp site">
-      <option name="closed" value="true" />
-      <created>1715715647695</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1715715647695</updated>
+      <workItem from="1720390616353" duration="725000" />
     </task>
     <task id="LOCAL-00018" summary="[+] WepApp site">
       <option name="closed" value="true" />
@@ -860,7 +854,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720303985949</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="[*] Renamed routes">
+      <option name="closed" value="true" />
+      <created>1720390646896</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1720390646896</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -882,7 +884,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Начал переписывать под web app" />
     <MESSAGE value="[*] Changed max distance value" />
     <MESSAGE value="[+] Some api" />
     <MESSAGE value="[+] Add api for post or get progress&#10;[+] For add or delete user" />
@@ -907,7 +908,8 @@
     <MESSAGE value="[+] Add user progress saving" />
     <MESSAGE value="[+] Add checking to publishing if no geopoint in quest" />
     <MESSAGE value="[*] Remamed geopoint to location" />
-    <option name="LAST_COMMIT_MESSAGE" value="[*] Remamed geopoint to location" />
+    <MESSAGE value="[*] Renamed routes" />
+    <option name="LAST_COMMIT_MESSAGE" value="[*] Renamed routes" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />

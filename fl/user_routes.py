@@ -21,7 +21,7 @@ user_bp = Blueprint('user_bp', __name__)
 CORS(user_bp)
 
 
-@user_bp.post('/refresh')
+@user_bp.post('/refresh')  # about once every 10 minutes, you need to update the jwt token
 @jwt_required(refresh=True)
 def refresh():
     current_user = get_jwt_identity()
@@ -29,7 +29,7 @@ def refresh():
     return jsonify(access_token=new_access_token), 200
 
 
-@user_bp.post('/auth')
+@user_bp.post('/auth')  # auth user
 def auth():
     try:
         data = request.form.get('json')
@@ -64,7 +64,7 @@ def auth():
         return make_response(jsonify(response), 401)
 
 
-@user_bp.put('/save_progress')
+@user_bp.put('/save_progress')  # save user progress
 @jwt_required()
 def save_progress():
     user_id = get_jwt_identity()

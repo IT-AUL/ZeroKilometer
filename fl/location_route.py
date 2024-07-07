@@ -25,14 +25,14 @@ MEDIA_FILES = set(os.getenv('MEDIA_FILES').split(','))
 AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
 
 
-@location_bp.get("/user_locations")
+@location_bp.get("/user_locations")  # return all user's locations
 @jwt_required()
 def user_locations():
     user_id = get_jwt_identity()
     return make_response(send_file(load_user_locations(user_id)['message'], download_name="file.zip"), 200)
 
 
-@location_bp.put("/save_location")
+@location_bp.put("/save_location")  # add new location/save location
 @jwt_required()
 def save_location():
     user_id = get_jwt_identity()
@@ -91,7 +91,7 @@ def save_location():
     return make_response(jsonify(response), 200)
 
 
-@location_bp.post("/publish_location")
+@location_bp.post("/publish_location")  # checks that the location is ready for publication and sends it if so
 @jwt_required()
 def publish_location():
     user_id = get_jwt_identity()
@@ -118,7 +118,7 @@ def publish_location():
     return make_response(jsonify({"message": "The location was successfully published", "status": "success"}), 200)
 
 
-@location_bp.get("/quest_locations")
+@location_bp.get("/quest_locations")  # return all quest's locations
 @jwt_required()
 def quest_locations():
     user_id = get_jwt_identity()
@@ -143,7 +143,7 @@ def quest_locations():
         return make_response(send_file(ans['message'], download_name='file.zip'), 200)
 
 
-@location_bp.delete("/delete_location")
+@location_bp.delete("/delete_location")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
 @jwt_required()
 def delete_location():
     user_id = get_jwt_identity()
