@@ -22,6 +22,7 @@ quest_bp = Blueprint('quest_bp', __name__)
 CORS(quest_bp)
 
 PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
+AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
 
 
 @quest_bp.post('/rate_quest')  # rate quest
@@ -141,6 +142,11 @@ def save_quest():
         quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
         upload_file(request.files['promo'], quest.link_to_promo_draft)
 
+    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, PROMO_FILES):
+        # save file
+        quest.link_to_promo_draft = f"quest/{quest_id}/audio_draft.{request.files["audio"].filename.split('.')[-1]}"
+        upload_file(request.files['audio'], quest.link_to_promo_draft)
+
     db.session.commit()
     response = {
         "message": "Quest Added",
@@ -166,6 +172,8 @@ def publish_quest():
 
     quest.prepare_for_publishing()
     copy_file(quest.link_to_promo_draft, quest.link_to_promo)
+    if quest.link_to_audio_draft:
+        copy_file(quest.link_to_audio_draft, quest.link_to_audio)
     db.session.commit()
 
     return make_response(jsonify({"message": "The quest was successfully published", "status": "success"}), 200)

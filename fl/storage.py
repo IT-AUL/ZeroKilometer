@@ -26,7 +26,6 @@ UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
 
 def upload_file(file: FileStorage, object_name: str) -> dict:
     try:
-        print("erere")
         s3.put_object(Bucket=BUCKET_NAME, Key=object_name, Body=file)
         return {"message": "File uploaded", "status": "success"}
     except Exception as e:
@@ -49,8 +48,12 @@ def delete_quest_res(quest: Quest, is_draft: bool = False):
 
     try:
         link_to_promo = quest.link_to_promo_draft if is_draft else quest.link_to_promo
+        link_to_audio = quest.link_to_audio_draft if is_draft else quest.link_to_audio
+
         if link_to_promo:
             for_deletion.append({'Key': link_to_promo})
+        if link_to_audio:
+            for_deletion.append({'Key': link_to_audio})
 
         if for_deletion:
             s3.delete_objects(Bucket=BUCKET_NAME, Delete={'Objects': for_deletion})
@@ -168,8 +171,14 @@ def load_quest(quest: Quest, is_draft: bool = False, add_author: bool = False):
         if quest.link_to_promo:
             getting_files.append(quest.link_to_promo)
 
+        if quest.link_to_audio:
+            getting_files.append(quest.link_to_audio)
+
         if is_draft and quest.link_to_promo_draft:
             getting_files.append(quest.link_to_promo_draft)
+
+        if is_draft and quest.link_to_audio_draft:
+            getting_files.append(quest.link_to_audio_draft)
 
         if add_author:
             getting_files.append(User.query.get(quest.user_id).link_to_profile_picture)
@@ -259,7 +268,6 @@ def load_quest_file(quest, is_draft: bool, add_author: bool):
     try:
         ans = load_quest(quest, is_draft, add_author)
         zip_buffer = BytesIO()
-        print("egeg")
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
             if ans['status'] == 'success':
                 ans = ans['message']

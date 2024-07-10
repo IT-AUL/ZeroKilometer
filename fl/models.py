@@ -41,6 +41,7 @@ class Quest(db.Model):
     id: Mapped[str] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(db.String(30), nullable=True)
     link_to_promo: Mapped[str] = mapped_column(nullable=True)
+    link_to_audio: Mapped[str] = mapped_column(nullable=True)
     description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location',
                                                           backref=db.backref('quests', lazy='dynamic'))
@@ -48,6 +49,7 @@ class Quest(db.Model):
     # draft
     title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
     link_to_promo_draft: Mapped[str] = mapped_column(nullable=True)
+    link_to_audio_draft: Mapped[str] = mapped_column(nullable=True)
     description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations_draft: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location_draft',
                                                                 backref=db.backref('draft_quests', lazy='dynamic'))
@@ -70,6 +72,8 @@ class Quest(db.Model):
     def prepare_for_publishing(self):
         self.title = self.title_draft
         self.link_to_promo = f'quest/{self.id}/promo.{self.link_to_promo_draft.split(".")[-1]}'
+        if self.link_to_audio_draft:
+            self.link_to_audio = f'quest/{self.id}/audio.{self.link_to_audio_draft.split(".")[-1]}'
         self.description = self.description_draft
         self.locations.clear()
         self.locations.extend(self.locations_draft)
