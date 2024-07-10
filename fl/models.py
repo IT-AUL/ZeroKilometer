@@ -20,7 +20,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(nullable=False)
+    username: Mapped[str] = mapped_column(db.String(30), nullable=False)
     link_to_profile_picture: Mapped[str] = mapped_column(nullable=True)
     progress: Mapped[MutableDict] = mapped_column(MutableDict.as_mutable(JSON), nullable=True, default=dict)
     rating: Mapped[MutableDict] = mapped_column(MutableDict.as_mutable(JSON), nullable=True, default=dict)
@@ -39,16 +39,16 @@ class Quest(db.Model):
     __tablename__ = 'quest'
 
     id: Mapped[str] = mapped_column(primary_key=True)
-    title: Mapped[str] = mapped_column(nullable=True)
+    title: Mapped[str] = mapped_column(db.String(30), nullable=True)
     link_to_promo: Mapped[str] = mapped_column(nullable=True)
-    description: Mapped[str] = mapped_column(nullable=True)
+    description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location',
                                                           backref=db.backref('quests', lazy='dynamic'))
 
     # draft
-    title_draft: Mapped[str] = mapped_column(nullable=True)
+    title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
     link_to_promo_draft: Mapped[str] = mapped_column(nullable=True)
-    description_draft: Mapped[str] = mapped_column(nullable=True)
+    description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations_draft: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location_draft',
                                                                 backref=db.backref('draft_quests', lazy='dynamic'))
 
@@ -80,18 +80,18 @@ class Location(db.Model):
     __tablename__ = 'location'
 
     id: Mapped[str] = mapped_column(primary_key=True)
-    title: Mapped[str] = mapped_column(nullable=True)
+    title: Mapped[str] = mapped_column(db.String(30), nullable=True)
     coords: Mapped[str] = mapped_column(nullable=True)
     link_to_promo: Mapped[str] = mapped_column(nullable=True)
-    description: Mapped[str] = mapped_column(nullable=True)
+    description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     links_to_media: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
     link_to_audio: Mapped[str] = mapped_column(nullable=True)
 
     # draft
-    title_draft: Mapped[str] = mapped_column(nullable=True)
+    title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
     coords_draft: Mapped[str] = mapped_column(nullable=True)
     link_to_promo_draft: Mapped[str] = mapped_column(nullable=True)
-    description_draft: Mapped[str] = mapped_column(nullable=True)
+    description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     links_to_media_draft: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
     link_to_audio_draft: Mapped[str] = mapped_column(nullable=True)
 
@@ -123,3 +123,16 @@ class Location(db.Model):
             self.links_to_media.append(f'location/{self.id}/media_{cnt}.{media.split(".")[-1]}')
             cnt += 1
         self.published = True
+
+
+class UserProgress(db.Model):
+    __tablename__ = 'user_progress'
+
+    user_id: Mapped[int] = mapped_column(db.ForeignKey('user.id'), primary_key=True)
+    quest_id: Mapped[str] = mapped_column(db.ForeignKey('quest.id'), primary_key=True)
+    location_id: Mapped[str] = mapped_column(db.ForeignKey('location.id'), primary_key=True)
+
+    def __init__(self, user_id, quest_id, location_id):
+        self.user_id = user_id
+        self.quest_id = quest_id
+        self.location_id = location_id

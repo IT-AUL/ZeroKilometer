@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
-from .models import db, User, Quest, Location
+from .models import db, User, Quest, Location, UserProgress
 import json
 import uuid
 from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file
@@ -187,6 +187,9 @@ def delete_quest():
     try:
         delete_quest_res(quest, True)
         delete_quest_res(quest, False)
+        user_progresses = UserProgress.query.filter_by(quest_id=quest_id).all()
+        for progress in user_progresses:
+            db.session.delete(progress)
         db.session.delete(quest)
         db.session.commit()
         return make_response(jsonify({"message": "Quest is deleted", "status": "success"}), 200)

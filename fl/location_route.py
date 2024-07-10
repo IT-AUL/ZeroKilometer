@@ -6,7 +6,7 @@ from flask import Blueprint, jsonify, request, make_response, send_file
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from .models import db, User, Location, Quest
+from .models import db, User, Location, Quest, UserProgress
 import json
 from .storage import delete_location_res, load_user_locations, upload_file, copy_file, load_quest_locations
 from .schemas import QuestSchema, QuestRate
@@ -143,7 +143,8 @@ def quest_locations():
         return make_response(send_file(ans['message'], download_name='file.zip'), 200)
 
 
-@location_bp.delete("/delete_location")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
+@location_bp.delete(
+    "/delete_location")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
 @jwt_required()
 def delete_location():
     user_id = get_jwt_identity()
@@ -155,6 +156,9 @@ def delete_location():
     for quest in User.query.get(user_id).quests:
         if location in quest.locations and len(quest.locations) == 1:
             quest.published = False
+    user_progresses = UserProgress.query.filter_by(location_id=location_id).all()
+    for progress in user_progresses:
+        db.session.delete(progress)
     delete_location_res(location, True)
     delete_location_res(location, False)
     db.session.delete(location)

@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[*] Renamed routes">
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add some comments">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/user_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/site.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/location_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/location_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/quests_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/quests_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/user_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/user_routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,8 +280,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.Site" />
-        <item itemvalue="Python.req" />
         <item itemvalue="Python.config" />
+        <item itemvalue="Python.req" />
         <item itemvalue="Python.code" />
         <item itemvalue="Python.TelegramBot" />
       </list>
@@ -468,15 +473,16 @@
       <workItem from="1720301903291" duration="3873000" />
       <workItem from="1720384892273" duration="27000" />
       <workItem from="1720385493463" duration="144000" />
-      <workItem from="1720390616353" duration="725000" />
-    </task>
-    <task id="LOCAL-00018" summary="[+] WepApp site">
-      <option name="closed" value="true" />
-      <created>1715964311446</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1715964311446</updated>
+      <workItem from="1720390616353" duration="826000" />
+      <workItem from="1720416617257" duration="652000" />
+      <workItem from="1720417474574" duration="252000" />
+      <workItem from="1720449874660" duration="1284000" />
+      <workItem from="1720452816301" duration="598000" />
+      <workItem from="1720469133870" duration="160000" />
+      <workItem from="1720505374508" duration="3314000" />
+      <workItem from="1720626711976" duration="2692000" />
+      <workItem from="1720634441629" duration="1306000" />
+      <workItem from="1720635766569" duration="2973000" />
     </task>
     <task id="LOCAL-00019" summary="[+] WepApp site">
       <option name="closed" value="true" />
@@ -862,7 +868,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720390646896</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="[+] Add some comments">
+      <option name="closed" value="true" />
+      <created>1720391436263</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1720391436263</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -884,7 +898,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[*] Changed max distance value" />
     <MESSAGE value="[+] Some api" />
     <MESSAGE value="[+] Add api for post or get progress&#10;[+] For add or delete user" />
     <MESSAGE value="[*] Some rewrite app and api" />
@@ -909,16 +922,17 @@
     <MESSAGE value="[+] Add checking to publishing if no geopoint in quest" />
     <MESSAGE value="[*] Remamed geopoint to location" />
     <MESSAGE value="[*] Renamed routes" />
-    <option name="LAST_COMMIT_MESSAGE" value="[*] Renamed routes" />
+    <MESSAGE value="[+] Add some comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Add some comments" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$player.coverage" NAME="player Coverage Results" MODIFIED="1716057916594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$Site.coverage" NAME="Site Coverage Results" MODIFIED="1720303562212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fl" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$TelegramBot.coverage" NAME="TelegramBot Coverage Results" MODIFIED="1720040999960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bot" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$Site.coverage" NAME="Site Coverage Results" MODIFIED="1720635910158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fl" />
     <SUITE FILE_PATH="coverage/Hakaton$w.coverage" NAME="w Coverage Results" MODIFIED="1715096687664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$TelegramBot.coverage" NAME="TelegramBot Coverage Results" MODIFIED="1720040999960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bot" />
     <SUITE FILE_PATH="coverage/Hakaton$editor.coverage" NAME="editor Coverage Results" MODIFIED="1713954619214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$config.coverage" NAME="config Coverage Results" MODIFIED="1720135550523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$config.coverage" NAME="config Coverage Results" MODIFIED="1720452993408" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$.coverage" NAME="ее Coverage Results" MODIFIED="1716031083529" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
     <SUITE FILE_PATH="coverage/Hakaton$m.coverage" NAME="m Coverage Results" MODIFIED="1716234027691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/npc_manager_py$request.coverage" NAME="request Coverage Results" MODIFIED="1719507166979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />

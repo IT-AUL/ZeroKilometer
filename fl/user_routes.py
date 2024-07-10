@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 from marshmallow import ValidationError
 
-from .models import db, User
+from .models import db, User, UserProgress
 import json
 from .storage import upload_file
 from .schemas import UserAuth
@@ -71,8 +71,12 @@ def save_progress():
     data = request.json
 
     quest_id = data['quest_id']
-    user: User = User.query.get(user_id)
+    # user: User = User.query.get(user_id)
 
-    user.progress[quest_id] = ()
+    location_ids = data['location_ids']
+    for location_id in location_ids:
+        progress = UserProgress(user_id, quest_id, location_id)
+        db.session.add(progress)
+    # user.progress[quest_id] = ()
     db.session.commit()
     return make_response(jsonify({"message": "Saved user progress", "status": "success"}), 200)

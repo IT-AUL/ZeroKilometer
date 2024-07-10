@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="users" uuid="b0dd6709-0166-44ed-9014-ef5db9f4eb63">
+    <data-source source="LOCAL" name="zero_kilometer" uuid="61651f46-f053-4d8c-8787-84f1bac27e23">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\galee\PycharmProjects\Hakaton\instance\users.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\galee\PycharmProjects\Hakaton\instance\zero_kilometer.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

@@ -188,14 +188,11 @@ def load_quest(quest: Quest, is_draft: bool = False, add_author: bool = False):
             json_data["title_draft"] = quest.title_draft
             json_data["description_draft"] = quest.description_draft
             json_data["locations_draft"] = [loc.id for loc in quest.locations_draft]
-        print("eegegggg")
         if add_author:
             json_data['rating'] = quest.rating
             json_data['rating_count'] = quest.rating_count
             json_data["author_name"] = User.query.get(quest.user_id).username
         ans["data"] = json.dumps(json_data).encode('utf-8')
-        print("egege")
-        print("eet")
         return {"message": ans, "status": "success"}
 
     except Exception as e:
