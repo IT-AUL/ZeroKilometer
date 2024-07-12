@@ -38,7 +38,7 @@ def auth():
         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
     valid_data, user_data = is_user_valid(TELEGRAM_BOT_TOKEN, data["user_data"])
 
-    if valid_data or True:
+    if valid_data:
         user = User.query.get(user_data['id'])
         if not user:
             user = User(user_data['id'], user_data['username'])
@@ -71,12 +71,10 @@ def save_progress():
     data = request.json
 
     quest_id = data['quest_id']
-    # user: User = User.query.get(user_id)
 
     location_ids = data['location_ids']
     for location_id in location_ids:
         progress = UserProgress(user_id, quest_id, location_id)
         db.session.add(progress)
-    # user.progress[quest_id] = ()
     db.session.commit()
     return make_response(jsonify({"message": "Saved user progress", "status": "success"}), 200)
