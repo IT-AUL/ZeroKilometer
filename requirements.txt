@@ -1,17 +1,8 @@
-aiogram==3.6.0
-beautifulsoup4==4.12.3
-geopy==2.4.1
 openai==1.28.1
 Requests==2.31.0
-moviepy~=1.0.3
-opencv-python~=4.9.0.80
-pillow~=10.3.0
-aiosqlite~=0.20.0
 click~=8.1.7
 Flask~=3.0.3
 Werkzeug~=3.0.3
-pytest~=8.2.2
-SQLAlchemy~=2.0.30
 python-dotenv~=1.0.1
 uuid~=1.30
 marshmallow~=3.21.3

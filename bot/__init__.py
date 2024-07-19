@@ -13,7 +13,7 @@ load_dotenv()
 dp = Dispatcher()
 bot = Bot(token=os.getenv('TELEGRAM_BOT_TOKEN'), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
-wep_app_url = ""
+wep_app_url = "https://zero-kilometer.ru"
 
 keyboard = InlineKeyboardMarkup(
     inline_keyboard=[[InlineKeyboardButton(text="Погнали", web_app=WebAppInfo(url=wep_app_url))]])
