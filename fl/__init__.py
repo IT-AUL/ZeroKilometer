@@ -19,7 +19,7 @@ def create_app():
     allowed_origins = [
         "https://zero-kilometer.ru/",
         "https://kilometr-zero.netlify.app/",
-        # Add more domains as needed
+     
     ]
 
     # Configure CORS with the list of allowed origins
