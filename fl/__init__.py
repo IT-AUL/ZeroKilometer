@@ -8,6 +8,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
+
 def create_app():
     app = Flask(__name__)
     handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=3)
