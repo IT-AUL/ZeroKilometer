@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timedelta
 
 from dotenv import load_dotenv
 import hashlib
@@ -38,3 +39,19 @@ def is_user_valid(token: str, init_data: str):
         key=secret_key.digest(), msg=data_check_string.encode(), digestmod=hashlib.sha256
     ).hexdigest()
     return calculated_hash == hash_, user_data
+
+
+def check_telegram_authorization(token, auth_data):
+    check_hash = auth_data.pop('hash')
+    data_check_arr = []
+    for key, value in sorted(auth_data.items()):
+        data_check_arr.append(f'{key}={value}')
+    data_check_string = '\n'.join(data_check_arr)
+    secret_key = hashlib.sha256(token.encode()).digest()
+    hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
+    if hash != check_hash:
+        return None, False
+    auth_date = datetime.fromtimestamp(int(auth_data['auth_date']))
+    if datetime.now() - auth_date > timedelta(days=15):
+        return None, False
+    return auth_data, True

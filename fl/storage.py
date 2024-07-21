@@ -24,7 +24,7 @@ BUCKET_NAME = os.getenv('YANDEX_BUCKET_NAME')
 UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
 
 
-def upload_file(file: FileStorage, object_name: str) -> dict:
+def upload_file(file, object_name: str) -> dict:
     try:
         s3.put_object(Bucket=BUCKET_NAME, Key=object_name, Body=file)
         return {"message": "File uploaded", "status": "success"}

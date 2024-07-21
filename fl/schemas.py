@@ -7,7 +7,13 @@ class QuestSchema(Schema):
 
 
 class UserAuth(Schema):
-    user_data = fields.Str(required=True)
+    id = fields.Integer(required=True)
+    first_name = fields.Str(required=True)
+    last_name = fields.Str(required=False)
+    username = fields.Str(required=False)
+    photo_url = fields.Str(required=False)
+    auth_date = fields.Integer(required=False)
+    hash = fields.Str(required=True)
 
 
 class QuestRate(Schema):

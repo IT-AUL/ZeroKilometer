@@ -1,16 +1,16 @@
 import os
+from io import BytesIO
 
+import requests
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, make_response
-from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 from marshmallow import ValidationError
 
 from .models import db, User, UserProgress
-import json
 from .storage import upload_file
 from .schemas import UserAuth
-from .tools import is_user_valid
+from .tools import check_telegram_authorization
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
@@ -18,7 +18,6 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 user_auth = UserAuth()
 
 user_bp = Blueprint('user_bp', __name__)
-CORS(user_bp)
 
 
 @user_bp.post('/refresh')  # about once every 10 minutes, you need to update the jwt token
@@ -32,21 +31,30 @@ def refresh():
 @user_bp.post('/auth')  # auth user
 def auth():
     try:
-        data = request.form.get('json')
-        data = user_auth.load(json.loads(data))
+        data = request.get_json()
+        data = user_auth.load(data)
     except ValidationError as e:
+        print(str(e))
         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
-    valid_data, user_data = is_user_valid(TELEGRAM_BOT_TOKEN, data["user_data"])
+    user_data, valid_data = check_telegram_authorization(TELEGRAM_BOT_TOKEN, data)
+    # try:
+    #     data = request.form.get('json')
+    #     data = user_auth.load(json.loads(data))
+    # except ValidationError as e:
+    #     return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+    # valid_data, user_data = is_user_valid(TELEGRAM_BOT_TOKEN, data["user_data"])
 
     if valid_data:
         user = User.query.get(user_data['id'])
         if not user:
             user = User(user_data['id'], user_data['username'])
-            user.link_to_profile_picture = f"user_profile/{user.id}/user_profile.{request.files['profile'].filename.split('.')[1]}"
-            upload_file(request.files['profile'], user.link_to_profile_picture)
+            if 'photo_url' in user_data:
+                response = requests.get(user_data['photo_url'], allow_redirects=True)
+                if response.status_code == 200:
+                    user.link_to_profile_picture = f"user_profile/{user.id}/user_profile.jpg"
+                    upload_file(BytesIO(response.content), user.link_to_profile_picture)
             db.session.add(user)
             db.session.commit()
-
         access_token = create_access_token(identity=user_data['id'])
         refresh_token = create_refresh_token(identity=user_data['id'])
         response = {

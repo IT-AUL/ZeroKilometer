@@ -3,7 +3,6 @@ import uuid
 
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, make_response, send_file
-from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from .models import db, User, Location, Quest, UserProgress
@@ -18,7 +17,6 @@ quest_schema = QuestSchema()
 quest_rating = QuestRate()
 
 location_bp = Blueprint('location_bp', __name__)
-CORS(location_bp)
 
 PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
 MEDIA_FILES = set(os.getenv('MEDIA_FILES').split(','))
