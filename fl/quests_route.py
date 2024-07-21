@@ -8,7 +8,7 @@ from marshmallow import ValidationError
 from .models import db, User, Quest, Location, UserProgress
 import json
 import uuid
-from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file
+from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file, load_user_quests
 from .schemas import QuestSchema, QuestRate
 from .tools import is_file_allowed
 
@@ -21,6 +21,13 @@ quest_bp = Blueprint('quest_bp', __name__)
 
 PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
 AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
+
+
+@quest_bp.get("/user_quests")  # return all user's locations
+@jwt_required()
+def user_locations():
+    user_id = get_jwt_identity()
+    return make_response(send_file(load_user_quests(user_id)['message'], download_name="file.zip"), 200)
 
 
 @quest_bp.post('/rate_quest')  # rate quest
@@ -107,50 +114,55 @@ def view_quest():
 @quest_bp.put("/save_quest")  # add new quest/save quest
 @jwt_required()
 def save_quest():
-    user_id = get_jwt_identity()
-    data = request.form.get('json')
-    data = json.loads(data)
-    quest_id = str(data.get("quest_id", None))
-    if quest_id is None:
-        return make_response(jsonify({"message": "Missing quest id"}), 400)
-    quest = Quest.query.get(quest_id)
-    if not quest:
-        quest = Quest(quest_id)
-        quest.user_id = user_id
-        db.session.add(quest)
+    try:
+        user_id = get_jwt_identity()
+        data = request.form.get('json')
+        data = json.loads(data)
+        quest_id = str(data.get("quest_id", None))
+        if quest_id is None:
+            return make_response(jsonify({"message": "Missing quest id"}), 400)
+        quest = Quest.query.get(quest_id)
+        if not quest:
+            quest = Quest(quest_id)
+            quest.user_id = user_id
+            db.session.add(quest)
+            db.session.commit()
+        else:
+            user = User.query.filter_by(id=user_id).first()
+            if not any(q.id == quest_id for q in user.quests):
+                return make_response(
+                    jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
+
+        delete_quest_res(quest, True)
+        quest.title_draft = data.get('title', None)
+        quest.description_draft = data.get('description', None)
+
+        quest.locations_draft.clear()
+        quest.link_to_promo_draft = None
+
+        for loc_id in data.get('locations', []):
+            quest.locations_draft.append(Location.query.get(loc_id))
+
+        if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
+            # save file
+            quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
+            upload_file(request.files['promo'], quest.link_to_promo_draft)
+
+        if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, PROMO_FILES):
+            # save file
+            quest.link_to_promo_draft = f"quest/{quest_id}/audio_draft.{request.files["audio"].filename.split('.')[-1]}"
+            upload_file(request.files['audio'], quest.link_to_promo_draft)
+
         db.session.commit()
-    else:
-        user = User.query.filter_by(id=user_id).first()
-        if not any(q.id == quest_id for q in user.quests):
-            return make_response(
-                jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
-
-    delete_quest_res(quest, True)
-    quest.title_draft = data.get('title', None)
-    quest.description_draft = data.get('description', None)
-
-    quest.locations_draft.clear()
-    quest.link_to_promo_draft = None
-
-    for loc_id in data.get('locations', []):
-        quest.locations_draft.append(Location.query.get(loc_id))
-
-    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
-        # save file
-        quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
-        upload_file(request.files['promo'], quest.link_to_promo_draft)
-
-    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, PROMO_FILES):
-        # save file
-        quest.link_to_promo_draft = f"quest/{quest_id}/audio_draft.{request.files["audio"].filename.split('.')[-1]}"
-        upload_file(request.files['audio'], quest.link_to_promo_draft)
-
-    db.session.commit()
-    response = {
-        "message": "Quest Added",
-        "status": "success"
-    }
-    return make_response(jsonify(response), 200)
+        response = {
+            "message": "Quest Added",
+            "status": "success"
+        }
+        return make_response(jsonify(response), 200)
+    except json.JSONDecodeError:
+        return make_response(jsonify({"message": "Invalid JSON format", "status": "error"}), 400)
+    except Exception as e:
+        return make_response(jsonify({"message": str(e), "status": "error"}), 500)
 
 
 @quest_bp.post("/publish_quest")  # publish quest if it readies to it

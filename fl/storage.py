@@ -6,7 +6,6 @@ from io import BytesIO
 
 import boto3
 from dotenv import load_dotenv
-from werkzeug.datastructures.file_storage import FileStorage
 
 from fl.models import Quest, User, Location
 
@@ -29,7 +28,6 @@ def upload_file(file, object_name: str) -> dict:
         s3.put_object(Bucket=BUCKET_NAME, Key=object_name, Body=file)
         return {"message": "File uploaded", "status": "success"}
     except Exception as e:
-        print(str(e))
         return {"message": str(e), "status": "error"}
 
 
@@ -153,6 +151,26 @@ def load_user_locations(user_id: int, is_draft: bool = True):
                         path = path.split('/', 2)[-1]
                         zip_ref.writestr(f'{loc.id}/{path}', content)
                     zip_ref.writestr(f'{loc.id}/data.json', ans['data'])
+
+        zip_buffer.seek(0)
+        return {"message": zip_buffer, "status": "success"}
+    except Exception as e:
+        return {"message": str(e), "status": "error"}
+
+
+def load_user_quests(user_id: int, is_draft: bool = True):
+    try:
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
+            quests = User.query.get(user_id).quests
+            for que in quests:
+                ans = load_quest(que, is_draft=is_draft)
+                if ans['status'] == 'success':
+                    ans = ans['message']
+                    for path, content in ans['files']:
+                        path = path.split('/', 2)[-1]
+                        zip_ref.writestr(f'{que.id}/{path}', content)
+                    zip_ref.writestr(f'{que.id}/data.json', ans['data'])
 
         zip_buffer.seek(0)
         return {"message": zip_buffer, "status": "success"}

@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Rewrite cors" />
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Remove cards">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/quests_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/quests_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,7 +127,7 @@
       <recent name="C:\Users\galee\PycharmProjects\Hakaton\api\objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tools">
+  <component name="RunManager" selected="Python.run">
     <configuration name="CODE" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Hakaton" />
       <option name="ENV_FILES" value="" />
@@ -138,29 +143,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CODE.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Site" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Hakaton" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fl" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\galee\PycharmProjects\Hakaton\run.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -238,6 +220,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Hakaton" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="tools" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Hakaton" />
       <option name="ENV_FILES" value="" />
@@ -263,19 +268,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.run" />
       <item itemvalue="Python.CODE" />
-      <item itemvalue="Python.Site" />
       <item itemvalue="Python.__init__" />
       <item itemvalue="Python.a" />
       <item itemvalue="Python.tools" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.run" />
         <item itemvalue="Python.tools" />
         <item itemvalue="Python.a" />
         <item itemvalue="Python.__init__" />
         <item itemvalue="Python.CODE" />
-        <item itemvalue="Python.Site" />
       </list>
     </recent_temporary>
   </component>
@@ -493,15 +498,7 @@
       <workItem from="1721486566006" duration="1918000" />
       <workItem from="1721496303222" duration="292000" />
       <workItem from="1721497402737" duration="2699000" />
-      <workItem from="1721561926654" duration="939000" />
-    </task>
-    <task id="LOCAL-00025" summary="[+] WepApp site">
-      <option name="closed" value="true" />
-      <created>1716071507986</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1716071507986</updated>
+      <workItem from="1721561926654" duration="2446000" />
     </task>
     <task id="LOCAL-00026" summary="[+] WepApp site">
       <option name="closed" value="true" />
@@ -887,7 +884,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721562726924</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="[+] Remove cards">
+      <option name="closed" value="true" />
+      <created>1721562909454</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1721562909454</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -909,7 +914,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress" />
     <MESSAGE value="[+] Web app to bot&#10;[+] Chapter loader" />
     <MESSAGE value="[*] Fixed some bugs" />
     <MESSAGE value="[*] Rewrite api module&#10;[*] Rewrite model module" />
@@ -934,7 +938,8 @@
     <MESSAGE value="[+] Add new system for saving user progress" />
     <MESSAGE value="[+] Add optional audio for quest" />
     <MESSAGE value="[+] Rewrite cors" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Rewrite cors" />
+    <MESSAGE value="[+] Remove cards" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Remove cards" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
@@ -967,6 +972,6 @@
     <SUITE FILE_PATH="coverage/Hakaton$config.coverage" NAME="config Coverage Results" MODIFIED="1713807934369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Hakaton$database.coverage" NAME="database Coverage Results" MODIFIED="1716050849265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/database" />
     <SUITE FILE_PATH="coverage/npc_manager_py$tools.coverage" NAME="tools Coverage Results" MODIFIED="1721415166915" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fl" />
-    <SUITE FILE_PATH="coverage/npc_manager_py$run.coverage" NAME="run Coverage Results" MODIFIED="1719871939918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/npc_manager_py$run.coverage" NAME="run Coverage Results" MODIFIED="1721563718872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
