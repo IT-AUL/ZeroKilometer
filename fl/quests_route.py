@@ -83,7 +83,7 @@ def quest_uuid():
 @jwt_required()
 def edit_quest():
     user_id = get_jwt_identity()
-    quest_id = request.args.get('quest_id', type=uuid.UUID)
+    quest_id = request.args.get('quest_id', type=str)
 
     if not Quest.query.get(quest_id):
         return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
@@ -116,6 +116,7 @@ def view_quest():
 def save_quest():
     try:
         user_id = get_jwt_identity()
+        print(request.form)
         data = request.form.get('json')
         data = json.loads(data)
         quest_id = str(data.get("quest_id", None))

@@ -120,7 +120,7 @@ def publish_location():
 @jwt_required()
 def quest_locations():
     user_id = get_jwt_identity()
-    quest_id = request.args.get('quest_id', None, type=uuid.UUID)
+    quest_id = request.args.get('quest_id', None, type=str)
     is_draft = request.args.get('is_draft', False, type=bool)
 
     if not quest_id:
