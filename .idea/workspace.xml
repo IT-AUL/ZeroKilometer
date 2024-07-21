@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Add optional audio for quest">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/location_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/location_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/quests_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/quests_route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/req.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/user_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/user_routes.py" afterDir="false" />
-    </list>
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Rewrite cors" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -504,15 +493,7 @@
       <workItem from="1721486566006" duration="1918000" />
       <workItem from="1721496303222" duration="292000" />
       <workItem from="1721497402737" duration="2699000" />
-      <workItem from="1721561926654" duration="620000" />
-    </task>
-    <task id="LOCAL-00024" summary="[+] WepApp site">
-      <option name="closed" value="true" />
-      <created>1716069900724</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1716069900725</updated>
+      <workItem from="1721561926654" duration="939000" />
     </task>
     <task id="LOCAL-00025" summary="[+] WepApp site">
       <option name="closed" value="true" />
@@ -898,7 +879,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721375973168</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="[+] Rewrite cors">
+      <option name="closed" value="true" />
+      <created>1721562726923</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1721562726924</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -920,7 +909,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[*] Some rewrite app and api" />
     <MESSAGE value="[*] Rewrite api for add, delete user&#10;[*] Rewrite api for apply choice, get progress" />
     <MESSAGE value="[+] Web app to bot&#10;[+] Chapter loader" />
     <MESSAGE value="[*] Fixed some bugs" />
@@ -945,7 +933,8 @@
     <MESSAGE value="[+] Add some comments" />
     <MESSAGE value="[+] Add new system for saving user progress" />
     <MESSAGE value="[+] Add optional audio for quest" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Add optional audio for quest" />
+    <MESSAGE value="[+] Rewrite cors" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Rewrite cors" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />
