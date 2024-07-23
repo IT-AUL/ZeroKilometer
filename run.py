@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import timedelta
 
@@ -7,6 +8,9 @@ from fl import create_app
 from fl.models import db
 
 load_dotenv()
+
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# logger = logging.getLogger(__name__)
 
 UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
 if not os.path.exists(UPLOAD_FOLDER):

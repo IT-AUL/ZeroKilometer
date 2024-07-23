@@ -209,12 +209,16 @@ def load_quest(quest: Quest, is_draft: bool = False, add_author: bool = False):
             "quest_id": quest.id,
             "title": quest.title,
             "description": quest.description,
-            "locations": [loc.id for loc in quest.locations]
+            "locations": [loc.id for loc in quest.locations],
+            "lang": quest.lang,
+            "type": quest.type
         }
         if is_draft:
             json_data["title_draft"] = quest.title_draft
             json_data["description_draft"] = quest.description_draft
             json_data["locations_draft"] = [loc.id for loc in quest.locations_draft]
+            json_data["lang_draft"] = quest.lang_draft
+            json_data["type_draft"] = quest.type_draft
         if add_author:
             json_data['rating'] = quest.rating
             json_data['rating_count'] = quest.rating_count
@@ -264,12 +268,14 @@ def load_location(location: Location, is_draft: bool = False, add_author: bool =
             "location_id": location.id,
             "title": location.title,
             "coords": location.coords,
-            "description": location.description
+            "description": location.description,
+            "lang": location.lang,
         }
         if is_draft:
             json_data["title_draft"] = location.title_draft
             json_data["coords_draft"] = location.coords_draft
-            json_data["description_draft"] = location.description_draft
+            json_data["description_draft"] = location.description_draft,
+            json_data["lang_draft"] = location.lang_draft
 
         if add_author:
             json_data["author_name"] = User.query.get(location.user_id).username

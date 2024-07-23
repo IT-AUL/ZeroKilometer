@@ -4,17 +4,19 @@ import uuid
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request, make_response, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from marshmallow import ValidationError
 
 from .models import db, User, Location, Quest, UserProgress
 import json
 from .storage import delete_location_res, load_user_locations, upload_file, copy_file, load_quest_locations
-from .schemas import QuestSchema, QuestRate
+from .schemas import QuestSchema, QuestRate, LocationSchema
 from .tools import is_file_allowed
 
 load_dotenv()
 
 quest_schema = QuestSchema()
 quest_rating = QuestRate()
+location_schema = LocationSchema()
 
 location_bp = Blueprint('location_bp', __name__)
 
@@ -36,10 +38,15 @@ def save_location():
     user_id = get_jwt_identity()
     data = request.form.get('json')
     data = json.loads(data)
+    try:
+        data = location_schema.load(data)
+    except ValidationError as err:
+        return make_response(jsonify({"message": "Data is not valid"}), 422)
 
-    location_id = data.get("location_id", None)
-    if not location_id:
-        return make_response(jsonify({"message": "Missing location_id"}), 400)
+    location_id = data['location_id']
+    # location_id = data.get("location_id", None)
+    # if not location_id:
+    #     return make_response(jsonify({"message": "Missing location_id"}), 400)
 
     location: Location = Location.query.get(location_id)
     if not location:
@@ -57,9 +64,13 @@ def save_location():
     if ans['status'] == 'error':
         return make_response(jsonify({"message": "Something going wrong", "status": "error"}), 500)
 
-    location.title_draft = data.get('title', None)
-    location.coords_draft = data.get('coords', None)
-    location.description_draft = data.get('description', None)
+    location.title_draft = data['title']
+    location.coords_draft = data['coords']
+    location.description_draft = data['description']
+    location.lang_draft = data['lang']
+    # location.title_draft = data.get('title', None)
+    # location.coords_draft = data.get('coords', None)
+    # location.description_draft = data.get('description', None)
     location.links_to_media_draft.clear()
     location.link_to_promo_draft = None
     location.link_to_audio_draft = None

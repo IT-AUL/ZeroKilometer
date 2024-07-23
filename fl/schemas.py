@@ -1,9 +1,11 @@
 from marshmallow import Schema, fields
 
+from fl.models import Language, Type
 
-class QuestSchema(Schema):
-    quest_id = fields.UUID(required=True)
-    title = fields.Str(required=True)
+
+# class QuestSchema(Schema):
+#     quest_id = fields.UUID(required=True)
+#     title = fields.Str(required=True)
 
 
 class UserAuth(Schema):
@@ -17,5 +19,25 @@ class UserAuth(Schema):
 
 
 class QuestRate(Schema):
-    quest_id = fields.UUID(required=True)
+    quest_id = fields.Str(required=True)
     rating = fields.Integer(required=True)
+
+
+class QuestSchema(Schema):
+    quest_id = fields.Str(required=True)
+
+    title = fields.Str(required=False)
+    description = fields.Str(required=False)
+    lang = fields.Enum(Language, required=False)
+    type = fields.Enum(Type, required=False)
+
+    locations = fields.List(fields.Str, required=False, default=[])
+
+
+class LocationSchema(Schema):
+    location_id = fields.Str(required=True)
+
+    title = fields.Str(required=False)
+    coords = fields.Str(required=False)
+    description = fields.Str(required=False)
+    lang = fields.Enum(Language, required=False)

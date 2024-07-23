@@ -1,9 +1,24 @@
-from sqlalchemy import JSON
+import enum
+
+from sqlalchemy import JSON, Enum
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
+
+class Language(enum.Enum):
+    ru = 'ru'
+    tat = 'tat'
+    en = 'en'
+
+
+class Type(enum.Enum):
+    walking = 'wal'
+    equestrian = 'equestrian'
+    auto = 'auto'
+
 
 location = db.Table('quest_location',
                     db.Column('quest_id', db.String(100), db.ForeignKey('quest.id'), primary_key=True),
@@ -45,6 +60,8 @@ class Quest(db.Model):
     description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location',
                                                           backref=db.backref('quests', lazy='dynamic'))
+    lang: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
+    type: Mapped[Type] = mapped_column(Enum(Type), nullable=False)
 
     # draft
     title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
@@ -53,6 +70,8 @@ class Quest(db.Model):
     description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations_draft: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location_draft',
                                                                 backref=db.backref('draft_quests', lazy='dynamic'))
+    lang_draft: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
+    type_draft: Mapped[Type] = mapped_column(Enum(Type), nullable=False)
 
     rating: Mapped[float] = mapped_column(nullable=False, default=0)
     rating_count: Mapped[int] = mapped_column(nullable=False, default=0)
@@ -67,7 +86,8 @@ class Quest(db.Model):
 
     def ready_for_publish(self) -> bool:
         return (bool(self.title_draft and self.link_to_promo_draft and self.description_draft) and
-                len(self.locations_draft) > 0 and all(loc.published for loc in self.locations_draft))
+                len(self.locations_draft) > 0 and all(
+                    loc.published for loc in self.locations_draft)) and self.lang_draft and self.type_draft
 
     def prepare_for_publishing(self):
         self.title = self.title_draft
@@ -78,6 +98,8 @@ class Quest(db.Model):
         self.locations.clear()
         self.locations.extend(self.locations_draft)
         self.published = True
+        self.lang = self.lang_draft
+        self.type = self.type_draft
 
 
 class Location(db.Model):
@@ -90,6 +112,7 @@ class Location(db.Model):
     description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     links_to_media: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
     link_to_audio: Mapped[str] = mapped_column(db.String(150), nullable=True)
+    lang: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
 
     # draft
     title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
@@ -98,6 +121,7 @@ class Location(db.Model):
     description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     links_to_media_draft: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
     link_to_audio_draft: Mapped[str] = mapped_column(db.String(150), nullable=True)
+    lang_draft: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -110,7 +134,8 @@ class Location(db.Model):
         return '<Location %r>' % self.id
 
     def ready_for_publish(self) -> bool:
-        return bool(self.title_draft and self.coords_draft and self.link_to_promo_draft and self.description_draft)
+        return bool(
+            self.title_draft and self.coords_draft and self.link_to_promo_draft and self.description_draft) and self.lang_draft
 
     def prepare_for_publishing(self):
         self.title = self.title_draft
@@ -127,6 +152,7 @@ class Location(db.Model):
             self.links_to_media.append(f'location/{self.id}/media_{cnt}.{media.split(".")[-1]}')
             cnt += 1
         self.published = True
+        self.lang = self.lang_draft
 
 
 class UserProgress(db.Model):

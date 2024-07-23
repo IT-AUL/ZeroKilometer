@@ -72,8 +72,12 @@ def quest_list():
 @quest_bp.get("/uuid")  # return uuid for quest or location
 @jwt_required()
 def quest_uuid():
+    cnt = request.args.get('cnt', 1, int)
+    ans = []
+    for _ in range(cnt):
+        ans.append(str(uuid.uuid4()))
     response = {
-        "uuid": str(uuid.uuid4()),
+        "uuid": ans,
         "status": "success"
     }
     return make_response(jsonify(response), 200)
@@ -116,12 +120,16 @@ def view_quest():
 def save_quest():
     try:
         user_id = get_jwt_identity()
-        print(request.form)
         data = request.form.get('json')
         data = json.loads(data)
-        quest_id = str(data.get("quest_id", None))
-        if quest_id is None:
-            return make_response(jsonify({"message": "Missing quest id"}), 400)
+        try:
+            data = quest_schema.load(data)
+        except ValidationError as e:
+            return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+        # quest_id = str(data.get("quest_id", None))
+        quest_id = data['quest_id']
+        # if quest_id is None:
+        #     return make_response(jsonify({"message": "Missing quest id"}), 400)
         quest = Quest.query.get(quest_id)
         if not quest:
             quest = Quest(quest_id)
@@ -135,13 +143,20 @@ def save_quest():
                     jsonify({"message": "You do not have the rights to edit this quest", "status": "error"}), 403)
 
         delete_quest_res(quest, True)
-        quest.title_draft = data.get('title', None)
-        quest.description_draft = data.get('description', None)
+        quest.title_draft = data['title']
+        quest.description_draft = data['description']
+        quest.language_draft = data['lang']
+        quest.type_draft = data['type']
+
+        # quest.title_draft = data.get('title', None)
+        # quest.description_draft = data.get('description', None)
+        # quest.lang_draft = data.get('lang', None)
 
         quest.locations_draft.clear()
         quest.link_to_promo_draft = None
+        quest.link_to_audio_draft = None
 
-        for loc_id in data.get('locations', []):
+        for loc_id in data['locations']:
             quest.locations_draft.append(Location.query.get(loc_id))
 
         if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):

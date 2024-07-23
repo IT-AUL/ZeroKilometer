@@ -11,6 +11,7 @@ from .models import db, User, UserProgress
 from .storage import upload_file
 from .schemas import UserAuth
 from .tools import check_telegram_authorization
+from flask import current_app as app
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
@@ -33,8 +34,9 @@ def auth():
     try:
         data = request.get_json()
         data = user_auth.load(data)
+        app.logger.info("data valid")
     except ValidationError as e:
-        print(str(e))
+        app.logger.error(f'data is not valid: {e}')
         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
     user_data, valid_data = check_telegram_authorization(TELEGRAM_BOT_TOKEN, data)
     # try:
@@ -55,6 +57,7 @@ def auth():
                     upload_file(BytesIO(response.content), user.link_to_profile_picture)
             db.session.add(user)
             db.session.commit()
+            app.logger.info("user auth success")
         access_token = create_access_token(identity=user_data['id'])
         refresh_token = create_refresh_token(identity=user_data['id'])
         response = {
@@ -85,4 +88,5 @@ def save_progress():
         progress = UserProgress(user_id, quest_id, location_id)
         db.session.add(progress)
     db.session.commit()
+    app.logger.info("user save progress success")
     return make_response(jsonify({"message": "Saved user progress", "status": "success"}), 200)
