@@ -60,8 +60,8 @@ class Quest(db.Model):
     description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location',
                                                           backref=db.backref('quests', lazy='dynamic'))
-    lang: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
-    type: Mapped[Type] = mapped_column(Enum(Type), nullable=False)
+    lang: Mapped[Language] = mapped_column(Enum(Language), nullable=True)
+    type: Mapped[Type] = mapped_column(Enum(Type), nullable=True)
 
     # draft
     title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
@@ -70,8 +70,8 @@ class Quest(db.Model):
     description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     locations_draft: Mapped[list['Location']] = db.relationship('Location', secondary='quest_location_draft',
                                                                 backref=db.backref('draft_quests', lazy='dynamic'))
-    lang_draft: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
-    type_draft: Mapped[Type] = mapped_column(Enum(Type), nullable=False)
+    lang_draft: Mapped[Language] = mapped_column(Enum(Language), nullable=True)
+    type_draft: Mapped[Type] = mapped_column(Enum(Type), nullable=True)
 
     rating: Mapped[float] = mapped_column(nullable=False, default=0)
     rating_count: Mapped[int] = mapped_column(nullable=False, default=0)
@@ -112,7 +112,7 @@ class Location(db.Model):
     description: Mapped[str] = mapped_column(db.String(200), nullable=True)
     links_to_media: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
     link_to_audio: Mapped[str] = mapped_column(db.String(150), nullable=True)
-    lang: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
+    lang: Mapped[Language] = mapped_column(Enum(Language), nullable=True)
 
     # draft
     title_draft: Mapped[str] = mapped_column(db.String(30), nullable=True)
@@ -121,7 +121,7 @@ class Location(db.Model):
     description_draft: Mapped[str] = mapped_column(db.String(200), nullable=True)
     links_to_media_draft: Mapped[MutableList] = mapped_column(MutableList.as_mutable(JSON), nullable=True, default=list)
     link_to_audio_draft: Mapped[str] = mapped_column(db.String(150), nullable=True)
-    lang_draft: Mapped[Language] = mapped_column(Enum(Language), nullable=False)
+    lang_draft: Mapped[Language] = mapped_column(Enum(Language), nullable=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

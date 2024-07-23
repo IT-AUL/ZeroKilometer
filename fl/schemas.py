@@ -26,18 +26,18 @@ class QuestRate(Schema):
 class QuestSchema(Schema):
     quest_id = fields.Str(required=True)
 
-    title = fields.Str(required=False)
-    description = fields.Str(required=False)
-    lang = fields.Enum(Language, required=False)
-    type = fields.Enum(Type, required=False)
+    title = fields.Str(required=False, allow_none=True, missing=None)
+    description = fields.Str(required=False, allow_none=True, missing=None)
+    lang = fields.Enum(Language, required=False, allow_none=True, missing=None)
+    type = fields.Enum(Type, required=False, allow_none=True, missing=None)
 
-    locations = fields.List(fields.Str, required=False, default=[])
+    locations = fields.List(fields.Str, required=False, allow_none=True, missing=[], default=[])
 
 
 class LocationSchema(Schema):
     location_id = fields.Str(required=True)
 
-    title = fields.Str(required=False)
-    coords = fields.Str(required=False)
-    description = fields.Str(required=False)
-    lang = fields.Enum(Language, required=False)
+    title = fields.Str(required=False, allow_none=True, missing=None)
+    coords = fields.Str(required=False, allow_none=True, missing=None)
+    description = fields.Str(required=False, allow_none=True, missing=None)
+    lang = fields.Enum(Language, required=False, allow_none=True, missing=None)

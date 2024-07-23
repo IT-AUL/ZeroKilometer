@@ -145,7 +145,7 @@ def save_quest():
         delete_quest_res(quest, True)
         quest.title_draft = data['title']
         quest.description_draft = data['description']
-        quest.language_draft = data['lang']
+        quest.lang_draft = data['lang']
         quest.type_draft = data['type']
 
         # quest.title_draft = data.get('title', None)
@@ -177,8 +177,8 @@ def save_quest():
         return make_response(jsonify(response), 200)
     except json.JSONDecodeError:
         return make_response(jsonify({"message": "Invalid JSON format", "status": "error"}), 400)
-    except Exception as e:
-        return make_response(jsonify({"message": str(e), "status": "error"}), 500)
+    # except Exception as e:
+    #     return make_response(jsonify({"message": str(e), "status": "error"}), 500)
 
 
 @quest_bp.post("/publish_quest")  # publish quest if it readies to it

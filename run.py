@@ -3,12 +3,12 @@ import os
 from datetime import timedelta
 
 from dotenv import load_dotenv, dotenv_values
+from flask_migrate import Migrate
 
 from fl import create_app
 from fl.models import db
 
 load_dotenv()
-
 # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 # logger = logging.getLogger(__name__)
 
@@ -23,6 +23,7 @@ app = create_app()
 app.config.from_mapping(dotenv_values())
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_EXPIRES')))
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=int(os.getenv('JWT_REFRESH_TOKEN_EXPIRES')))
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.init_app(app)

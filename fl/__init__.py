@@ -10,7 +10,7 @@ from flask_cors import CORS
 
 
 def create_app():
-    logging.basicConfig(filename='flask.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # logging.basicConfig(filename='flask.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     app = Flask(__name__)
 
