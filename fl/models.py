@@ -1,5 +1,6 @@
 import enum
 
+from flask_sqlalchemy.model import Model
 from sqlalchemy import JSON, Enum
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy.orm import Mapped, mapped_column
@@ -42,6 +43,8 @@ class User(db.Model):
     quests: Mapped[list['Quest']] = db.relationship('Quest', backref='user', lazy=True)
     locations: Mapped[list['Location']] = db.relationship('Location', backref='user', lazy=True)
 
+    lines: Mapped[list['Line']] = db.relationship('Line', backref='owner', lazy=True)
+
     def __init__(self, id, username):
         self.id = id
         self.username = username
@@ -78,6 +81,9 @@ class Quest(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     published: Mapped[bool] = mapped_column(default=False, nullable=False)
 
+    lines: Mapped[list['Line']] = db.relationship('Line', backref='quest', lazy=True)
+    lines_draft: Mapped[list['Line']] = db.relationship('Line', backref='quest', lazy=True)
+
     def __init__(self, id):
         self.id = id
 
@@ -100,6 +106,9 @@ class Quest(db.Model):
         self.published = True
         self.lang = self.lang_draft
         self.type = self.type_draft
+
+    def owner(self, user_id):
+        return self.user_id == user_id
 
 
 class Location(db.Model):
@@ -154,6 +163,9 @@ class Location(db.Model):
         self.published = True
         self.lang = self.lang_draft
 
+    def owner(self, user_id):
+        return self.user_id == user_id
+
 
 class UserProgress(db.Model):
     __tablename__ = 'user_progress'
@@ -166,3 +178,29 @@ class UserProgress(db.Model):
         self.user_id = user_id
         self.quest_id = quest_id
         self.location_id = location_id
+
+
+class Line(db.Model):
+    __tablename__ = 'line'
+
+    id: Mapped[str] = mapped_column(db.String(100), primary_key=True)
+    coordinates: Mapped[MutableList[tuple]] = mapped_column(MutableList.as_mutable(JSON), nullable=True)
+    user_id: Mapped[int] = mapped_column(db.ForeignKey('user.id'), nullable=False)
+    quest_id: Mapped[str] = mapped_column(db.ForeignKey('quest.id'), nullable=False)
+
+    def __init__(self, id, coordinates, user_id, quest_id):
+        self.id = id
+        self.coordinates = coordinates
+        self.user_id = user_id
+        self.quest_id = quest_id
+
+    def owner(self, user_id):
+        return self.user_id == user_id
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "coordinates": self.coordinates,
+            "user_id": self.user_id,
+            "quest_id": self.quest_id,
+        }

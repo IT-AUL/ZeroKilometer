@@ -41,3 +41,8 @@ class LocationSchema(Schema):
     coords = fields.Str(required=False, allow_none=True, missing=None)
     description = fields.Str(required=False, allow_none=True, missing=None)
     lang = fields.Enum(Language, required=False, allow_none=True, missing=None)
+
+
+class LineSchema(Schema):
+    coords = fields.List(fields.Tuple((fields.Float(), fields.Float())), required=False, allow_none=True, default=None,
+                         missing=None)

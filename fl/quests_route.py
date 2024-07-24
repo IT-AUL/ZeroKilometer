@@ -1,11 +1,11 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Blueprint, jsonify, request, make_response, send_file
+from flask import Blueprint, jsonify, request, make_response, send_file, current_app as app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
-from .models import db, User, Quest, Location, UserProgress
+from .models import db, User, Quest, Location, UserProgress, Line
 import json
 import uuid
 from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file, load_user_quests
@@ -88,11 +88,14 @@ def quest_uuid():
 def edit_quest():
     user_id = get_jwt_identity()
     quest_id = request.args.get('quest_id', type=str)
-
+    app.logger.info(quest_id)
+    print(quest_id)
+    print(Quest.query.get(quest_id))
     if not Quest.query.get(quest_id):
         return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
     if Quest.query.get(quest_id).user_id != user_id:
         return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
+    print(quest_id)
     return make_response(
         send_file(load_quest_file(Quest.query.get(quest_id), is_draft=True, add_author=False)['message'],
                   download_name="file.zip"),

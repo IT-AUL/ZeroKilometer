@@ -3,6 +3,7 @@ import logging
 from flask import Flask
 from flask.logging import default_handler
 from flask_jwt_extended import JWTManager
+
 from .quests_route import quest_bp
 from .user_routes import user_bp
 from .location_route import location_bp
