@@ -15,9 +15,9 @@ class Language(enum.Enum):
 
 
 class Type(enum.Enum):
-    walking = 'wal'
+    walking = 'walking'
     equestrian = 'equestrian'
-    auto = 'auto'
+    bus = 'bus'
 
 
 location = db.Table('quest_location',
