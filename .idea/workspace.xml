@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Rename types">
-      <change afterPath="$PROJECT_DIR$/fl/line_route.py" afterDir="false" />
+    <list default="true" id="2af6db24-f959-4915-a5ed-8fb1653ea167" name="Changes" comment="[+] Started to add lines">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fl/quests_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/quests_route.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fl/line_route.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/line_route.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fl/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/fl/schemas.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -510,15 +507,9 @@
       <workItem from="1721818509599" duration="1237000" />
       <workItem from="1721820827344" duration="3338000" />
       <workItem from="1721835501720" duration="4067000" />
-      <workItem from="1721840633822" duration="2874000" />
-    </task>
-    <task id="LOCAL-00032" summary="Исправил ошибки&#10;Добавил поддержку боевки">
-      <option name="closed" value="true" />
-      <created>1717784377220</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1717784377220</updated>
+      <workItem from="1721840633822" duration="6480000" />
+      <workItem from="1721898426612" duration="2606000" />
+      <workItem from="1721927701235" duration="2933000" />
     </task>
     <task id="LOCAL-00033" summary="Переделал структуру">
       <option name="closed" value="true" />
@@ -904,7 +895,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721821329998</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="[+] Started to add lines">
+      <option name="closed" value="true" />
+      <created>1721851705704</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1721851705704</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -926,7 +925,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[+] Add schema for user_auth&#10;[*] Deleted unnecessary files" />
     <MESSAGE value="[+] Add jwt auth" />
     <MESSAGE value="[+] Add new db" />
     <MESSAGE value="[+] Add quest saving&#10;[+] New token system" />
@@ -951,7 +949,8 @@
     <MESSAGE value="[+] Add lang and type for quest and lang for location" />
     <MESSAGE value="[+] Add full support for type and lang" />
     <MESSAGE value="[+] Rename types" />
-    <option name="LAST_COMMIT_MESSAGE" value="[+] Rename types" />
+    <MESSAGE value="[+] Started to add lines" />
+    <option name="LAST_COMMIT_MESSAGE" value="[+] Started to add lines" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Hakaton$circle.coverage" NAME="circle Coverage Results" MODIFIED="1716018169715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com/hakaton/quest" />

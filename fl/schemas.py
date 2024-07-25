@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates_schema, ValidationError
 
 from fl.models import Language, Type
 
@@ -46,3 +46,13 @@ class LocationSchema(Schema):
 class LineSchema(Schema):
     coords = fields.List(fields.Tuple((fields.Float(), fields.Float())), required=False, allow_none=True, default=None,
                          missing=None)
+
+
+class LinesSchema(Schema):
+    ids = fields.List(fields.Str, required=False, allow_none=True, default=None)
+    lines = fields.List(fields.Nested(LineSchema()), required=False, allow_none=True, default=None)
+
+    @validates_schema
+    def validate_ids_length(self, data, **kwargs):
+        if len(data['lines']) != len(data['ids']):
+            raise ValidationError("The number of lines must match the number of IDs")
