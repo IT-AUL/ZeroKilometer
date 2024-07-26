@@ -129,10 +129,7 @@ def save_quest():
             data = quest_schema.load(data)
         except ValidationError as e:
             return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
-        # quest_id = str(data.get("quest_id", None))
         quest_id = data['quest_id']
-        # if quest_id is None:
-        #     return make_response(jsonify({"message": "Missing quest id"}), 400)
         quest = Quest.query.get(quest_id)
         if not quest:
             quest = Quest(quest_id)
@@ -150,10 +147,6 @@ def save_quest():
         quest.description_draft = data['description']
         quest.lang_draft = data['lang']
         quest.type_draft = data['type']
-
-        # quest.title_draft = data.get('title', None)
-        # quest.description_draft = data.get('description', None)
-        # quest.lang_draft = data.get('lang', None)
 
         quest.locations_draft.clear()
         quest.link_to_promo_draft = None
@@ -180,8 +173,6 @@ def save_quest():
         return make_response(jsonify(response), 200)
     except json.JSONDecodeError:
         return make_response(jsonify({"message": "Invalid JSON format", "status": "error"}), 400)
-    # except Exception as e:
-    #     return make_response(jsonify({"message": str(e), "status": "error"}), 500)
 
 
 @quest_bp.post("/publish_quest")  # publish quest if it readies to it

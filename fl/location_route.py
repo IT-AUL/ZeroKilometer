@@ -1,8 +1,7 @@
 import os
-import uuid
 
 from dotenv import load_dotenv
-from flask import Blueprint, jsonify, request, make_response, send_file
+from flask import Blueprint, jsonify, request, make_response, send_file, current_app as app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
@@ -25,40 +24,35 @@ MEDIA_FILES = set(os.getenv('MEDIA_FILES').split(','))
 AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
 
 
-@location_bp.get("/user_locations")  # return all user's locations
+@location_bp.get("/users/locations")  # return all user's locations
 @jwt_required()
-def user_locations():
+def get_all_user_locations():
     user_id = get_jwt_identity()
     return make_response(send_file(load_user_locations(user_id)['message'], download_name="file.zip"), 200)
 
 
-@location_bp.put("/save_location")  # add new location/save location
+@location_bp.post('/locations')
 @jwt_required()
-def save_location():
+def create_location():
     user_id = get_jwt_identity()
     data = request.form.get('json')
     data = json.loads(data)
     try:
         data = location_schema.load(data)
     except ValidationError as err:
+        app.logger.error(err.messages)
         return make_response(jsonify({"message": "Data is not valid"}), 422)
 
     location_id = data['location_id']
-    # location_id = data.get("location_id", None)
-    # if not location_id:
-    #     return make_response(jsonify({"message": "Missing location_id"}), 400)
 
     location: Location = Location.query.get(location_id)
-    if not location:
-        location = Location(location_id)
-        location.user_id = user_id
-        db.session.add(location)
-        db.session.commit()
-    else:
-        user = User.query.filter_by(id=user_id).first()
-        if not any(loc.id == location_id for loc in user.locations):
-            return make_response(
-                jsonify({"message": "You do not have the rights to edit this location", "status": "error"}), 403)
+    if location:
+        return make_response(jsonify({"message": "Location already exists", "status": "error"}), 422)
+
+    location = Location(location_id)
+    location.user_id = user_id
+    db.session.add(location)
+    db.session.commit()
 
     ans = delete_location_res(location, True)
     if ans['status'] == 'error':
@@ -68,9 +62,7 @@ def save_location():
     location.coords_draft = data['coords']
     location.description_draft = data['description']
     location.lang_draft = data['lang']
-    # location.title_draft = data.get('title', None)
-    # location.coords_draft = data.get('coords', None)
-    # location.description_draft = data.get('description', None)
+
     location.links_to_media_draft.clear()
     location.link_to_promo_draft = None
     location.link_to_audio_draft = None
@@ -100,11 +92,70 @@ def save_location():
     return make_response(jsonify(response), 200)
 
 
-@location_bp.post("/publish_location")  # checks that the location is ready for publication and sends it if so
+@location_bp.put("/location")  # add new location/save location
 @jwt_required()
-def publish_location():
+def update_location():
     user_id = get_jwt_identity()
-    location_id = request.json['location_id']
+    data = request.form.get('json')
+    data = json.loads(data)
+    try:
+        data = location_schema.load(data)
+    except ValidationError as err:
+        return make_response(jsonify({"message": "Data is not valid"}), 422)
+
+    location_id = data['location_id']
+
+    location: Location = Location.query.get(location_id)
+    if not location:
+        return make_response(jsonify({"message": "Location does not exists", "status": "error"}), 422)
+    user = User.query.filter_by(id=user_id).first()
+    if not any(loc.id == location_id for loc in user.locations):
+        return make_response(
+            jsonify({"message": "You do not have the rights to edit this location", "status": "error"}), 403)
+
+    ans = delete_location_res(location, True)
+    if ans['status'] == 'error':
+        return make_response(jsonify({"message": "Something going wrong", "status": "error"}), 500)
+
+    location.title_draft = data['title']
+    location.coords_draft = data['coords']
+    location.description_draft = data['description']
+    location.lang_draft = data['lang']
+
+    location.links_to_media_draft.clear()
+    location.link_to_promo_draft = None
+    location.link_to_audio_draft = None
+
+    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
+        location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
+        upload_file(request.files['promo'], location.link_to_promo_draft)
+
+    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
+        location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+        upload_file(request.files['audio'], location.link_to_promo_draft)
+
+    if 'media' in request.files:
+        cnt = 0
+        for media in request.files.getlist('media'):
+            if is_file_allowed(media.filename, MEDIA_FILES):
+                location.links_to_media_draft.append(
+                    f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
+                upload_file(media, location.links_to_media_draft[-1])
+                cnt += 1
+
+    db.session.commit()
+    response = {
+        "message": "Location saved",
+        "status": "success"
+    }
+    return make_response(jsonify(response), 200)
+
+
+@location_bp.post(
+    "/locations/<str:location_id>/publish")  # checks that the location is ready for publication and sends it if so
+@jwt_required()
+def publish_location(location_id):
+    user_id = get_jwt_identity()
 
     location: Location = Location.query.get(location_id)
     user: User = User.query.get(user_id)
@@ -127,11 +178,10 @@ def publish_location():
     return make_response(jsonify({"message": "The location was successfully published", "status": "success"}), 200)
 
 
-@location_bp.get("/quest_locations")  # return all quest's locations
+@location_bp.get("/quests/str:quest_id/locations")  # return all quest's locations
 @jwt_required()
-def quest_locations():
+def get_all_quest_locations(quest_id):
     user_id = get_jwt_identity()
-    quest_id = request.args.get('quest_id', None, type=str)
     is_draft = request.args.get('is_draft', False, type=bool)
 
     if not quest_id:
@@ -153,11 +203,10 @@ def quest_locations():
 
 
 @location_bp.delete(
-    "/delete_location")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
+    "/locations/<str:location_id>")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
 @jwt_required()
-def delete_location():
+def delete_location(location_id):
     user_id = get_jwt_identity()
-    location_id = request.json['location_id']
     location: Location = Location.query.get(location_id)
     if not location or location.user_id != user_id:
         return make_response(jsonify({"message": "You can't delete this location", "status": "error"}), 403)

@@ -61,29 +61,30 @@ def create_lines(quest_id):
         return make_response(jsonify({"message": "Error", "status": "error"}), 500)
 
 
-@line_bp.put('/lines/str:line_id')
-@jwt_required()
-def update_line(line_id):
-    user_id = get_jwt_identity()
-    line: Line = Line.query.get(line_id)
-    try:
-        data = line_schema.load(request.json)
-    except ValidationError as err:
-        app.logger.error(f'data {request.json}, err {err.messages}')
-        return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 400)
-
-    if not line or not line.owner(user_id):
-        return make_response(jsonify({"message": "Line does not exist", "status": "error"}), 404)
-
-    line.coords = data['coords']
-    try:
-        db.session.commit()
-        return make_response(jsonify({"message": "Success", "status": "success"}), 201)
-    except Exception as e:
-        db.session.flush()
-        app.logger.error(e)
-        return make_response(jsonify({"message": "Error", "status": "error"}), 500)
-
+#
+# @line_bp.put('/lines/str:line_id')
+# @jwt_required()
+# def update_line(line_id):
+#     user_id = get_jwt_identity()
+#     line: Line = Line.query.get(line_id)
+#     try:
+#         data = line_schema.load(request.json)
+#     except ValidationError as err:
+#         app.logger.error(f'data {request.json}, err {err.messages}')
+#         return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 400)
+#
+#     if not line or not line.owner(user_id):
+#         return make_response(jsonify({"message": "Line does not exist", "status": "error"}), 404)
+#
+#     line.coords = data['coords']
+#     try:
+#         db.session.commit()
+#         return make_response(jsonify({"message": "Success", "status": "success"}), 201)
+#     except Exception as e:
+#         db.session.flush()
+#         app.logger.error(e)
+#         return make_response(jsonify({"message": "Error", "status": "error"}), 500)
+#
 
 @line_bp.delete('/lines/str:line_id')
 @jwt_required()
