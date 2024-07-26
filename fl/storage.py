@@ -305,3 +305,22 @@ def load_quest_file(quest, is_draft: bool, add_author: bool):
 
     except Exception as e:
         return {"message": str(e), "status": "error"}
+
+
+def load_location_file(location: Location, is_draft: bool, add_author: bool):
+    try:
+        ans = load_location(location, is_draft, add_author)
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_ref:
+            if ans['status'] == 'success':
+                ans = ans['message']
+                for path, content in ans['files']:
+                    path = path.split('/', 2)[-1]
+                    zip_ref.writestr(f'{location.id}/{path}', content)
+                zip_ref.writestr(f'{location.id}/data.json', ans['data'])
+
+        zip_buffer.seek(0)
+        return {"message": zip_buffer, "status": "success"}
+
+    except Exception as e:
+        return {"message": str(e), "status": "error"}

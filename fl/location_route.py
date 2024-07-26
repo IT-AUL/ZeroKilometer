@@ -7,7 +7,8 @@ from marshmallow import ValidationError
 
 from .models import db, User, Location, Quest, UserProgress
 import json
-from .storage import delete_location_res, load_user_locations, upload_file, copy_file, load_quest_locations
+from .storage import delete_location_res, load_user_locations, upload_file, copy_file, load_quest_locations, \
+    load_location_file
 from .schemas import QuestSchema, QuestRate, LocationSchema
 from .tools import is_file_allowed
 
@@ -22,13 +23,6 @@ location_bp = Blueprint('location_bp', __name__)
 PROMO_FILES = set(os.getenv('PROMO_FILES').split(','))
 MEDIA_FILES = set(os.getenv('MEDIA_FILES').split(','))
 AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
-
-
-@location_bp.get("/users/locations")  # return all user's locations
-@jwt_required()
-def get_all_user_locations():
-    user_id = get_jwt_identity()
-    return make_response(send_file(load_user_locations(user_id)['message'], download_name="file.zip"), 200)
 
 
 @location_bp.post('/locations')
@@ -92,9 +86,26 @@ def create_location():
     return make_response(jsonify(response), 200)
 
 
-@location_bp.put("/location")  # add new location/save location
+@location_bp.get("/locations/<str:location_id>")
 @jwt_required()
-def update_location():
+def get_location(location_id):
+    is_draft = request.args.get('is_draft', default=False, type=bool)
+    add_author = request.args.get('add_author', default=True, type=bool)
+    user_id = get_jwt_identity()
+    location: Location = Location.query.get(location_id)
+
+    if not location:
+        return make_response(jsonify({"message": "Location not found", "status": "error"}), 404)
+    if is_draft and not location.owner(user_id):
+        return make_response(jsonify({"message": "User is not owner", "status": "error"}), 403)
+
+    return make_response(
+        send_file(load_location_file(location, is_draft, add_author)['message'], download_name='file.zip'), 200)
+
+
+@location_bp.put("/location/<str:location_id>")  # add new location/save location
+@jwt_required()
+def update_location(location_id):
     user_id = get_jwt_identity()
     data = request.form.get('json')
     data = json.loads(data)
@@ -102,8 +113,6 @@ def update_location():
         data = location_schema.load(data)
     except ValidationError as err:
         return make_response(jsonify({"message": "Data is not valid"}), 422)
-
-    location_id = data['location_id']
 
     location: Location = Location.query.get(location_id)
     if not location:
@@ -151,6 +160,57 @@ def update_location():
     return make_response(jsonify(response), 200)
 
 
+@location_bp.delete(
+    "/locations/<str:location_id>")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
+@jwt_required()
+def delete_location(location_id):
+    user_id = get_jwt_identity()
+    location: Location = Location.query.get(location_id)
+    if not location or location.user_id != user_id:
+        return make_response(jsonify({"message": "You can't delete this location", "status": "error"}), 403)
+
+    for quest in User.query.get(user_id).quests:
+        if location in quest.locations and len(quest.locations) == 1:
+            quest.published = False
+    user_progresses = UserProgress.query.filter_by(location_id=location_id).all()
+    for progress in user_progresses:
+        db.session.delete(progress)
+    delete_location_res(location, True)
+    delete_location_res(location, False)
+    db.session.delete(location)
+    db.session.commit()
+
+    return make_response(jsonify({"message": "Location deleted", "status": "success"}), 200)
+
+
+@location_bp.get("/users/locations")  # return all user's locations
+@jwt_required()
+def get_all_user_locations():
+    user_id = get_jwt_identity()
+    return make_response(send_file(load_user_locations(user_id)['message'], download_name="file.zip"), 200)
+
+
+@location_bp.get("/quests/str:quest_id/locations")  # return all quest's locations
+@jwt_required()
+def get_all_quest_locations(quest_id):
+    user_id = get_jwt_identity()
+    is_draft = request.args.get('is_draft', False, type=bool)
+
+    quest: Quest = Quest.query.get(quest_id)
+    if not quest:
+        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 400)
+
+    if is_draft and not quest.owner(user_id):
+        return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
+
+    if not quest.published and not quest.owner(user_id):
+        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 403)
+
+    ans = load_quest_locations(quest, is_draft)
+    if ans['status'] == 'success':
+        return make_response(send_file(ans['message'], download_name='file.zip'), 200)
+
+
 @location_bp.post(
     "/locations/<str:location_id>/publish")  # checks that the location is ready for publication and sends it if so
 @jwt_required()
@@ -176,50 +236,3 @@ def publish_location(location_id):
     db.session.commit()
 
     return make_response(jsonify({"message": "The location was successfully published", "status": "success"}), 200)
-
-
-@location_bp.get("/quests/str:quest_id/locations")  # return all quest's locations
-@jwt_required()
-def get_all_quest_locations(quest_id):
-    user_id = get_jwt_identity()
-    is_draft = request.args.get('is_draft', False, type=bool)
-
-    if not quest_id:
-        return make_response(jsonify({"message": "quest_id is required", "status": "error"}), 400)
-
-    quest: Quest = Quest.query.get(quest_id)
-    if not quest:
-        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 400)
-
-    if is_draft and quest.user_id != user_id:
-        return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
-
-    if not quest.published and quest.user_id != user_id:
-        return make_response(jsonify({"message": "Quest not found", "status": "error"}), 400)
-
-    ans = load_quest_locations(quest, is_draft)
-    if ans['status'] == 'success':
-        return make_response(send_file(ans['message'], download_name='file.zip'), 200)
-
-
-@location_bp.delete(
-    "/locations/<str:location_id>")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
-@jwt_required()
-def delete_location(location_id):
-    user_id = get_jwt_identity()
-    location: Location = Location.query.get(location_id)
-    if not location or location.user_id != user_id:
-        return make_response(jsonify({"message": "You can't delete this location", "status": "error"}), 403)
-
-    for quest in User.query.get(user_id).quests:
-        if location in quest.locations and len(quest.locations) == 1:
-            quest.published = False
-    user_progresses = UserProgress.query.filter_by(location_id=location_id).all()
-    for progress in user_progresses:
-        db.session.delete(progress)
-    delete_location_res(location, True)
-    delete_location_res(location, False)
-    db.session.delete(location)
-    db.session.commit()
-
-    return make_response(jsonify({"message": "Location deleted", "status": "success"}), 200)

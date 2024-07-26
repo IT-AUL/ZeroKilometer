@@ -35,7 +35,6 @@ class QuestSchema(Schema):
 
 
 class LocationSchema(Schema):
-    location_id = fields.Str(required=True)
 
     title = fields.Str(required=False, allow_none=True, missing=None)
     coords = fields.Str(required=False, allow_none=True, missing=None)
