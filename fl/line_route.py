@@ -14,7 +14,7 @@ lines_schema = LinesSchema()
 line_bp = Blueprint('line_bp', __name__)
 
 
-@line_bp.post('/lines/str:quest_id/str:line_id')
+@line_bp.post('/lines/uuid:quest_id/uuid:line_id')
 @jwt_required()
 def create_line(quest_id, line_id):
     user_id = get_jwt_identity()
@@ -38,7 +38,7 @@ def create_line(quest_id, line_id):
     return make_response(jsonify({"message": "Line already exist", "status": "error"}), 422)
 
 
-@line_bp.post('/lines/str:quest_id')
+@line_bp.post('/lines/uuid:quest_id')
 @jwt_required()
 def create_lines(quest_id):
     user_id = get_jwt_identity()
@@ -86,7 +86,7 @@ def create_lines(quest_id):
 #         return make_response(jsonify({"message": "Error", "status": "error"}), 500)
 #
 
-@line_bp.delete('/lines/str:line_id')
+@line_bp.delete('/lines/uuid:line_id')
 @jwt_required()
 def delete_line(line_id):
     user_id = get_jwt_identity()
@@ -104,7 +104,7 @@ def delete_line(line_id):
         return make_response(jsonify({"message": "Error", "status": "error"}), 500)
 
 
-@line_bp.delete('/lines/str:quest_id')
+@line_bp.delete('/lines/uuid:quest_id')
 @jwt_required()
 def delete_quest_lines(quest_id):
     user_id = get_jwt_identity()
@@ -127,7 +127,7 @@ def delete_quest_lines(quest_id):
         return make_response(jsonify({"message": "Error", "status": "error"}), 500)
 
 
-@line_bp.get('/lines/str:line_id')
+@line_bp.get('/lines/uuid:line_id')
 @jwt_required()
 def get_line(line_id):
     user_id = get_jwt_identity()
@@ -151,7 +151,7 @@ def get_user_lines():
     return make_response(jsonify({"lines": ans, "status": "success"}), 200)
 
 
-@line_bp.get('/lines/str:quest_id')
+@line_bp.get('/lines/uuid:quest_id')
 @jwt_required()
 def get_quest_lines(quest_id):
     user_id = get_jwt_identity()

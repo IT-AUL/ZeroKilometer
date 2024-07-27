@@ -1,11 +1,6 @@
-from marshmallow import Schema, fields, validates_schema, ValidationError
+from marshmallow import Schema, fields, validates_schema, ValidationError, post_load
 
 from fl.models import Language, Type
-
-
-# class QuestSchema(Schema):
-#     quest_id = fields.UUID(required=True)
-#     title = fields.Str(required=True)
 
 
 class UserAuth(Schema):
@@ -34,12 +29,46 @@ class QuestSchema(Schema):
     locations = fields.List(fields.Str, required=False, allow_none=True, missing=[], default=[])
 
 
-class LocationSchema(Schema):
+class CreateLocationSchema(Schema):
+    location_id = fields.UUID(required=True, allow_none=False)
 
-    title = fields.Str(required=False, allow_none=True, missing=None)
+    @post_load
+    def convert_id_to_string(self, data, **kwargs):
+        data['location_id'] = str(data['location_id'])
+        return data
+
+
+class CreateLocationsSchema(Schema):
+    locations_id = fields.List(fields.UUID, required=True, allow_none=False)
+
+    @post_load
+    def convert_ids_to_string(self, data, **kwargs):
+        for i in range(len(data['locations_id'])):
+            data['locations_id'][i] = str(data['locations_id'][i])
+        return data
+
+
+class UpdateLocationSchema(Schema):
+    title = fields.Str(required=False, allow_none=True, missing=None, )
     coords = fields.Str(required=False, allow_none=True, missing=None)
     description = fields.Str(required=False, allow_none=True, missing=None)
     lang = fields.Enum(Language, required=False, allow_none=True, missing=None)
+
+
+class LocationSchema(Schema):
+    location_id = fields.UUID(required=True, allow_none=False)
+    title = fields.Str(required=False, allow_none=True, missing=None, )
+    coords = fields.Str(required=False, allow_none=True, missing=None)
+    description = fields.Str(required=False, allow_none=True, missing=None)
+    lang = fields.Enum(Language, required=False, allow_none=True, missing=None)
+
+    @post_load
+    def convert_ids_to_string(self, data, **kwargs):
+        data['location_id'] = str(data['location_id'])
+        return data
+
+
+# class UpdateLocationsSchema(Schema):
 
 
 class LineSchema(Schema):

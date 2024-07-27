@@ -9,14 +9,14 @@ from .models import db, User, Location, Quest, UserProgress
 import json
 from .storage import delete_location_res, load_user_locations, upload_file, copy_file, load_quest_locations, \
     load_location_file
-from .schemas import QuestSchema, QuestRate, LocationSchema
+from .schemas import QuestSchema, QuestRate, UpdateLocationSchema, CreateLocationSchema
 from .tools import is_file_allowed
 
 load_dotenv()
 
 quest_schema = QuestSchema()
 quest_rating = QuestRate()
-location_schema = LocationSchema()
+location_schema = UpdateLocationSchema()
 
 location_bp = Blueprint('location_bp', __name__)
 
@@ -29,13 +29,13 @@ AUDIO_FILES = set(os.getenv('AUDIO_FILES').split(','))
 @jwt_required()
 def create_location():
     user_id = get_jwt_identity()
-    data = request.form.get('json')
-    data = json.loads(data)
+    data = request.get_json()
+    schema = CreateLocationSchema()
     try:
-        data = location_schema.load(data)
+        data = schema.load(data)
     except ValidationError as err:
-        app.logger.error(err.messages)
-        return make_response(jsonify({"message": "Data is not valid"}), 422)
+        app.logger.error(err)
+        return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
 
     location_id = data['location_id']
 
@@ -43,50 +43,57 @@ def create_location():
     if location:
         return make_response(jsonify({"message": "Location already exists", "status": "error"}), 422)
 
-    location = Location(location_id)
-    location.user_id = user_id
-    db.session.add(location)
-    db.session.commit()
-
-    ans = delete_location_res(location, True)
-    if ans['status'] == 'error':
-        return make_response(jsonify({"message": "Something going wrong", "status": "error"}), 500)
-
-    location.title_draft = data['title']
-    location.coords_draft = data['coords']
-    location.description_draft = data['description']
-    location.lang_draft = data['lang']
-
-    location.links_to_media_draft.clear()
-    location.link_to_promo_draft = None
-    location.link_to_audio_draft = None
-
-    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
-        location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
-        upload_file(request.files['promo'], location.link_to_promo_draft)
-
-    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
-        location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
-        upload_file(request.files['audio'], location.link_to_promo_draft)
-
-    if 'media' in request.files:
-        cnt = 0
-        for media in request.files.getlist('media'):
-            if is_file_allowed(media.filename, MEDIA_FILES):
-                location.links_to_media_draft.append(
-                    f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
-                upload_file(media, location.links_to_media_draft[-1])
-                cnt += 1
-
-    db.session.commit()
-    response = {
-        "message": "Location saved",
-        "status": "success"
-    }
-    return make_response(jsonify(response), 200)
+    try:
+        location = Location(location_id)
+        location.user_id = user_id
+        db.session.add(location)
+        db.session.commit()
+        return make_response(jsonify({"message": "Location created", "status": "susses"}), 201)
+    except Exception as e:
+        app.logger.error(e)
+        db.session.flush()
+        return make_response(jsonify({"message": "Location could not be created", "status": "error"}), 500)
 
 
-@location_bp.get("/locations/<str:location_id>")
+# ans = delete_location_res(location, True)
+# if ans['status'] == 'error':
+#     return make_response(jsonify({"message": "Something going wrong", "status": "error"}), 500)
+#
+# location.title_draft = data['title']
+# location.coords_draft = data['coords']
+# location.description_draft = data['description']
+# location.lang_draft = data['lang']
+#
+# location.links_to_media_draft.clear()
+# location.link_to_promo_draft = None
+# location.link_to_audio_draft = None
+#
+# if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
+#     location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
+#     upload_file(request.files['promo'], location.link_to_promo_draft)
+#
+# if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
+#     location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+#     upload_file(request.files['audio'], location.link_to_promo_draft)
+#
+# if 'media' in request.files:
+#     cnt = 0
+#     for media in request.files.getlist('media'):
+#         if is_file_allowed(media.filename, MEDIA_FILES):
+#             location.links_to_media_draft.append(
+#                 f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
+#             upload_file(media, location.links_to_media_draft[-1])
+#             cnt += 1
+#
+# db.session.commit()
+# response = {
+#     "message": "Location saved",
+#     "status": "success"
+# }
+# return make_response(jsonify(response), 200)
+
+
+@location_bp.get("/locations/<uuid:location_id>")
 @jwt_required()
 def get_location(location_id):
     is_draft = request.args.get('is_draft', default=False, type=bool)
@@ -103,7 +110,7 @@ def get_location(location_id):
         send_file(load_location_file(location, is_draft, add_author)['message'], download_name='file.zip'), 200)
 
 
-@location_bp.put("/location/<str:location_id>")  # add new location/save location
+@location_bp.put("/location/<uuid:location_id>")  # add new location/save location
 @jwt_required()
 def update_location(location_id):
     user_id = get_jwt_identity()
@@ -121,37 +128,38 @@ def update_location(location_id):
     if not any(loc.id == location_id for loc in user.locations):
         return make_response(
             jsonify({"message": "You do not have the rights to edit this location", "status": "error"}), 403)
+    #
+    # ans = delete_location_res(location, True)
+    # if ans['status'] == 'error':
+    #     return make_response(jsonify({"message": "Something going wrong", "status": "error"}), 500)
+    #
+    # location.title_draft = data['title']
+    # location.coords_draft = data['coords']
+    # location.description_draft = data['description']
+    # location.lang_draft = data['lang']
+    #
+    # location.links_to_media_draft.clear()
+    # location.link_to_promo_draft = None
+    # location.link_to_audio_draft = None
+    #
+    # if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
+    #     location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
+    #     upload_file(request.files['promo'], location.link_to_promo_draft)
+    #
+    # if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
+    #     location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+    #     upload_file(request.files['audio'], location.link_to_promo_draft)
+    #
+    # if 'media' in request.files:
+    #     cnt = 0
+    #     for media in request.files.getlist('media'):
+    #         if is_file_allowed(media.filename, MEDIA_FILES):
+    #             location.links_to_media_draft.append(
+    #                 f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
+    #             upload_file(media, location.links_to_media_draft[-1])
+    #             cnt += 1
 
-    ans = delete_location_res(location, True)
-    if ans['status'] == 'error':
-        return make_response(jsonify({"message": "Something going wrong", "status": "error"}), 500)
-
-    location.title_draft = data['title']
-    location.coords_draft = data['coords']
-    location.description_draft = data['description']
-    location.lang_draft = data['lang']
-
-    location.links_to_media_draft.clear()
-    location.link_to_promo_draft = None
-    location.link_to_audio_draft = None
-
-    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
-        location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
-        upload_file(request.files['promo'], location.link_to_promo_draft)
-
-    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
-        location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
-        upload_file(request.files['audio'], location.link_to_promo_draft)
-
-    if 'media' in request.files:
-        cnt = 0
-        for media in request.files.getlist('media'):
-            if is_file_allowed(media.filename, MEDIA_FILES):
-                location.links_to_media_draft.append(
-                    f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
-                upload_file(media, location.links_to_media_draft[-1])
-                cnt += 1
-
+    update(location, data)
     db.session.commit()
     response = {
         "message": "Location saved",
@@ -161,7 +169,7 @@ def update_location(location_id):
 
 
 @location_bp.delete(
-    "/locations/<str:location_id>")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
+    "/locations/<uuid:location_id>")  # delete location (if after deleting location, there are no points left in some quests, they become unpublishable)
 @jwt_required()
 def delete_location(location_id):
     user_id = get_jwt_identity()
@@ -183,6 +191,43 @@ def delete_location(location_id):
     return make_response(jsonify({"message": "Location deleted", "status": "success"}), 200)
 
 
+@location_bp.post('/locations/blum')
+@jwt_required()
+def create_locations():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+    schema = CreateLocationSchema(many=True)
+    try:
+        data = schema.load(data)
+    except ValidationError as err:
+        app.logger.error(err)
+        return make_response(jsonify({"message": "Data is not valid", "status": "error"}), 422)
+
+    print(data)
+    locations_id = data['locations_id']
+
+    error = []
+
+    for loc_id in locations_id:
+        try:
+            location: Location = Location.query.get(loc_id)
+            if location:
+                error.append({"message": f"{loc_id} location already exists", "status": "error"})
+                continue
+
+            location = Location(loc_id)
+            location.user_id = user_id
+            db.session.add(location)
+            db.session.commit()
+        except Exception as e:
+            app.logger.error(e)
+            db.session.flush()
+            error.append(loc_id)
+    if len(error) > 0:
+        return make_response(jsonify({"message": "Some locations could not be created", "status": "error"}), 500)
+    return make_response(jsonify({"message": "Locations created", "status": "success"}), 200)
+
+
 @location_bp.get("/users/locations")  # return all user's locations
 @jwt_required()
 def get_all_user_locations():
@@ -190,7 +235,7 @@ def get_all_user_locations():
     return make_response(send_file(load_user_locations(user_id)['message'], download_name="file.zip"), 200)
 
 
-@location_bp.get("/quests/str:quest_id/locations")  # return all quest's locations
+@location_bp.get("/quests/uuid:quest_id/locations")  # return all quest's locations
 @jwt_required()
 def get_all_quest_locations(quest_id):
     user_id = get_jwt_identity()
@@ -212,7 +257,7 @@ def get_all_quest_locations(quest_id):
 
 
 @location_bp.post(
-    "/locations/<str:location_id>/publish")  # checks that the location is ready for publication and sends it if so
+    "/locations/<uuid:location_id>/publish")  # checks that the location is ready for publication and sends it if so
 @jwt_required()
 def publish_location(location_id):
     user_id = get_jwt_identity()
@@ -236,3 +281,35 @@ def publish_location(location_id):
     db.session.commit()
 
     return make_response(jsonify({"message": "The location was successfully published", "status": "success"}), 200)
+
+
+def update(location: Location, data):
+    ans = delete_location_res(location, True)
+    if ans['status'] == 'error':
+        return jsonify({"message": "Something going wrong", "status": "error"})
+
+    location.title_draft = data['title']
+    location.coords_draft = data['coords']
+    location.description_draft = data['description']
+    location.lang_draft = data['lang']
+
+    location.links_to_media_draft.clear()
+    location.link_to_promo_draft = None
+    location.link_to_audio_draft = None
+
+    if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
+        location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
+        upload_file(request.files['promo'], location.link_to_promo_draft)
+
+    if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
+        location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+        upload_file(request.files['audio'], location.link_to_promo_draft)
+
+    if 'media' in request.files:
+        cnt = 0
+        for media in request.files.getlist('media'):
+            if is_file_allowed(media.filename, MEDIA_FILES):
+                location.links_to_media_draft.append(
+                    f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
+                upload_file(media, location.links_to_media_draft[-1])
+                cnt += 1
