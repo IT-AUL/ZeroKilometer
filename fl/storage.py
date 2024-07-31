@@ -8,6 +8,15 @@ import boto3
 from dotenv import load_dotenv
 
 from fl.models import Quest, User, Location
+from enum import Enum as PyEnum
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, PyEnum):
+            return obj.value
+        return super(CustomJSONEncoder, self).default(obj)
+
 
 load_dotenv()
 session = boto3.session.Session()
@@ -223,7 +232,7 @@ def load_quest(quest: Quest, is_draft: bool = False, add_author: bool = False):
             json_data['rating'] = quest.rating
             json_data['rating_count'] = quest.rating_count
             json_data["author_name"] = User.query.get(quest.user_id).username
-        ans["data"] = json.dumps(json_data).encode('utf-8')
+        ans["data"] = json.dumps(json_data, cls=CustomJSONEncoder).encode('utf-8')
         return {"message": ans, "status": "success"}
 
     except Exception as e:
@@ -280,7 +289,7 @@ def load_location(location: Location, is_draft: bool = False, add_author: bool =
         if add_author:
             json_data["author_name"] = User.query.get(location.user_id).username
 
-        ans["data"] = json.dumps(json_data).encode('utf-8')
+        ans["data"] = json.dumps(json_data, cls=CustomJSONEncoder).encode('utf-8')
 
         return {"message": ans, "status": "success"}
 

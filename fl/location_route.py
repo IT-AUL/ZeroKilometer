@@ -302,8 +302,8 @@ def update(location: Location, data):
         upload_file(request.files['promo'], location.link_to_promo_draft)
 
     if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
-        location.link_to_promo_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
-        upload_file(request.files['audio'], location.link_to_promo_draft)
+        location.link_to_audio_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+        upload_file(request.files['audio'], location.link_to_audio_draft)
 
     if 'media' in request.files:
         cnt = 0

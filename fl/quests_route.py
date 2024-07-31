@@ -89,13 +89,10 @@ def edit_quest():
     user_id = get_jwt_identity()
     quest_id = request.args.get('quest_id', type=str)
     app.logger.info(quest_id)
-    print(quest_id)
-    print(Quest.query.get(quest_id))
     if not Quest.query.get(quest_id):
         return make_response(jsonify({"message": "Quest not found", "status": "error"}), 404)
     if Quest.query.get(quest_id).user_id != user_id:
         return make_response(jsonify({"message": "You can't edit this quest", "status": "error"}), 403)
-    print(quest_id)
     return make_response(
         send_file(load_quest_file(Quest.query.get(quest_id), is_draft=True, add_author=False)['message'],
                   download_name="file.zip"),
@@ -160,10 +157,11 @@ def save_quest():
             quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
             upload_file(request.files['promo'], quest.link_to_promo_draft)
 
-        if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, PROMO_FILES):
+        if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
             # save file
-            quest.link_to_promo_draft = f"quest/{quest_id}/audio_draft.{request.files["audio"].filename.split('.')[-1]}"
-            upload_file(request.files['audio'], quest.link_to_promo_draft)
+
+            quest.link_to_audio_draft = f"quest/{quest_id}/audio_draft.{request.files["audio"].filename.split('.')[-1]}"
+            upload_file(request.files['audio'], quest.link_to_audio_draft)
 
         db.session.commit()
         response = {

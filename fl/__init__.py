@@ -4,10 +4,10 @@ from flask import Flask
 from flask.logging import default_handler
 from flask_jwt_extended import JWTManager
 
+from .line_route import line_bp
 from .quests_route import quest_bp
 from .user_routes import user_bp
 from .location_route import location_bp
-from .line_route import line_bp
 from flask_cors import CORS
 
 

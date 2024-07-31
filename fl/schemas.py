@@ -57,7 +57,7 @@ class UpdateLocationSchema(Schema):
 
 class LocationSchema(Schema):
     location_id = fields.UUID(required=True, allow_none=False)
-    title = fields.Str(required=False, allow_none=True, missing=None, )
+    title = fields.Str(required=False, allow_none=True, missing=None)
     coords = fields.Str(required=False, allow_none=True, missing=None)
     description = fields.Str(required=False, allow_none=True, missing=None)
     lang = fields.Enum(Language, required=False, allow_none=True, missing=None)
@@ -72,15 +72,21 @@ class LocationSchema(Schema):
 
 
 class LineSchema(Schema):
+    line_id = fields.UUID(required=True, allow_none=False)
     coords = fields.List(fields.Tuple((fields.Float(), fields.Float())), required=False, allow_none=True, default=None,
                          missing=None)
 
+    @post_load
+    def convert_ids_to_string(self, data, **kwargs):
+        data['line_id'] = str(data['line_id'])
+        return data
 
-class LinesSchema(Schema):
-    ids = fields.List(fields.Str, required=False, allow_none=True, default=None)
-    lines = fields.List(fields.Nested(LineSchema()), required=False, allow_none=True, default=None)
-
-    @validates_schema
-    def validate_ids_length(self, data, **kwargs):
-        if len(data['lines']) != len(data['ids']):
-            raise ValidationError("The number of lines must match the number of IDs")
+    #
+# class LinesSchema(Schema):
+#     ids = fields.List(fields.Str, required=False, allow_none=True, default=None)
+#     lines = fields.List(fields.Nested(LineSchema()), required=False, allow_none=True, default=None)
+#
+#     @validates_schema
+#     def validate_ids_length(self, data, **kwargs):
+#         if len(data['lines']) != len(data['ids']):
+#             raise ValidationError("The number of lines must match the number of IDs")
