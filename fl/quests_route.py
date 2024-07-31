@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request, make_response, send_file, current
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
-from .models import db, User, Quest, Location, UserProgress, Line
+from .models import db, User, Quest, Location, UserProgress
 import json
 import uuid
 from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file, load_user_quests
