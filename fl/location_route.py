@@ -96,8 +96,8 @@ def create_location():
 @location_bp.get("/locations/<uuid:location_id>")
 @jwt_required()
 def get_location(location_id):
-    is_draft = request.args.get('is_draft', default=False, type=bool)
-    add_author = request.args.get('add_author', default=True, type=bool)
+    is_draft = request.args.get('is_draft', default=False, type=lambda v: v.lower() == 'true')
+    add_author = request.args.get('add_author', default=True, type=lambda v: v.lower() == 'true')
     user_id = get_jwt_identity()
     location: Location = Location.query.get(location_id)
 
@@ -239,7 +239,7 @@ def get_all_user_locations():
 @jwt_required()
 def get_all_quest_locations(quest_id):
     user_id = get_jwt_identity()
-    is_draft = request.args.get('is_draft', False, type=bool)
+    is_draft = request.args.get('is_draft', default=False, type=lambda v: v.lower() == 'true')
 
     quest: Quest = Quest.query.get(quest_id)
     if not quest:
