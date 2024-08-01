@@ -1,6 +1,10 @@
 import os
 from datetime import datetime, timedelta
+from io import BytesIO
 
+from PIL import Image
+from pydub import AudioSegment
+import moviepy.editor as mp
 from dotenv import load_dotenv
 import hashlib
 import hmac
@@ -15,6 +19,30 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 def is_file_allowed(filename, allowed_extensions):
     return (filename != '') and '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+
+def convert_image_to_webp(image):
+    image = Image.open(image)
+    webp_image = BytesIO()
+    image.save(webp_image, format='WEBP')
+    webp_image.seek(0)
+    return webp_image
+
+
+def convert_audio_to_aac(audio):
+    audio_segment = AudioSegment.from_file(audio)
+    aac_audio = BytesIO()
+    audio_segment.export(aac_audio, format='adts')  # Use 'adts' for AAC
+    aac_audio.seek(0)
+    return aac_audio
+
+
+def convert_video_to_webm(video):
+    video = mp.VideoFileClip(video)
+    webm_video = BytesIO()
+    video.write_videofile(webm_video, codec='libvpx', audio_codec='libvorbis')
+    webm_video.seek(0)
+    return webm_video
 
 
 def is_user_valid(token: str, init_data: str):

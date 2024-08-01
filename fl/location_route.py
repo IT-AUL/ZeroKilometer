@@ -10,7 +10,8 @@ import json
 from .storage import delete_location_res, load_user_locations, upload_file, copy_file, load_quest_locations, \
     load_location_file
 from .schemas import QuestSchema, QuestRate, UpdateLocationSchema, CreateLocationSchema
-from .tools import is_file_allowed
+from .tools import is_file_allowed, convert_image_to_webp as citw, convert_audio_to_aac as cata, \
+    convert_video_to_webm as cvtw
 
 load_dotenv()
 
@@ -233,18 +234,26 @@ def update(location: Location, data):
     location.link_to_audio_draft = None
 
     if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
-        location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
-        upload_file(request.files['promo'], location.link_to_promo_draft)
+        location.link_to_promo_draft = f"location/{location.id}/promo_draft.webp"
+        # location.link_to_promo_draft = f"location/{location.id}/promo_draft.{request.files['promo'].filename.split('.')[-1]}"
+        upload_file(citw(request.files['promo']), location.link_to_promo_draft)
 
     if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
-        location.link_to_audio_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
-        upload_file(request.files['audio'], location.link_to_audio_draft)
+        location.link_to_audio_draft = f"location/{location.id}/audio_draft.aac"
+        # location.link_to_audio_draft = f"location/{location.id}/audio_draft.{request.files['audio'].filename.split('.')[-1]}"
+        upload_file(cata(request.files['audio']), location.link_to_audio_draft)
 
     if 'media' in request.files:
         cnt = 0
         for media in request.files.getlist('media'):
             if is_file_allowed(media.filename, MEDIA_FILES):
-                location.links_to_media_draft.append(
-                    f"location/{location.id}/media_{cnt}_draft.{media.filename.split('.')[-1]}")
-                upload_file(media, location.links_to_media_draft[-1])
+                _, ext = os.path.splitext(media.filename.lower())
+                if ext in PROMO_FILES:
+                    location.links_to_media_draft.append(
+                        f"location/{location.id}/media_{cnt}_draft.webp")
+                    upload_file(citw(media), location.links_to_media_draft[-1])
+                else:
+                    location.links_to_media_draft.append(
+                        f"location/{location.id}/media_{cnt}_draft.webm")
+                    upload_file(cvtw(media), location.links_to_media_draft[-1])
                 cnt += 1

@@ -11,6 +11,7 @@ import uuid
 from .storage import load_quests_list, delete_quest_res, upload_file, copy_file, load_quest_file, load_user_quests
 from .schemas import QuestSchema, QuestRate
 from .tools import is_file_allowed
+from .tools import convert_image_to_webp, convert_audio_to_aac
 
 load_dotenv()
 
@@ -151,17 +152,16 @@ def save_quest():
 
         for loc_id in data['locations']:
             quest.locations_draft.append(Location.query.get(loc_id))
-
         if 'promo' in request.files and is_file_allowed(request.files['promo'].filename, PROMO_FILES):
             # save file
-            quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.{request.files["promo"].filename.split('.')[-1]}"
-            upload_file(request.files['promo'], quest.link_to_promo_draft)
+            quest.link_to_promo_draft = f"quest/{quest_id}/promo_draft.webp"
+            upload_file(convert_image_to_webp(request.files['promo']), quest.link_to_promo_draft)
 
         if 'audio' in request.files and is_file_allowed(request.files['audio'].filename, AUDIO_FILES):
             # save file
 
-            quest.link_to_audio_draft = f"quest/{quest_id}/audio_draft.{request.files["audio"].filename.split('.')[-1]}"
-            upload_file(request.files['audio'], quest.link_to_audio_draft)
+            quest.link_to_audio_draft = f"quest/{quest_id}/audio_draft.aac"
+            upload_file(convert_audio_to_aac(request.files['audio']), quest.link_to_audio_draft)
 
         db.session.commit()
         response = {
