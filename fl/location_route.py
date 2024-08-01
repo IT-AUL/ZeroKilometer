@@ -248,11 +248,14 @@ def update(location: Location, data):
         for media in request.files.getlist('media'):
             if is_file_allowed(media.filename, MEDIA_FILES):
                 _, ext = os.path.splitext(media.filename.lower())
+                ext = ext[1:]
+                print(ext)
                 if ext in PROMO_FILES:
                     location.links_to_media_draft.append(
                         f"location/{location.id}/media_{cnt}_draft.webp")
                     upload_file(citw(media), location.links_to_media_draft[-1])
                 else:
+                    print(media.filename)
                     location.links_to_media_draft.append(
                         f"location/{location.id}/media_{cnt}_draft.webm")
                     upload_file(cvtw(media), location.links_to_media_draft[-1])

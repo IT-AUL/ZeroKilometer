@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 
 from PIL import Image
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 import moviepy.editor as mp
 from dotenv import load_dotenv
@@ -37,10 +38,33 @@ def convert_audio_to_aac(audio):
     return aac_audio
 
 
-def convert_video_to_webm(video):
-    video = mp.VideoFileClip(video)
+#
+# def convert_video_to_webm(video):
+#     video = mp.VideoFileClip(video)
+#     webm_video = BytesIO()
+#     video.write_videofile(webm_video, codec='libvpx', audio_codec='libvorbis')
+#     webm_video.seek(0)
+#     return webm_video
+
+# def convert_video_to_webm(video):
+#     video_bytes = BytesIO()
+#     video.save(video_bytes)
+#     video_bytes.seek(0)
+#     video_clip = mp.VideoFileClip(video_bytes)
+#     webm_video = BytesIO()
+#     video_clip.write_videofile(webm_video.name, codec='libvpx', audio_codec='libvorbis')
+#     webm_video.seek(0)
+#     return webm_video
+
+
+def convert_video_to_webm(file):
+    file_stream = BytesIO(file.read())
+    file_stream.seek(0)
+
+    # Convert video to WebM format
+    input_video = VideoFileClip(file_stream)
     webm_video = BytesIO()
-    video.write_videofile(webm_video, codec='libvpx', audio_codec='libvorbis')
+    input_video.write_videofile(webm_video, codec='libvpx', format='webm')
     webm_video.seek(0)
     return webm_video
 
